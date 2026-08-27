@@ -31,6 +31,12 @@ import {
   Landmark,
   CreditCard,
   Map,
+  ShieldCheck,
+  Upload,
+  LockKeyhole,
+  Users,
+  Route,
+  Gauge,
 } from "lucide-react";
 
 const navItems = [
@@ -184,6 +190,12 @@ const availableVehicles = [
 ];
 
 function App() {
+  const [authenticated, setAuthenticated] = useState(
+    () => localStorage.getItem("hanhTrinhXanh.authenticated") === "true",
+  );
+  const [role, setRole] = useState(
+    () => localStorage.getItem("hanhTrinhXanh.role") || "farmer",
+  );
   const [activeTab, setActiveTab] = useState("home");
   const [origin, setOrigin] = useState("Xã Ninh Quới");
   const [destination, setDestination] = useState("Xã Phước Long");
@@ -209,6 +221,7 @@ function App() {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [walletAction, setWalletAction] = useState(null);
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [contractOpen, setContractOpen] = useState(false);
   const notify = (message) => {
     setToast(message);
     window.setTimeout(() => setToast(""), 2600);
@@ -252,6 +265,23 @@ function App() {
     setBalance((current) => current - fee);
     notify(`Thanh toán cước ${fee.toLocaleString("vi-VN")}đ thành công`);
   };
+  const changeRole = (nextRole) => {
+    setRole(nextRole);
+    localStorage.setItem("hanhTrinhXanh.role", nextRole);
+    setActiveTab("home");
+    notify(
+      nextRole === "farmer"
+        ? "Đã chuyển sang Nông dân / HTX"
+        : "Đã chuyển sang Chủ ghe",
+    );
+  };
+  const logout = () => {
+    localStorage.removeItem("hanhTrinhXanh.authenticated");
+    setAuthenticated(false);
+  };
+  if (!authenticated) {
+    return <LoginView onAuthenticated={() => setAuthenticated(true)} />;
+  }
   return (
     <div className="app-shell">
       <div className="mx-auto min-h-screen max-w-[1180px] bg-[#f5f8f4] md:border-x md:border-[#e2ebe0]">
@@ -284,7 +314,7 @@ function App() {
               <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#dcebd3] text-[#397153]">
                 NA
               </span>
-              Ngọc Anh
+              <VerifiedName name="Ngọc Anh" />
             </div>
           </div>
         </header>
@@ -321,6 +351,8 @@ function App() {
                 journeyMode,
                 setJourneyMode,
                 vehicleInfo,
+                role,
+                onContract: () => setContractOpen(true),
               }}
             />
           )}
@@ -355,6 +387,9 @@ function App() {
               vehicleInfo={vehicleInfo}
               setVehicleInfo={setVehicleInfo}
               onProfilePanel={setProfilePanel}
+              role={role}
+              onRoleChange={changeRole}
+              onKycUpload={() => notify("Đã tải ảnh CCCD lên hồ sơ demo")}
             />
           )}
         </main>
@@ -389,6 +424,7 @@ function App() {
           panel={profilePanel}
           onClose={() => setProfilePanel(null)}
           notify={notify}
+          onLogout={logout}
         />
       )}
       {selectedCargo && (
@@ -435,7 +471,120 @@ function App() {
           }
         />
       )}
+      {contractOpen && (
+        <ContractModal onClose={() => setContractOpen(false)} notify={notify} />
+      )}
     </div>
+  );
+}
+
+function LoginView({ onAuthenticated }) {
+  const [phone, setPhone] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [kycUploaded, setKycUploaded] = useState(false);
+  const submit = () => {
+    if (!otpSent) {
+      setOtpSent(true);
+      return;
+    }
+    localStorage.setItem("hanhTrinhXanh.authenticated", "true");
+    localStorage.setItem("hanhTrinhXanh.phone", phone);
+    onAuthenticated();
+  };
+  return (
+    <div className="app-shell flex min-h-screen items-center justify-center p-5">
+      <main className="w-full max-w-md rounded-[28px] border border-[#dfeade] bg-white p-6 shadow-2xl shadow-[#2f815c]/10 sm:p-8">
+        <div className="mb-8 flex items-center gap-3">
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#2f815c] text-white">
+            <Leaf size={24} />
+          </div>
+          <div>
+            <p className="display-font text-xl font-bold">Hành trình xanh</p>
+            <p className="text-xs text-[#799085]">
+              Vận chuyển nông sản minh bạch
+            </p>
+          </div>
+        </div>
+        <p className="mb-2 text-[10px] font-bold uppercase tracking-[.18em] text-[#8ba095]">
+          Định danh số
+        </p>
+        <h1 className="display-font text-3xl font-bold text-[#183b32]">
+          Chào mừng trở lại
+        </h1>
+        <p className="mt-2 text-sm leading-6 text-[#71877b]">
+          Đăng nhập để kết nối mùa vụ với những chuyến ghe hiệu quả hơn.
+        </p>
+        <label className="mt-6 block text-xs font-bold text-[#557264]">
+          Số điện thoại
+          <input
+            value={phone}
+            onChange={(event) => setPhone(event.target.value)}
+            className="mt-2 w-full rounded-xl border border-[#dce8dc] px-3 py-3 outline-none focus:border-[#4c9758]"
+            placeholder="09xx xxx xxx"
+            inputMode="tel"
+          />
+        </label>
+        {otpSent && (
+          <label className="mt-3 block text-xs font-bold text-[#557264]">
+            Mã OTP giả
+            <input
+              value={otp}
+              onChange={(event) => setOtp(event.target.value)}
+              className="mt-2 w-full rounded-xl border border-[#dce8dc] px-3 py-3 tracking-[.35em] outline-none focus:border-[#4c9758]"
+              placeholder="123456"
+              inputMode="numeric"
+            />
+          </label>
+        )}
+        <button
+          disabled={!phone || (otpSent && !otp)}
+          onClick={submit}
+          className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-[#e9784b] py-3.5 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {otpSent ? (
+            <>
+              <ShieldCheck size={17} /> Xác nhận OTP
+            </>
+          ) : (
+            "Nhận OTP"
+          )}
+        </button>
+        <div className="mt-5 rounded-2xl bg-[#f1f6ef] p-4">
+          <div className="flex items-center gap-2 text-sm font-bold text-[#28704d]">
+            <ShieldCheck size={17} /> Hồ sơ KYC mô phỏng
+          </div>
+          <p className="mt-1 text-xs leading-5 text-[#71877b]">
+            Tải đủ CCCD mặt trước và sau để nhận dấu xác thực xanh.
+          </p>
+          <button
+            onClick={() => setKycUploaded(true)}
+            className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-[#9fc898] bg-white py-3 text-xs font-bold text-[#397153]"
+          >
+            <Upload size={15} />{" "}
+            {kycUploaded
+              ? "Đã tải 2 ảnh CCCD"
+              : "Tải lên ảnh CCCD mặt trước / sau"}
+          </button>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+function VerifiedName({ name }) {
+  return (
+    <span
+      className="inline-flex items-center gap-1"
+      title="Tài khoản đã xác thực"
+    >
+      {name}
+      <ShieldCheck
+        size={14}
+        className="text-[#3e9b61]"
+        aria-label="Tài khoản đã xác thực"
+      />
+    </span>
   );
 }
 
@@ -494,7 +643,14 @@ function HomeView({
   onCargoDetail,
   onVehicleDetail,
   onRouteDetail,
+  role,
+  onContract,
 }) {
+  if (role === "boatOwner") {
+    return (
+      <BoatOwnerHome onContract={onContract} setActiveTab={setActiveTab} />
+    );
+  }
   return (
     <div className="animate-rise flex flex-col">
       <section className="relative mb-7 overflow-hidden rounded-[24px] bg-[#2f815c] px-6 py-7 text-white shadow-xl shadow-[#2f815c]/15 md:px-9 md:py-9">
@@ -519,6 +675,30 @@ function HomeView({
           size={42}
         />
       </section>
+      <div className="order-2 mb-7 grid grid-cols-3 gap-2">
+        <button
+          onClick={() => setJourneyMode("Tìm phương tiện")}
+          className="rounded-xl bg-[#e9784b] px-2 py-3 text-[11px] font-bold text-white"
+        >
+          Tìm ghe ghép chuyến
+        </button>
+        <button
+          onClick={onContract}
+          className="rounded-xl border border-[#bde0a9] bg-white px-2 py-3 text-[11px] font-bold text-[#28704d]"
+        >
+          Tạo hợp đồng
+        </button>
+        <button
+          onClick={() =>
+            document
+              .getElementById("luong-xanh-htx")
+              ?.scrollIntoView({ behavior: "smooth" })
+          }
+          className="rounded-xl border border-[#bde0a9] bg-white px-2 py-3 text-[11px] font-bold text-[#28704d]"
+        >
+          Gom đơn HTX
+        </button>
+      </div>
       <section className="order-3 mb-8">
         <SectionTitle eyebrow="Bắt đầu hành trình" title="Đặt chuyến nhanh" />
         <div className="rounded-[20px] border border-[#e0ebe0] bg-white p-4 shadow-sm md:p-5">
@@ -647,6 +827,10 @@ function HomeView({
           )}
         </div>
       </section>
+      <section id="luong-xanh-htx" className="order-3 mb-8">
+        <SectionTitle eyebrow="Dành cho HTX" title="Luồng Xanh HTX" />
+        <CooperativeFlow onContract={onContract} />
+      </section>
       <section className="order-1 mb-8">
         <SectionTitle
           eyebrow="Đang cần chuyến"
@@ -764,6 +948,148 @@ function HomeView({
           />
         </div>
       </section>
+    </div>
+  );
+}
+
+function BoatOwnerHome({ onContract, setActiveTab }) {
+  return (
+    <div className="animate-rise">
+      <section className="mb-7 rounded-[24px] bg-[#174c3a] px-6 py-7 text-white shadow-xl md:px-9">
+        <p className="text-sm text-[#bfe3b0]">
+          Xin chào, <VerifiedName name="Anh Tùng" />
+        </p>
+        <h1 className="display-font mt-2 text-3xl font-bold">
+          Tối ưu từng chuyến ghe.
+        </h1>
+        <p className="mt-3 text-sm leading-6 text-[#d7ebdc]">
+          Nhận nguồn hàng phù hợp, chạy đầy tải và giảm chuyến rỗng trên tuyến
+          Cái Cui.
+        </p>
+        <button
+          onClick={() => setActiveTab("profile")}
+          className="mt-5 rounded-xl bg-[#e9784b] px-4 py-3 text-xs font-bold"
+        >
+          Cập nhật trọng tải trống
+        </button>
+      </section>
+      <SectionTitle
+        eyebrow="Nguồn hàng đang tìm ghe"
+        title="Cơ hội quanh bạn"
+      />
+      <div className="space-y-3">
+        {cargoRequests.map((cargo) => (
+          <article
+            key={cargo.name}
+            className="rounded-[18px] border border-[#e0ebe0] bg-white p-4 shadow-sm"
+          >
+            <div className="flex items-start gap-3">
+              <span className="text-2xl">{cargo.icon}</span>
+              <div className="flex-1">
+                <p className="text-sm font-bold">
+                  <VerifiedName name="HTX Ninh Quới" />
+                </p>
+                <p className="mt-1 text-xs text-[#71877b]">
+                  {cargo.name} · {cargo.amount} · {cargo.route}
+                </p>
+                <p className="mt-2 text-[10px] font-bold text-[#e9784b]">
+                  {cargo.time}
+                </p>
+              </div>
+              <button
+                onClick={onContract}
+                className="rounded-lg bg-[#edf6e9] px-3 py-2 text-[10px] font-bold text-[#28704d]"
+              >
+                Đề xuất
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+      <div className="mt-6 grid grid-cols-2 gap-3">
+        <button
+          onClick={() => setActiveTab("activity")}
+          className="rounded-2xl bg-white p-4 text-left shadow-sm"
+        >
+          <Route className="text-[#397153]" size={20} />
+          <b className="mt-3 block text-sm">Tối ưu tuyến đường</b>
+          <span className="mt-1 block text-xs text-[#799085]">
+            Ninh Quới - Phước Long
+          </span>
+        </button>
+        <button
+          onClick={() => setActiveTab("profile")}
+          className="rounded-2xl bg-white p-4 text-left shadow-sm"
+        >
+          <Gauge className="text-[#e9784b]" size={20} />
+          <b className="mt-3 block text-sm">Trọng tải trống</b>
+          <span className="mt-1 block text-xs text-[#799085]">
+            Còn 3,2 tấn hôm nay
+          </span>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+const cooperativeFarmers = [
+  "Nguyễn Văn Sáu",
+  "Trần Thị Mai",
+  "Lê Minh Tâm",
+  "Phạm Văn Bình",
+  "Đặng Thị Lan",
+];
+function CooperativeFlow({ onContract }) {
+  const [selected, setSelected] = useState([0, 1, 2, 3, 4]);
+  const toggle = (index) =>
+    setSelected((current) =>
+      current.includes(index)
+        ? current.filter((item) => item !== index)
+        : [...current, index],
+    );
+  return (
+    <div className="rounded-[20px] border border-[#bde0a9] bg-[#f7fcf3] p-4">
+      <div className="mb-3 flex items-center gap-2">
+        <Users size={18} className="text-[#397153]" />
+        <div>
+          <b className="text-sm">Gom đơn thành lô lớn</b>
+          <p className="text-xs text-[#71877b]">
+            AI gọi xà lan lớn, cước phí rẻ hơn.
+          </p>
+        </div>
+      </div>
+      <div className="space-y-2">
+        {cooperativeFarmers.map((farmer, index) => (
+          <label
+            key={farmer}
+            className="flex items-center gap-3 rounded-xl bg-white p-3 text-xs"
+          >
+            <input
+              type="checkbox"
+              checked={selected.includes(index)}
+              onChange={() => toggle(index)}
+              className="h-4 w-4 accent-[#2f815c]"
+            />
+            <span className="flex-1">
+              <VerifiedName name={farmer} />
+              <span className="ml-2 text-[#8ba095]">
+                {index % 2 ? "8 tấn" : "12 tấn"} lúa
+              </span>
+            </span>
+          </label>
+        ))}
+      </div>
+      <div className="mt-3 flex items-center justify-between border-t border-[#dcebd3] pt-3">
+        <span className="text-xs font-bold text-[#28704d]">
+          {selected.length} hộ · {selected.length * 10} tấn lúa
+        </span>
+        <button
+          onClick={onContract}
+          className="rounded-xl bg-[#2f815c] px-3 py-2.5 text-xs font-bold text-white"
+        >
+          Tạo lô hàng lớn
+        </button>
+      </div>
     </div>
   );
 }
@@ -1107,7 +1433,15 @@ function NotificationView({ notify }) {
     </div>
   );
 }
-function ProfileView({ notify, vehicleInfo, setVehicleInfo, onProfilePanel }) {
+function ProfileView({
+  notify,
+  vehicleInfo,
+  setVehicleInfo,
+  onProfilePanel,
+  role,
+  onRoleChange,
+  onKycUpload,
+}) {
   const [editingVehicle, setEditingVehicle] = useState(false);
   const updateVehicle = (field, value) =>
     setVehicleInfo((current) => ({ ...current, [field]: value }));
@@ -1130,14 +1464,39 @@ function ProfileView({ notify, vehicleInfo, setVehicleInfo, onProfilePanel }) {
           NA
         </div>
         <div>
-          <h2 className="display-font text-xl font-bold">Ngọc Anh</h2>
+          <h2 className="display-font text-xl font-bold">
+            <VerifiedName name="Ngọc Anh" />
+          </h2>
           <p className="mt-1 text-xs text-[#799085]">
-            Nông dân · Thành viên từ 2024
+            {role === "farmer" ? "Nông dân / HTX" : "Chủ ghe"} · Thành viên từ
+            2024
           </p>
           <span className="mt-2 inline-flex items-center gap-1 rounded-full bg-[#edf6e9] px-2 py-1 text-[10px] font-bold text-[#4c9758]">
             <Check size={11} />
             Tài khoản đã xác thực
           </span>
+        </div>
+      </section>
+      <section className="mb-5 rounded-[20px] border border-[#bde0a9] bg-[#f7fcf3] p-5">
+        <p className="text-[10px] font-bold uppercase tracking-[.16em] text-[#8ba095]">
+          Phân quyền demo
+        </p>
+        <h2 className="display-font mt-1 text-lg font-bold">
+          Chuyển đổi vai trò
+        </h2>
+        <div className="mt-4 grid grid-cols-2 gap-2 rounded-xl bg-[#e4f1df] p-1">
+          <button
+            onClick={() => onRoleChange("farmer")}
+            className={`rounded-lg px-2 py-3 text-xs font-bold ${role === "farmer" ? "bg-white text-[#28704d] shadow-sm" : "text-[#71877b]"}`}
+          >
+            Nông dân / HTX
+          </button>
+          <button
+            onClick={() => onRoleChange("boatOwner")}
+            className={`rounded-lg px-2 py-3 text-xs font-bold ${role === "boatOwner" ? "bg-white text-[#28704d] shadow-sm" : "text-[#71877b]"}`}
+          >
+            Chủ ghe
+          </button>
         </div>
       </section>
       <section className="mb-5 rounded-[20px] border border-[#e0ebe0] bg-white p-5 shadow-sm">
@@ -1213,7 +1572,9 @@ function ProfileView({ notify, vehicleInfo, setVehicleInfo, onProfilePanel }) {
               <Ship size={19} />
             </span>
             <div className="flex-1">
-              <p className="text-sm font-bold">{vehicleInfo.name}</p>
+              <p className="text-sm font-bold">
+                <VerifiedName name={vehicleInfo.name} />
+              </p>
               <p className="mt-1 text-xs text-[#799085]">
                 {vehicleInfo.type} · {vehicleInfo.plate} · tải{" "}
                 {vehicleInfo.capacity}
@@ -1221,6 +1582,23 @@ function ProfileView({ notify, vehicleInfo, setVehicleInfo, onProfilePanel }) {
             </div>
           </div>
         )}
+      </section>
+      <section className="mb-5 rounded-[20px] border border-[#e0ebe0] bg-white p-5 shadow-sm">
+        <div className="flex items-center gap-3">
+          <ShieldCheck className="text-[#3e9b61]" size={21} />
+          <div>
+            <b className="text-sm">Định danh & KYC</b>
+            <p className="mt-1 text-xs text-[#799085]">
+              CCCD mặt trước / mặt sau đã sẵn sàng
+            </p>
+          </div>
+        </div>
+        <button
+          onClick={onKycUpload}
+          className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-[#9fc898] bg-[#f7fcf3] py-3 text-xs font-bold text-[#28704d]"
+        >
+          <Upload size={15} /> Tải lên ảnh CCCD mặt trước / sau
+        </button>
       </section>
       <div className="overflow-hidden rounded-[20px] border border-[#e0ebe0] bg-white shadow-sm">
         {[
@@ -1340,7 +1718,7 @@ function RoutePreview({ onClose }) {
   );
 }
 
-function ProfilePanel({ panel, onClose, notify }) {
+function ProfilePanel({ panel, onClose, notify, onLogout }) {
   const content = {
     "Thông tin cá nhân": [
       "Hồ sơ Ngọc Anh",
@@ -1391,6 +1769,7 @@ function ProfilePanel({ panel, onClose, notify }) {
             <button
               onClick={() => {
                 notify("Đã đăng xuất khỏi phiên demo");
+                onLogout();
                 onClose();
               }}
               className="flex-1 rounded-xl bg-[#e9784b] py-3 text-sm font-bold text-white"
@@ -1708,6 +2087,93 @@ function VehicleDetail({ vehicle, onClose, onBook }) {
         className="mt-4 w-full rounded-xl bg-[#e9784b] py-3.5 text-sm font-bold text-white"
       >
         Đặt chuyến với phương tiện này
+      </button>
+    </ModalShell>
+  );
+}
+
+function ContractModal({ onClose, notify }) {
+  const [deposit, setDeposit] = useState("20%");
+  const [signed, setSigned] = useState(false);
+  const fields = [
+    ["Tên người mua / chủ ghe", "Anh Tùng · Ghe Thành Công"],
+    ["Tên nông dân", "Ngọc Anh · HTX Ninh Quới"],
+    ["Loại nông sản", "Lúa thơm ST25"],
+    ["Ngày thu hoạch dự kiến", "28/08/2026"],
+    ["Khối lượng", "50 tấn · Lô HTX-NQ-08"],
+    ["Giá chốt cố định", "7.200.000đ / tấn"],
+  ];
+  const sign = () => {
+    setSigned(true);
+    notify("Tiền cọc đã được giữ an toàn trên hệ thống. Hợp đồng có hiệu lực!");
+  };
+  return (
+    <ModalShell>
+      <div className="mb-5 flex items-start justify-between">
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-[.15em] text-[#8ba095]">
+            Smart Contract · HTX-NQ-08
+          </p>
+          <h2 className="display-font mt-1 text-xl font-bold">
+            Hợp đồng vận tải & Bao tiêu số
+          </h2>
+        </div>
+        <button
+          onClick={onClose}
+          aria-label="Đóng"
+          className="rounded-full bg-[#f1f6ef] p-2 text-[#397153]"
+        >
+          <X size={18} />
+        </button>
+      </div>
+      <div className="space-y-2">
+        {fields.map(([label, value]) => (
+          <label
+            key={label}
+            className="block rounded-xl bg-[#f1f6ef] px-3 py-2"
+          >
+            <span className="block text-[10px] font-bold uppercase tracking-[.08em] text-[#8ba095]">
+              {label}
+            </span>
+            <input
+              readOnly
+              value={value}
+              className="mt-1 w-full bg-transparent text-xs font-bold text-[#183b32] outline-none"
+            />
+          </label>
+        ))}
+      </div>
+      <label className="mt-3 block rounded-xl border border-[#bde0a9] bg-[#f7fcf3] px-3 py-2">
+        <span className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-[.08em] text-[#8ba095]">
+          <LockKeyhole size={12} /> Tỷ lệ cọc
+        </span>
+        <select
+          value={deposit}
+          onChange={(event) => setDeposit(event.target.value)}
+          className="mt-1 w-full bg-transparent text-sm font-bold text-[#28704d] outline-none"
+        >
+          <option>10%</option>
+          <option>20%</option>
+          <option>30%</option>
+        </select>
+      </label>
+      <div
+        className={`mt-3 flex items-start gap-2 rounded-xl p-3 text-xs ${signed ? "bg-[#e5f5df] text-[#28704d]" : "bg-[#fff4df] text-[#8b6332]"}`}
+      >
+        <ShieldCheck size={16} className="mt-0.5 shrink-0" />
+        <span>
+          {signed
+            ? "Đã ký điện tử · Tiền cọc đã khóa an toàn."
+            : `Số tiền cọc dự kiến: 72.000.000đ (${deposit})`}
+        </span>
+      </div>
+      <button
+        disabled={signed}
+        onClick={sign}
+        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#1f6b4b] py-3.5 text-sm font-bold text-white disabled:opacity-70"
+      >
+        <LockKeyhole size={17} />
+        {signed ? "Hợp đồng đã có hiệu lực" : "Ký tên & Khóa tiền cọc"}
       </button>
     </ModalShell>
   );
