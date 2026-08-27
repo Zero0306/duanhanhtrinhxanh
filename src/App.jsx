@@ -43,7 +43,12 @@ const navItems = [
   { id: "home", label: "Trang chủ", mobileLabel: "Home", icon: Home },
   { id: "activity", label: "Hoạt động", mobileLabel: "Chuyến", icon: Activity },
   { id: "payment", label: "Thanh toán", mobileLabel: "Ví", icon: Wallet },
-  { id: "notifications", label: "Tin nhắn", mobileLabel: "Tin nhắn", icon: MessageCircle },
+  {
+    id: "notifications",
+    label: "Tin nhắn",
+    mobileLabel: "Tin nhắn",
+    icon: MessageCircle,
+  },
   { id: "profile", label: "Tôi", mobileLabel: "Tôi", icon: UserRound },
 ];
 const journeys = [
@@ -62,7 +67,7 @@ const journeys = [
   },
   {
     id: "HT-1982",
-    title: "Lúa thơm ST25",
+    title: "Lúa",
     route: "Xã Hồng Dân → Xã Vĩnh Lợi",
     boat: "Ghe Phúc Lộc",
     plate: "CT 5521",
@@ -151,14 +156,14 @@ const cargoRequests = [
     icon: "🦐",
   },
   {
-    name: "Lúa mùa",
+    name: "Lúa",
     amount: "5 tấn",
     route: "Xã Hồng Dân → Xã Vĩnh Lợi",
     time: "Cần chuyến ngày mai",
     icon: "🌾",
   },
   {
-    name: "Cua Cà Mau",
+    name: "Cua biển",
     amount: "100 kg",
     route: "Xã Ninh Quới → Xã Phong Thạnh Tây",
     time: "Cần chuyến hôm nay",
@@ -407,8 +412,12 @@ function App() {
               className={`flex min-w-0 flex-1 flex-col items-center gap-1 rounded-xl px-0.5 py-1.5 text-center text-[9px] font-semibold leading-3 transition sm:px-2 sm:text-[10px] sm:leading-normal ${activeTab === id ? "bg-[#edf6e9] text-[#28704d]" : "text-[#8b9e93] hover:text-[#397153]"}`}
             >
               <Icon size={19} strokeWidth={activeTab === id ? 2.5 : 1.8} />
-              <span className="max-w-full whitespace-nowrap sm:hidden">{mobileLabel}</span>
-              <span className="hidden max-w-full whitespace-nowrap sm:block">{label}</span>
+              <span className="max-w-full whitespace-nowrap sm:hidden">
+                {mobileLabel}
+              </span>
+              <span className="hidden max-w-full whitespace-nowrap sm:block">
+                {label}
+              </span>
             </button>
           ))}
         </nav>
@@ -757,11 +766,10 @@ function HomeView({
                 onChange={(event) => setProduce(event.target.value)}
               >
                 <option>Xoài Cao Lãnh</option>
-                <option>Lúa thơm ST25</option>
+                <option>Lúa</option>
                 <option>Thanh long ruột đỏ</option>
                 <option>Tôm sú tươi</option>
-                <option>Lúa mùa</option>
-                <option>Cua Cà Mau</option>
+                <option>Cua biển</option>
                 <option>Gạo thơm</option>
                 <option>Cá đồng</option>
                 <option>Trái cây miền Tây</option>
@@ -2105,7 +2113,7 @@ function ContractModal({ onClose, notify }) {
   const fields = [
     ["Tên người mua / chủ ghe", "Anh Tùng · Ghe Thành Công"],
     ["Tên nông dân", "Ngọc Anh · HTX Ninh Quới"],
-    ["Loại nông sản", "Lúa thơm ST25"],
+    ["Loại nông sản", "Lúa"],
     ["Ngày thu hoạch dự kiến", "28/08/2026"],
     ["Khối lượng", "50 tấn · Lô HTX-NQ-08"],
     ["Giá chốt cố định", "7.200.000đ / tấn"],
