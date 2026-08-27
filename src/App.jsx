@@ -191,7 +191,15 @@ const availableVehicles = [
 
 function App() {
   const [authenticated, setAuthenticated] = useState(
-    () => localStorage.getItem("hanhTrinhXanh.authenticated") === "true",
+    () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has("reset")) {
+        localStorage.removeItem("hanhTrinhXanh.authenticated");
+        window.history.replaceState({}, "", window.location.pathname);
+        return false;
+      }
+      return localStorage.getItem("hanhTrinhXanh.authenticated") === "true";
+    },
   );
   const [role, setRole] = useState(
     () => localStorage.getItem("hanhTrinhXanh.role") || "farmer",
