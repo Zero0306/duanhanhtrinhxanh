@@ -190,17 +190,15 @@ const availableVehicles = [
 ];
 
 function App() {
-  const [authenticated, setAuthenticated] = useState(
-    () => {
-      const params = new URLSearchParams(window.location.search);
-      if (params.has("reset")) {
-        localStorage.removeItem("hanhTrinhXanh.authenticated");
-        window.history.replaceState({}, "", window.location.pathname);
-        return false;
-      }
-      return localStorage.getItem("hanhTrinhXanh.authenticated") === "true";
-    },
-  );
+  const [authenticated, setAuthenticated] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has("reset")) {
+      localStorage.removeItem("hanhTrinhXanh.authenticated");
+      window.history.replaceState({}, "", window.location.pathname);
+      return false;
+    }
+    return localStorage.getItem("hanhTrinhXanh.authenticated") === "true";
+  });
   const [role, setRole] = useState(
     () => localStorage.getItem("hanhTrinhXanh.role") || "farmer",
   );
@@ -401,15 +399,15 @@ function App() {
             />
           )}
         </main>
-        <nav className="fixed bottom-0 left-0 right-0 z-20 mx-auto grid w-full max-w-[620px] grid-cols-5 items-center border-t border-[#e5ece3] bg-white/95 px-2 pb-[max(10px,env(safe-area-inset-bottom))] pt-2 shadow-[0_-8px_30px_rgba(36,77,52,.08)] backdrop-blur md:bottom-4 md:rounded-2xl md:border md:pb-2">
+        <nav className="fixed bottom-0 left-0 right-0 z-20 mx-auto grid w-full max-w-[620px] grid-cols-5 items-center border-t border-[#e5ece3] bg-white/95 px-1 pb-[max(10px,env(safe-area-inset-bottom))] pt-2 shadow-[0_-8px_30px_rgba(36,77,52,.08)] backdrop-blur sm:px-2 md:bottom-4 md:rounded-2xl md:border md:pb-2">
           {navItems.map(({ id, label, icon: Icon }) => (
             <button
               key={id}
               onClick={() => setActiveTab(id)}
-              className={`flex min-w-0 flex-1 flex-col items-center gap-1 whitespace-nowrap rounded-xl px-2 py-1.5 text-[10px] font-semibold transition ${activeTab === id ? "bg-[#edf6e9] text-[#28704d]" : "text-[#8b9e93] hover:text-[#397153]"}`}
+              className={`flex min-w-0 flex-1 flex-col items-center gap-1 rounded-xl px-0.5 py-1.5 text-center text-[9px] font-semibold leading-3 transition sm:px-2 sm:text-[10px] sm:leading-normal ${activeTab === id ? "bg-[#edf6e9] text-[#28704d]" : "text-[#8b9e93] hover:text-[#397153]"}`}
             >
               <Icon size={19} strokeWidth={activeTab === id ? 2.5 : 1.8} />
-              <span>{label}</span>
+              <span className="max-w-full whitespace-normal break-words">{label}</span>
             </button>
           ))}
         </nav>
