@@ -40,11 +40,11 @@ import {
 } from "lucide-react";
 
 const navItems = [
-  { id: "home", label: "Trang chủ", icon: Home },
-  { id: "activity", label: "Hoạt động", icon: Activity },
-  { id: "payment", label: "Thanh toán", icon: Wallet },
-  { id: "notifications", label: "Tin nhắn", icon: MessageCircle },
-  { id: "profile", label: "Tôi", icon: UserRound },
+  { id: "home", label: "Trang chủ", mobileLabel: "Home", icon: Home },
+  { id: "activity", label: "Hoạt động", mobileLabel: "Chuyến", icon: Activity },
+  { id: "payment", label: "Thanh toán", mobileLabel: "Ví", icon: Wallet },
+  { id: "notifications", label: "Tin nhắn", mobileLabel: "Tin nhắn", icon: MessageCircle },
+  { id: "profile", label: "Tôi", mobileLabel: "Tôi", icon: UserRound },
 ];
 const journeys = [
   {
@@ -400,14 +400,15 @@ function App() {
           )}
         </main>
         <nav className="fixed bottom-0 left-0 right-0 z-20 mx-auto grid w-full max-w-[620px] grid-cols-5 items-center border-t border-[#e5ece3] bg-white/95 px-1 pb-[max(10px,env(safe-area-inset-bottom))] pt-2 shadow-[0_-8px_30px_rgba(36,77,52,.08)] backdrop-blur sm:px-2 md:bottom-4 md:rounded-2xl md:border md:pb-2">
-          {navItems.map(({ id, label, icon: Icon }) => (
+          {navItems.map(({ id, label, mobileLabel, icon: Icon }) => (
             <button
               key={id}
               onClick={() => setActiveTab(id)}
               className={`flex min-w-0 flex-1 flex-col items-center gap-1 rounded-xl px-0.5 py-1.5 text-center text-[9px] font-semibold leading-3 transition sm:px-2 sm:text-[10px] sm:leading-normal ${activeTab === id ? "bg-[#edf6e9] text-[#28704d]" : "text-[#8b9e93] hover:text-[#397153]"}`}
             >
               <Icon size={19} strokeWidth={activeTab === id ? 2.5 : 1.8} />
-              <span className="max-w-full whitespace-normal break-words">{label}</span>
+              <span className="max-w-full whitespace-nowrap sm:hidden">{mobileLabel}</span>
+              <span className="hidden max-w-full whitespace-nowrap sm:block">{label}</span>
             </button>
           ))}
         </nav>
