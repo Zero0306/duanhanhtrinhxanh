@@ -55,6 +55,7 @@ import {
   Boxes,
   Navigation2,
   CheckCheck,
+  ArrowLeft,
 } from "lucide-react";
 
 const navItems = [
@@ -380,36 +381,37 @@ const riverSegments = [
 ];
 
 function ProduceIcon({ type, className = "w-5 h-5" }) {
+  const wrapperClass = "flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-gray-300 text-gray-700 bg-white";
   switch (type) {
     case "crab":
       return (
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500/15 to-orange-500/15 text-[#c25e2e] ring-1 ring-amber-500/25">
-          <Boxes className={className} strokeWidth={2.2} />
+        <div className={wrapperClass}>
+          <Boxes className={className} strokeWidth={1.5} />
         </div>
       );
     case "rice":
       return (
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400/20 to-yellow-500/15 text-[#b8860b] ring-1 ring-yellow-500/30">
-          <Wheat className={className} strokeWidth={2.2} />
+        <div className={wrapperClass}>
+          <Wheat className={className} strokeWidth={1.5} />
         </div>
       );
     case "shrimp":
       return (
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500/15 to-cyan-500/15 text-[#1b75bb] ring-1 ring-blue-500/25">
-          <Fish className={className} strokeWidth={2.2} />
+        <div className={wrapperClass}>
+          <Fish className={className} strokeWidth={1.5} />
         </div>
       );
     case "salted_crab":
       return (
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500/15 to-teal-500/15 text-[#1e7b57] ring-1 ring-emerald-500/25">
-          <Boxes className={className} strokeWidth={2.2} />
+        <div className={wrapperClass}>
+          <Boxes className={className} strokeWidth={1.5} />
         </div>
       );
     case "mango":
     default:
       return (
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-lime-500/20 to-emerald-500/15 text-[#2f815c] ring-1 ring-emerald-500/25">
-          <Leaf className={className} strokeWidth={2.2} />
+        <div className={wrapperClass}>
+          <Leaf className={className} strokeWidth={1.5} />
         </div>
       );
   }
@@ -680,8 +682,17 @@ function App() {
   return (
     <div className="app-shell">
       <div className="mx-auto min-h-screen max-w-[1180px] bg-[#f5f8f4] md:border-x md:border-[#e2ebe0]">
-        <header className="flex items-center justify-between px-5 pb-3 pt-5 md:px-10 md:pt-7">
+        <header className="flex items-center justify-between px-5 pb-3 pt-5 md:px-10 md:pt-7 relative">
           <div className="flex items-center gap-3">
+            {activeTab !== "home" && (
+              <button
+                onClick={() => setActiveTab("home")}
+                className="mr-1 flex h-10 w-10 items-center justify-center rounded-full bg-white text-gray-700 shadow-sm transition hover:bg-gray-100 active:scale-95"
+                aria-label="Quay lại"
+              >
+                <ArrowLeft size={20} />
+              </button>
+            )}
             <div className="flex h-10 w-10 items-center justify-center rounded-[13px] bg-[#2f815c] text-white shadow-lg shadow-[#2f815c]/20">
               <Leaf size={21} />
             </div>
@@ -1822,16 +1833,19 @@ function CustomSearchModal({
 
   const produceCategories = [
     { id: "Tất cả", label: "Tất cả" },
-    { id: "crab", label: "🦀 Cua biển Năm Căn" },
-    { id: "rice", label: "🌾 Lúa ST25 Bạc Liêu" },
-    { id: "shrimp", label: "🦐 Tôm sú sinh thái" },
-    { id: "salted_crab", label: "📦 Ba khía Rạch Gốc" },
-    { id: "mango", label: "🍋 Xoài Cát & Trái cây" },
+    { id: "rice", label: "🌾 Lúa (ST25, Một bụi...)" },
+    { id: "fruit", label: "🍋 Trái cây (Cam, Mít, Ổi...)" },
+    { id: "seafood", label: "🦀 Hải sản (Cua, Tôm, Cá...)" },
   ];
 
   // Filter cargo requests
   const filteredCargos = cargoRequests.filter((cargo) => {
-    if (selectedProduce !== "Tất cả" && cargo.type !== selectedProduce) return false;
+    if (selectedProduce !== "Tất cả") {
+      const category = selectedProduce.split("_")[0]; // "rice", "fruit", "seafood"
+      if (category === "rice" && cargo.type !== "rice") return false;
+      if (category === "fruit" && cargo.type !== "mango") return false;
+      if (category === "seafood" && !["crab", "shrimp", "salted_crab"].includes(cargo.type)) return false;
+    }
     if (filterOrigin !== "Tất cả" && cargo.origin !== filterOrigin) return false;
     if (filterDestination !== "Tất cả" && cargo.destination !== filterDestination) return false;
     if (filterUrgency !== "Tất cả" && cargo.urgency !== filterUrgency) return false;
@@ -1892,25 +1906,39 @@ function CustomSearchModal({
         {/* Filter Bar */}
         <div className="border-b border-[#eef5ec] bg-[#fbfdfa] p-4 space-y-3">
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-wider text-[#8ba095] mb-1.5">
-              Loại nông sản đặc sản Cà Mau & Bạc Liêu:
-            </p>
-            <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
-              {produceCategories.map((cat) => (
-                <button
-                  key={cat.id}
-                  type="button"
-                  onClick={() => setSelectedProduce(cat.id)}
-                  className={`shrink-0 rounded-xl px-3 py-1.5 text-xs font-semibold transition active:scale-95 ${
-                    selectedProduce === cat.id
-                      ? "bg-[#2f815c] text-white shadow-sm shadow-[#2f815c]/25 font-bold"
-                      : "border border-[#e0ebe0] bg-white text-[#557264] hover:bg-[#edf6e9]"
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
+            <label className="block text-[10px] font-bold text-[#71877b] mb-1">
+              Loại nông/hải sản đặc sản
+            </label>
+            <select
+              value={selectedProduce}
+              onChange={(e) => setSelectedProduce(e.target.value)}
+              className="w-full rounded-xl border border-[#dce8dc] bg-white p-2.5 text-xs font-semibold text-[#183b32] outline-none focus:border-[#2f815c]"
+            >
+              <option value="Tất cả">-- Tất cả các loại --</option>
+              <optgroup label="🌾 Lúa">
+                <option value="rice_st25">Lúa ST25 Bạc Liêu</option>
+                <option value="rice_motbui">Lúa Một Bụi Đỏ</option>
+                <option value="rice_daithom">Lúa Đài Thơm 8</option>
+                <option value="rice_om18">Lúa OM18</option>
+                <option value="rice_huonglai">Lúa Hương Lài</option>
+              </optgroup>
+              <optgroup label="🍋 Trái cây">
+                <option value="fruit_cam">Cam sành</option>
+                <option value="fruit_mit">Mít Thái</option>
+                <option value="fruit_oi">Ổi nữ hoàng</option>
+                <option value="fruit_man">Mận An Phước</option>
+                <option value="fruit_chuoi">Chuối sáp</option>
+                <option value="fruit_xoai">Xoài Cát Hòa Lộc</option>
+              </optgroup>
+              <optgroup label="🦀 Hải sản">
+                <option value="seafood_cua">Cua biển Năm Căn</option>
+                <option value="seafood_tomsu">Tôm sú sinh thái</option>
+                <option value="seafood_tomthe">Tôm thẻ chân trắng</option>
+                <option value="seafood_cabop">Cá bóp</option>
+                <option value="seafood_cachem">Cá chẽm</option>
+                <option value="seafood_bakhia">Ba khía Rạch Gốc</option>
+              </optgroup>
+            </select>
           </div>
 
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
@@ -2176,18 +2204,36 @@ function HomeView({
                 ))}
               </select>
             </Field>
-            <Field label="Loại nông sản đặc sản" icon={Package}>
+            <Field label="Loại nông/hải sản đặc sản" icon={Package}>
               <select
                 value={produce}
                 onChange={(event) => setProduce(event.target.value)}
+                className="w-full bg-transparent outline-none font-semibold text-[#183b32]"
               >
-                <option>Lúa ST25 Bạc Liêu</option>
-                <option>Cua biển Năm Căn</option>
-                <option>Tôm sú sinh thái</option>
-                <option>Ba khía Rạch Gốc</option>
-                <option>Xoài Cát & Trái cây</option>
-                <option>Mật ong U Minh</option>
-                <option>Thủy sản biển Sông Đốc</option>
+                <option value="Tất cả">-- Tất cả các loại --</option>
+                <optgroup label="🌾 Lúa">
+                  <option value="Lúa ST25 Bạc Liêu">Lúa ST25</option>
+                  <option value="Lúa Một Bụi Đỏ">Lúa Một Bụi Đỏ</option>
+                  <option value="Lúa Đài Thơm 8">Lúa Đài Thơm 8</option>
+                  <option value="Lúa OM18">Lúa OM18</option>
+                  <option value="Lúa Hương Lài">Lúa Hương Lài</option>
+                </optgroup>
+                <optgroup label="🍋 Trái cây">
+                  <option value="Cam sành">Cam sành</option>
+                  <option value="Mít Thái">Mít Thái</option>
+                  <option value="Ổi nữ hoàng">Ổi nữ hoàng</option>
+                  <option value="Mận An Phước">Mận An Phước</option>
+                  <option value="Chuối sáp">Chuối sáp</option>
+                  <option value="Xoài Cát Hòa Lộc">Xoài Cát Hòa Lộc</option>
+                </optgroup>
+                <optgroup label="🦀 Hải sản">
+                  <option value="Cua biển Năm Căn">Cua biển Năm Căn</option>
+                  <option value="Tôm sú sinh thái">Tôm sú sinh thái</option>
+                  <option value="Tôm thẻ chân trắng">Tôm thẻ chân trắng</option>
+                  <option value="Cá bóp">Cá bóp</option>
+                  <option value="Cá chẽm">Cá chẽm</option>
+                  <option value="Ba khía Rạch Gốc">Ba khía Rạch Gốc</option>
+                </optgroup>
               </select>
             </Field>
             <Field label="Khối lượng cần chở" icon={MoreHorizontal}>
