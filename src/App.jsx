@@ -2429,6 +2429,18 @@ function HomeView({
             label="Nước mặn triều dâng"
             tone="danger"
           />
+          <EnvironmentCard
+            name="Sông Cà Mau (Phường 2 & 9 mới sáp nhập)"
+            value="4.2‰"
+            label="Xâm nhập mặn nhẹ"
+            tone="warning"
+          />
+          <EnvironmentCard
+            name="Kênh xáng (Phường Tân Xuyên)"
+            value="0.8‰"
+            label="Nước ngọt an toàn"
+            tone="safe"
+          />
         </div>
       </section>
     </div>
@@ -3260,14 +3272,35 @@ function RoutePreview({ onClose }) {
         })}
       </div>
 
-      {/* Dynamic Map Frame */}
-      <div className="relative h-64 overflow-hidden rounded-2xl border border-[#dce8dc]">
-        <iframe
-          title="Luồng tuyến Cà Mau - Bạc Liêu"
-          className="h-full w-full border-0"
-          src={mapUrl}
-          loading="lazy"
-        />
+      {/* Dynamic Visual Route Map (Shopee Tracking Style) */}
+      <div className="relative h-64 overflow-hidden rounded-2xl bg-[#f1f8f3] border border-[#dce8dc]">
+        {/* Background Grid */}
+        <div className="absolute inset-0 opacity-40" style={{ backgroundImage: 'radial-gradient(#2f815c 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
+        
+        {/* River path curvy aesthetic */}
+        <svg className="absolute inset-0 h-full w-full opacity-10" viewBox="0 0 400 200" preserveAspectRatio="none">
+          <path d="M -50,150 Q 100,50 200,100 T 450,50" fill="none" stroke="#2f815c" strokeWidth="30" />
+          <path d="M -50,180 Q 150,150 250,50 T 450,100" fill="none" stroke="#2f815c" strokeWidth="20" />
+        </svg>
+
+        {/* Tracking Line */}
+        <div className="absolute left-10 right-10 top-1/2 -translate-y-1/2">
+           <div className="h-1.5 w-full rounded-full bg-[#2f815c]" />
+           
+           {/* Stops */}
+           {activeSeg.stops.map((stop, index) => {
+             const percent = (index / (activeSeg.stops.length - 1)) * 100;
+             return (
+               <div key={stop} className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 z-10" style={{ left: `${percent}%` }}>
+                 <div className={`h-5 w-5 rounded-full border-4 border-white shadow-md ${index === 0 || index === activeSeg.stops.length - 1 ? 'bg-[#e9784b] h-6 w-6' : 'bg-[#2f815c]'}`} />
+                 <span className={`absolute top-6 w-24 text-center text-[10px] font-bold leading-tight text-[#183b32] line-clamp-2 -translate-x-1/2 left-1/2`}>
+                   {stop}
+                 </span>
+               </div>
+             );
+           })}
+        </div>
+
         <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-lg bg-white/95 px-3 py-2 text-xs font-bold text-[#28704d] shadow">
           <Map size={14} className="text-[#2f815c]" />
           <span>{activeSeg.name}</span>
