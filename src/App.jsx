@@ -684,15 +684,16 @@ function App() {
       <div className="mx-auto min-h-screen max-w-[1180px] bg-[#f5f8f4] md:border-x md:border-[#e2ebe0]">
         <header className="flex items-center justify-between px-5 pb-3 pt-5 md:px-10 md:pt-7 relative">
           <div className="flex items-center gap-3">
-            {activeTab !== "home" && (
-              <button
-                onClick={() => setActiveTab("home")}
-                className="mr-1 flex h-10 w-10 items-center justify-center rounded-full bg-white text-gray-700 shadow-sm transition hover:bg-gray-100 active:scale-95"
-                aria-label="Quay lại"
-              >
-                <ArrowLeft size={20} />
-              </button>
-            )}
+            <button
+              onClick={() => {
+                if (activeTab !== "home") setActiveTab("home");
+                else window.history.back();
+              }}
+              className="mr-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#2f815c] shadow-sm transition hover:bg-gray-100 active:scale-95 border border-[#e0ebe0]"
+              aria-label="Quay lại"
+            >
+              <ArrowLeft size={20} />
+            </button>
             <div className="flex h-10 w-10 items-center justify-center rounded-[13px] bg-[#2f815c] text-white shadow-lg shadow-[#2f815c]/20">
               <Leaf size={21} />
             </div>
@@ -3447,33 +3448,62 @@ function JourneyDetail({ journey, onClose }) {
         </button>
       </div>
 
-      {/* Embedded Dynamic GPS Waterway Map */}
-      <div className="relative h-60 overflow-hidden rounded-2xl bg-[#dcebd3] border border-[#d5e7d1]">
-        <iframe
-          title={`Bản đồ lộ trình ${journey.route}`}
-          className="h-full w-full border-0"
-          src={mapUrl}
-          loading="lazy"
-        />
-        <div className="absolute left-3 top-3 flex items-center gap-2 rounded-xl bg-white/95 px-3 py-2 text-xs font-bold text-[#183b32] shadow backdrop-blur border border-[#e0ebe0]">
-          <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-[#e9784b]" />
-          <span>
-            Vị trí {journey.boat}:{" "}
-            <strong className="text-[#2f815c]">
-              {journey.progress <= 10
-                ? origin
-                : journey.progress >= 90
-                  ? destination
-                  : stops[1] || origin}
-            </strong>
-          </span>
+      {/* Embedded Dynamic GPS Waterway Map (Shopee Tracking Style) */}
+      <div className="relative h-60 w-full overflow-hidden rounded-2xl bg-[#f1f8f3] border border-[#dce8dc]">
+        {/* Background Grid / Map aesthetics */}
+        <div className="absolute inset-0 opacity-40" style={{ backgroundImage: 'radial-gradient(#2f815c 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
+        
+        {/* River path curvy aesthetic (just for looks) */}
+        <svg className="absolute inset-0 h-full w-full opacity-10" viewBox="0 0 400 200" preserveAspectRatio="none">
+          <path d="M -50,150 Q 100,50 200,100 T 450,50" fill="none" stroke="#2f815c" strokeWidth="30" />
+          <path d="M -50,180 Q 150,150 250,50 T 450,100" fill="none" stroke="#2f815c" strokeWidth="20" />
+        </svg>
+
+        {/* Tracking Line Container */}
+        <div className="absolute left-10 right-10 top-1/2 -translate-y-1/2">
+           {/* Track Background */}
+           <div className="h-1.5 w-full rounded-full bg-[#c8dec2]" />
+           {/* Track Progress */}
+           <div className="absolute left-0 top-0 h-1.5 rounded-full bg-[#2f815c] transition-all duration-1000 ease-in-out" style={{ width: `${journey.progress}%` }} />
+           
+           {/* Origin Node */}
+           <div className="absolute -left-3 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full border-4 border-white bg-[#e9784b] shadow-md z-10" />
+           <span className="absolute -left-8 top-6 w-24 text-center text-[10px] font-bold leading-tight text-[#397153] line-clamp-2">
+             {origin}
+           </span>
+
+           {/* Destination Node */}
+           <div className="absolute -right-3 top-1/2 h-6 w-6 -translate-y-1/2 rounded-full border-4 border-white bg-[#2f815c] shadow-md z-10" />
+           <span className="absolute -right-8 top-6 w-24 text-center text-[10px] font-bold leading-tight text-[#397153] line-clamp-2">
+             {destination}
+           </span>
+           
+           {/* Moving Boat */}
+           <div 
+             className="absolute top-1/2 z-20 flex -translate-y-1/2 -translate-x-1/2 items-center justify-center transition-all duration-1000 ease-in-out"
+             style={{ left: `${journey.progress}%` }}
+           >
+             <div className="relative">
+               <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#2f815c] bg-white text-[#2f815c] shadow-lg">
+                 <Ship size={20} className={journey.progress > 0 && journey.progress < 100 ? "animate-pulse" : ""} />
+               </div>
+               <span className="absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-[#183b32] px-2.5 py-1 text-[11px] font-bold text-white shadow-md after:absolute after:left-1/2 after:top-full after:-translate-x-1/2 after:border-[5px] after:border-transparent after:border-t-[#183b32]">
+                 {journey.progress}%
+               </span>
+             </div>
+           </div>
         </div>
-        <div className="absolute bottom-3 right-3 rounded-xl bg-[#183b32]/95 px-3 py-1.5 text-[10px] font-bold text-white shadow backdrop-blur">
-          {journey.progress <= 5
-            ? "Đang neo bến xuất phát"
+
+        {/* Live Status Overlay */}
+        <div className="absolute left-3 top-3 flex items-center gap-2 rounded-xl bg-white/95 px-3 py-2 text-[11px] font-bold text-[#183b32] shadow-sm backdrop-blur border border-[#e0ebe0]">
+          <span className="h-2 w-2 animate-pulse rounded-full bg-[#e9784b]" />
+          <span>
+            {journey.progress <= 5
+            ? "Đang neo bến xếp dỡ"
             : journey.progress >= 100
               ? "Đã cập bến an toàn"
-              : `Tiến độ: ${journey.progress}%`}
+              : `Ghe đang chạy: ${stops[1] || "Khúc sông trung chuyển"}`}
+          </span>
         </div>
       </div>
 
