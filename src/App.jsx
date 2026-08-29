@@ -641,13 +641,21 @@ function App() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setBellOpen((current) => !current)}
-              className="relative rounded-full bg-white p-2.5 text-[#557264] shadow-sm"
+              className="relative rounded-full bg-white p-2.5 text-[#557264] shadow-sm hover:bg-[#edf6e9] transition"
               aria-label="Thông báo"
             >
               <Bell size={19} />
               {notices.some((notice) => notice.unread) && (
                 <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-[#e9784b]" />
               )}
+            </button>
+            <button
+              onClick={logout}
+              title="Bấm để đăng xuất và quay lại màn hình Đăng nhập"
+              className="flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-[#d96e44] shadow-sm hover:bg-[#fff3ed] transition active:scale-95"
+            >
+              <LogOut size={14} />
+              <span className="hidden xs:inline sm:inline">Đăng xuất</span>
             </button>
             <div className="hidden items-center gap-2 rounded-full bg-white py-1.5 pl-1.5 pr-3 text-xs font-semibold shadow-sm sm:flex">
               <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#dcebd3] text-[#397153]">
