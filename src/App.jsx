@@ -57,7 +57,7 @@ import {
   CheckCheck,
   ArrowLeft,
 } from "lucide-react";
-
+import appLogo from "./assets/logo.png";
 const navItems = [
   { id: "home", label: "Trang chủ", mobileLabel: "Home", icon: Home },
   { id: "activity", label: "Hoạt động", mobileLabel: "Chuyến", icon: Activity },
@@ -694,8 +694,8 @@ function App() {
             >
               <ArrowLeft size={20} />
             </button>
-            <div className="flex h-10 w-10 items-center justify-center rounded-[13px] bg-[#2f815c] text-white shadow-lg shadow-[#2f815c]/20">
-              <Leaf size={21} />
+            <div className="flex h-10 w-10 overflow-hidden items-center justify-center rounded-[13px] shadow-lg shadow-[#2f815c]/20">
+              <img src={appLogo} alt="Hành Trình Xanh Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <p className="display-font text-lg font-bold leading-none">
@@ -1190,16 +1190,17 @@ function LoginView({ onAuthenticated }) {
 
   const handleQuickDemo = (demoRole) => {
     const isFarmer = demoRole === "farmer";
-    const demoName = isFarmer ? "Ngọc Anh (Nông dân)" : "Nguyễn Thành Công (Chủ ghe)";
-    const demoPhone = isFarmer ? "0912 345 678" : "0988 777 666";
+    const isCoop = demoRole === "cooperative";
+    const demoName = isCoop ? "Nguyễn Văn A (Ban quản trị HTX)" : (isFarmer ? "Ngọc Anh (Nông dân)" : "Nguyễn Thành Công (Chủ ghe)");
+    const demoPhone = isCoop ? "0900 111 222" : (isFarmer ? "0912 345 678" : "0988 777 666");
     localStorage.setItem("hanhTrinhXanh.authenticated", "true");
     localStorage.setItem("hanhTrinhXanh.phone", demoPhone);
     localStorage.setItem("hanhTrinhXanh.name", demoName);
-    localStorage.setItem("hanhTrinhXanh.role", isFarmer ? "farmer" : "owner");
+    localStorage.setItem("hanhTrinhXanh.role", isCoop ? "cooperative" : (isFarmer ? "farmer" : "owner"));
     localStorage.setItem("hanhTrinhXanh.authMethod", "demo_quick");
-    showToast(`Đang vào với vai trò ${isFarmer ? "Nông dân" : "Chủ ghe"}...`);
+    showToast(`Đang vào với vai trò ${isCoop ? "Quản lý HTX" : (isFarmer ? "Nông dân" : "Chủ ghe")}...`);
     setTimeout(() => {
-      onAuthenticated(isFarmer ? "farmer" : "owner", demoName);
+      onAuthenticated(isCoop ? "cooperative" : (isFarmer ? "farmer" : "owner"), demoName);
     }, 200);
   };
 
@@ -1209,8 +1210,8 @@ function LoginView({ onAuthenticated }) {
         {/* Logo & Brand Header */}
         <div className="mb-6 flex items-center justify-between border-b border-[#eef4ec] pb-5">
           <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#2f815c] to-[#1f5c40] text-white shadow-lg shadow-[#2f815c]/25">
-              <Leaf size={24} />
+            <div className="flex h-12 w-12 overflow-hidden items-center justify-center rounded-2xl shadow-lg shadow-[#2f815c]/25 bg-white">
+              <img src={appLogo} alt="Hành Trình Xanh Logo" className="w-full h-full object-cover" />
             </div>
             <div>
               <p className="display-font text-xl font-bold tracking-tight text-[#183b32]">
@@ -1367,20 +1368,27 @@ function LoginView({ onAuthenticated }) {
               <p className="mb-2 text-center text-[11px] font-bold uppercase tracking-wider text-[#799085]">
                 🚀 Dùng thử nhanh 1-chạm (Không cần OTP)
               </p>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                 <button
                   type="button"
                   onClick={() => handleQuickDemo("farmer")}
                   className="flex items-center justify-center gap-1.5 rounded-xl border border-[#cee2c9] bg-white py-2.5 text-xs font-bold text-[#28704d] hover:bg-[#edf6e9] active:scale-95 transition shadow-sm"
                 >
-                  🌾 Nông dân / HTX
+                  🌾 Nông dân
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleQuickDemo("cooperative")}
+                  className="flex items-center justify-center gap-1.5 rounded-xl border border-[#cee2c9] bg-white py-2.5 text-xs font-bold text-[#28704d] hover:bg-[#edf6e9] active:scale-95 transition shadow-sm"
+                >
+                  🏢 HTX
                 </button>
                 <button
                   type="button"
                   onClick={() => handleQuickDemo("owner")}
                   className="flex items-center justify-center gap-1.5 rounded-xl border border-[#cee2c9] bg-white py-2.5 text-xs font-bold text-[#28704d] hover:bg-[#edf6e9] active:scale-95 transition shadow-sm"
                 >
-                  🚢 Chủ ghe chở hàng
+                  🚢 Chủ ghe
                 </button>
               </div>
             </div>
@@ -1440,7 +1448,7 @@ function LoginView({ onAuthenticated }) {
               <label className="block text-xs font-bold text-[#4d6b5c] mb-1.5">
                 Vai trò chính của bạn
               </label>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                 <button
                   type="button"
                   onClick={() => setRegRole("farmer")}
@@ -1451,7 +1459,19 @@ function LoginView({ onAuthenticated }) {
                   }`}
                 >
                   <span className="text-xl">🌾</span>
-                  <span className="mt-1 text-[11px] font-bold leading-tight">Nông dân / HTX</span>
+                  <span className="mt-1 text-[11px] font-bold leading-tight">Nông dân</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRegRole("cooperative")}
+                  className={`flex flex-col items-center justify-center rounded-2xl border p-2.5 text-center transition active:scale-95 ${
+                    regRole === "cooperative"
+                      ? "border-[#2f815c] bg-[#edf6e9] text-[#1f5c40] ring-2 ring-[#2f815c]/20"
+                      : "border-[#dfeade] bg-[#fbfdfa] text-[#71877b] hover:bg-[#f4faf2]"
+                  }`}
+                >
+                  <span className="text-xl">🏢</span>
+                  <span className="mt-1 text-[11px] font-bold leading-tight">HTX</span>
                 </button>
                 <button
                   type="button"
@@ -1463,7 +1483,7 @@ function LoginView({ onAuthenticated }) {
                   }`}
                 >
                   <span className="text-xl">🚢</span>
-                  <span className="mt-1 text-[11px] font-bold leading-tight">Chủ ghe / Sà lan</span>
+                  <span className="mt-1 text-[11px] font-bold leading-tight">Chủ ghe</span>
                 </button>
                 <button
                   type="button"
@@ -2082,6 +2102,178 @@ function CustomSearchModal({
   );
 }
 
+function CooperativeDashboard({ onContract, setActiveTab }) {
+  const [dashboardTab, setDashboardTab] = useState("overview"); // overview, members, pooling, contracts
+
+  const stats = [
+    { label: "Tổng xã viên", value: "124 Hộ", icon: Users, color: "text-[#2f815c]", bg: "bg-[#edf6e9]" },
+    { label: "Sản lượng lúa ST25", value: "850 Tấn", icon: Wheat, color: "text-[#e9784b]", bg: "bg-[#fff3ed]" },
+    { label: "CO2 Giảm phát thải", value: "12.5 Tấn", icon: Leaf, color: "text-[#28704d]", bg: "bg-[#e5ece3]" },
+  ];
+
+  const members = [
+    { id: 1, name: "Nguyễn Văn Sáu", area: "2.5 ha", product: "Lúa ST25", expectedYield: "15 tấn", status: "Sẵn sàng thu hoạch" },
+    { id: 2, name: "Trần Thị Mai", area: "1.2 ha", product: "Lúa ST25", expectedYield: "8 tấn", status: "Thu hoạch trong 3 ngày" },
+    { id: 3, name: "Lê Minh Tâm", area: "3.0 ha", product: "Tôm sinh thái", expectedYield: "2 tấn", status: "Đang thu hoạch" },
+    { id: 4, name: "Phạm Văn Bình", area: "4.5 ha", product: "Lúa ST24", expectedYield: "30 tấn", status: "Sẵn sàng thu hoạch" },
+  ];
+
+  const [selectedForPooling, setSelectedForPooling] = useState([]);
+
+  const togglePool = (id) => {
+    setSelectedForPooling((curr) =>
+      curr.includes(id) ? curr.filter((item) => item !== id) : [...curr, id]
+    );
+  };
+
+  return (
+    <div className="animate-rise">
+      <section className="mb-7 rounded-[24px] bg-gradient-to-br from-[#183b32] to-[#2f815c] px-6 py-7 text-white shadow-xl md:px-9">
+        <p className="text-sm font-semibold text-[#c5e8ae]">
+          🏢 {getFormattedCurrentDateLong()}
+        </p>
+        <h1 className="display-font mt-2 text-3xl font-bold">
+          Bảng điều khiển HTX
+        </h1>
+        <p className="mt-3 text-sm leading-6 text-[#d7ebdc]">
+          Quản lý xã viên, gom đơn lô lớn và điều phối logistics xanh tập trung.
+        </p>
+      </section>
+
+      {/* Tabs */}
+      <div className="mb-6 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+        {[
+          { id: "overview", label: "Tổng quan", icon: Activity },
+          { id: "members", label: "Quản lý Xã viên", icon: Users },
+          { id: "pooling", label: "Gom đơn (Bulk)", icon: Boxes },
+          { id: "contracts", label: "Hợp đồng", icon: ReceiptText },
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setDashboardTab(tab.id)}
+            className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-xs font-bold transition-all ${
+              dashboardTab === tab.id
+                ? "bg-[#2f815c] text-white shadow-md shadow-[#2f815c]/20"
+                : "border border-[#e0ebe0] bg-white text-[#71877b] hover:border-[#2f815c] hover:text-[#2f815c]"
+            }`}
+          >
+            <tab.icon size={16} />
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Tab Content */}
+      {dashboardTab === "overview" && (
+        <div className="space-y-6 animate-fade-in">
+          <SectionTitle eyebrow="Chỉ số hoạt động" title="Thống kê HTX" />
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {stats.map((stat, i) => (
+              <div key={i} className="rounded-2xl border border-[#e0ebe0] bg-white p-4 shadow-sm">
+                <div className={`mb-3 inline-flex rounded-xl p-2.5 ${stat.bg} ${stat.color}`}>
+                  <stat.icon size={20} />
+                </div>
+                <p className="text-xs font-semibold text-[#799085]">{stat.label}</p>
+                <p className="mt-1 text-lg font-bold text-[#183b32]">{stat.value}</p>
+              </div>
+            ))}
+          </div>
+          <div className="rounded-2xl border border-[#d6e8d2] bg-[#f4faf2] p-4">
+             <div className="flex items-center gap-2 mb-2">
+                <ShieldCheck size={18} className="text-[#28704d]" />
+                <span className="text-sm font-bold text-[#183b32]">Chứng nhận xanh (MRV)</span>
+             </div>
+             <p className="text-xs text-[#557264] leading-5">HTX đã áp dụng quy trình giảm phát thải, đủ điều kiện nhận tín chỉ carbon từ vận tải đường thủy nội địa. (Mã vùng trồng: VN-94-123)</p>
+          </div>
+        </div>
+      )}
+
+      {dashboardTab === "members" && (
+        <div className="space-y-4 animate-fade-in">
+           <div className="flex justify-between items-center mb-2">
+             <SectionTitle eyebrow="Danh sách" title="Hộ nông dân" />
+             <button className="rounded-xl bg-[#e9784b] px-3 py-1.5 text-xs font-bold text-white shadow-sm hover:bg-[#de6c3e]">
+               + Thêm xã viên
+             </button>
+           </div>
+           {members.map(m => (
+             <div key={m.id} className="rounded-[20px] border border-[#e0ebe0] bg-white p-4 shadow-sm flex justify-between items-center">
+                <div>
+                   <p className="text-sm font-bold text-[#183b32]"><VerifiedName name={m.name} /></p>
+                   <p className="text-xs text-[#71877b] mt-1">Diện tích: {m.area} · Dự kiến: {m.expectedYield}</p>
+                   <span className="inline-block mt-2 rounded-full bg-[#edf6e9] px-2 py-1 text-[10px] font-bold text-[#28704d]">
+                     {m.product} - {m.status}
+                   </span>
+                </div>
+             </div>
+           ))}
+        </div>
+      )}
+
+      {dashboardTab === "pooling" && (
+        <div className="space-y-4 animate-fade-in">
+           <SectionTitle eyebrow="Gom đơn thành lô lớn" title="Khởi tạo lô hàng" />
+           <p className="text-xs text-[#71877b] mb-4">Chọn các hộ có cùng loại nông sản và sẵn sàng thu hoạch để gom thành lô lớn, gọi xà lan tải trọng cao nhằm tiết kiệm cước.</p>
+           <div className="space-y-2">
+             {members.filter(m => m.status === "Sẵn sàng thu hoạch").map(m => (
+                <label key={m.id} className="flex items-center gap-3 rounded-xl border border-[#e0ebe0] bg-white p-3 cursor-pointer hover:border-[#2f815c]">
+                   <input type="checkbox" checked={selectedForPooling.includes(m.id)} onChange={() => togglePool(m.id)} className="w-5 h-5 accent-[#2f815c]"/>
+                   <div className="flex-1">
+                      <p className="text-sm font-bold text-[#183b32]">{m.name}</p>
+                      <p className="text-xs text-[#71877b]">{m.expectedYield} {m.product}</p>
+                   </div>
+                </label>
+             ))}
+           </div>
+           
+           <div className="sticky bottom-20 rounded-2xl bg-[#183b32] p-4 text-white shadow-xl mt-6">
+              <div className="flex justify-between items-center mb-3">
+                 <span className="text-xs font-semibold text-[#a5c2b4]">Đã chọn:</span>
+                 <span className="text-sm font-bold">{selectedForPooling.length} hộ</span>
+              </div>
+              <div className="flex justify-between items-center mb-4">
+                 <span className="text-xs font-semibold text-[#a5c2b4]">Tổng sản lượng ước tính:</span>
+                 <span className="text-lg font-bold text-[#c5e8ae]">
+                   {selectedForPooling.length > 0 ? selectedForPooling.map(id => parseInt(members.find(m=>m.id===id).expectedYield)).reduce((a,b)=>a+b, 0) : 0} tấn
+                 </span>
+              </div>
+              <button 
+                 disabled={selectedForPooling.length === 0}
+                 onClick={() => {
+                   onContract();
+                   alert("Đã tạo lô hàng lớn thành công và chuyển sang giao diện tạo hợp đồng thầu.");
+                 }}
+                 className="w-full rounded-xl bg-[#e9784b] py-3 text-sm font-bold shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                 Tiến hành mời thầu xà lan
+              </button>
+           </div>
+        </div>
+      )}
+
+      {dashboardTab === "contracts" && (
+         <div className="space-y-4 animate-fade-in">
+           <SectionTitle eyebrow="Quản lý" title="Hợp đồng Bao tiêu & Vận tải" />
+           <div className="rounded-[20px] border border-[#e0ebe0] bg-white p-4 shadow-sm">
+             <div className="flex justify-between items-start mb-3">
+               <div>
+                  <span className="rounded-full bg-[#fff3ed] px-2 py-0.5 text-[10px] font-bold text-[#e9784b]">Đang hiệu lực</span>
+                  <p className="mt-1.5 text-sm font-bold text-[#183b32]">Hợp đồng vận tải Lúa Đông Xuân 2026</p>
+               </div>
+             </div>
+             <div className="grid grid-cols-2 gap-2 text-xs text-[#71877b] mb-4">
+               <p>Đối tác: <strong>Đoàn Xà lan Minh Trí</strong></p>
+               <p>Cam kết: <strong>1,200 Tấn</strong></p>
+               <p>Đơn giá: <strong>120,000đ/Tấn</strong></p>
+               <p>Tiến độ: <strong className="text-[#2f815c]">450 / 1200 Tấn</strong></p>
+             </div>
+             <button onClick={onContract} className="w-full rounded-lg bg-[#f1f6ef] py-2 text-xs font-bold text-[#28704d]">Xem chi tiết & Đối soát</button>
+           </div>
+         </div>
+      )}
+    </div>
+  );
+}
+
 function HomeView({
   origin,
   setOrigin,
@@ -2110,6 +2302,11 @@ function HomeView({
   if (role === "boatOwner") {
     return (
       <BoatOwnerHome onContract={onContract} setActiveTab={setActiveTab} />
+    );
+  }
+  if (role === "cooperative") {
+    return (
+      <CooperativeDashboard onContract={onContract} setActiveTab={setActiveTab} />
     );
   }
   return (
@@ -2998,7 +3195,7 @@ function ProfileView({
 
   const currentUserName =
     localStorage.getItem("hanhTrinhXanh.name") ||
-    (role === "farmer" ? "Ngọc Anh" : "Nguyễn Thành Công");
+    (role === "cooperative" ? "Nguyễn Văn A" : (role === "farmer" ? "Ngọc Anh" : "Nguyễn Thành Công"));
   const userInitials =
     currentUserName
       .split(" ")
@@ -3031,7 +3228,7 @@ function ProfileView({
             <VerifiedName name={currentUserName} />
           </h2>
           <p className="mt-1 text-xs text-[#799085]">
-            {role === "farmer" ? "Nông dân / HTX" : "Chủ ghe"} · Thành viên từ
+            {role === "cooperative" ? "Quản lý HTX" : (role === "farmer" ? "Nông dân" : "Chủ ghe")} · Thành viên từ
             2024
           </p>
           <span className="mt-2 inline-flex items-center gap-1 rounded-full bg-[#edf6e9] px-2 py-1 text-[10px] font-bold text-[#4c9758]">
@@ -3047,12 +3244,18 @@ function ProfileView({
         <h2 className="display-font mt-1 text-lg font-bold">
           Chuyển đổi vai trò
         </h2>
-        <div className="mt-4 grid grid-cols-2 gap-2 rounded-xl bg-[#e4f1df] p-1">
+        <div className="mt-4 grid grid-cols-1 gap-2 rounded-xl bg-[#e4f1df] p-1 sm:grid-cols-3">
           <button
             onClick={() => onRoleChange("farmer")}
             className={`rounded-lg px-2 py-3 text-xs font-bold ${role === "farmer" ? "bg-white text-[#28704d] shadow-sm" : "text-[#71877b]"}`}
           >
-            Nông dân / HTX
+            Nông dân
+          </button>
+          <button
+            onClick={() => onRoleChange("cooperative")}
+            className={`rounded-lg px-2 py-3 text-xs font-bold ${role === "cooperative" ? "bg-white text-[#28704d] shadow-sm" : "text-[#71877b]"}`}
+          >
+            HTX
           </button>
           <button
             onClick={() => onRoleChange("boatOwner")}
