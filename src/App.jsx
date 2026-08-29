@@ -69,45 +69,84 @@ const navItems = [
   },
   { id: "profile", label: "Tôi", mobileLabel: "Tôi", icon: UserRound },
 ];
+
+function getFormattedCurrentDateLong() {
+  const now = new Date();
+  const days = [
+    "Chủ Nhật",
+    "Thứ Hai",
+    "Thứ Ba",
+    "Thứ Tư",
+    "Thứ Năm",
+    "Thứ Sáu",
+    "Thứ Bảy",
+  ];
+  const dayName = days[now.getDay()];
+  const date = now.getDate();
+  const month = now.getMonth() + 1;
+  const year = now.getFullYear();
+  return `${dayName}, ngày ${date} tháng ${month}, ${year}`;
+}
+
+function getCurrentDateShort() {
+  const now = new Date();
+  const date = String(now.getDate()).padStart(2, "0");
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const year = now.getFullYear();
+  return `${date}/${month}/${year}`;
+}
+
 const journeys = [
   {
     id: "HT-2048",
-    title: "Xoài Cao Lãnh",
-    route: "Xã Ninh Quới → Xã Phước Long",
+    title: "Lúa ST25 Bạc Liêu",
+    weight: "5 tấn",
+    origin: "Xã Ninh Quới (Bạc Liêu)",
+    destination: "Xã Phước Long (Bạc Liêu)",
+    route: "Xã Ninh Quới (Bạc Liêu) → Xã Phước Long (Bạc Liêu)",
     boat: "Ghe Thành Công",
     plate: "AG 1888",
     status: "Đang giao",
     tone: "green",
-    progress: 68,
-    eta: "Còn 2 giờ 15 phút",
-    mapMarker: "9.176,105.15",
-    stops: ["Xã Ninh Quới", "Xã Hồng Dân", "Xã Phước Long"],
+    progress: 45,
+    eta: "Còn 1 giờ 15 phút (Đang qua Kênh Quản Lộ)",
+    mapMarker: "9.458,105.421",
+    stops: ["Xã Ninh Quới (Bạc Liêu)", "Kênh Quản Lộ", "Xã Phước Long (Bạc Liêu)"],
+    createdAt: "Hôm nay, 10:15",
   },
   {
     id: "HT-1982",
-    title: "Lúa",
-    route: "Xã Hồng Dân → Xã Vĩnh Lợi",
+    title: "Cua biển Năm Căn",
+    weight: "150 kg",
+    origin: "Xã Năm Căn (Cà Mau)",
+    destination: "Phường Cà Mau (TP Cà Mau)",
+    route: "Xã Năm Căn (Cà Mau) → Phường Cà Mau (TP Cà Mau)",
     boat: "Ghe Phúc Lộc",
     plate: "CT 5521",
     status: "Đã hoàn thành",
     tone: "blue",
     progress: 100,
-    eta: "Đã cập bến hôm qua",
-    mapMarker: "9.004,105.15",
-    stops: ["Xã Hồng Dân", "Xã Ninh Quới", "Xã Vĩnh Lợi"],
+    eta: "Đã cập bến Cà Mau an toàn",
+    mapMarker: "9.176,105.150",
+    stops: ["Xã Năm Căn (Cà Mau)", "Sông Bảy Háp", "Phường Cà Mau (TP Cà Mau)"],
+    createdAt: "Hôm qua, 14:30",
   },
   {
     id: "HT-1873",
-    title: "Thanh long ruột đỏ",
-    route: "Xã Phong Thạnh Tây → Xã Gành Hào",
+    title: "Tôm sú sinh thái",
+    weight: "300 kg",
+    origin: "Xã Đất Mũi (Cà Mau)",
+    destination: "Cảng cá Sông Đốc (Cà Mau)",
+    route: "Xã Đất Mũi (Cà Mau) → Cảng cá Sông Đốc (Cà Mau)",
     boat: "Ghe Minh Anh",
     plate: "TG 0912",
     status: "Đã hủy",
     tone: "gray",
     progress: 0,
-    eta: "Đã hủy bởi người gửi",
-    mapMarker: "9.085,104.92",
-    stops: ["Xã Phong Thạnh Tây", "Xã Phước Long", "Xã Gành Hào"],
+    eta: "Đã hủy bởi người gửi (biển động)",
+    mapMarker: "9.045,104.835",
+    stops: ["Xã Đất Mũi (Cà Mau)", "Cửa biển Sông Đốc", "Cảng cá Sông Đốc (Cà Mau)"],
+    createdAt: "27/08/2026",
   },
 ];
 const notices = [
@@ -564,27 +603,44 @@ function App() {
     }, 1700);
   };
   const createJourney = (mode, details = {}) => {
-    const route = details.route || `${origin} → ${destination}`;
+    const originLoc = details.origin || origin || "Xã Ninh Quới (Bạc Liêu)";
+    const destinationLoc =
+      details.destination || destination || "Xã Phước Long (Bạc Liêu)";
+    const route = details.route || `${originLoc} → ${destinationLoc}`;
+    const itemTitle = details.title || produce || "Lúa ST25 Bạc Liêu";
+    const itemWeight = details.weight || weight || "5 tấn";
+    const boatName =
+      details.boat ||
+      (mode === "Tìm phương tiện" ? "Ghe Thành Công" : vehicleInfo.name);
+    const boatPlate =
+      details.plate ||
+      (mode === "Tìm phương tiện" ? "AG 1888" : vehicleInfo.plate);
+    const coords = locationCoordinates[originLoc] || [9.458, 105.421];
+
     const newJourney = {
       id: `HT-${Date.now().toString().slice(-4)}`,
-      title: details.title || produce,
+      title: itemTitle,
+      weight: itemWeight,
       route,
-      boat:
-        details.boat ||
-        (mode === "Tìm phương tiện" ? "Ghe Thành Công" : vehicleInfo.name),
-      plate:
-        details.plate ||
-        (mode === "Tìm phương tiện" ? "AG 1888" : vehicleInfo.plate),
-      status: "Đang giao",
+      origin: originLoc,
+      destination: destinationLoc,
+      boat: boatName,
+      plate: boatPlate,
+      status: "Chuẩn bị xuất phát",
       tone: "green",
-      progress: 18,
-      eta: "Phương tiện đang đến nhận hàng",
-      mapMarker: "9.176,105.15",
-      stops: [origin, "Xã Hồng Dân", destination],
+      progress: 0, // Vừa mới ghép chuyến: luôn ở vạch xuất phát (0%)
+      eta: `Đang neo bến bốc hàng tại ${originLoc} · Khởi hành theo con nước`,
+      mapMarker: `${coords[0]},${coords[1]}`,
+      stops: [originLoc, "Luồng sông trung chuyển", destinationLoc],
+      createdAt: `Hôm nay, ${new Date().toLocaleTimeString("vi-VN", {
+        hour: "2-digit",
+        minute: "2-digit",
+      })}`,
     };
     setActiveJourneys((current) => [newJourney, ...current]);
     setActiveTab("activity");
     setMatched(false);
+    notify(`Đã tạo chuyến: ${itemTitle} (${originLoc} → ${destinationLoc})`);
   };
   const pay = () => {
     const fee =
@@ -2031,8 +2087,8 @@ function HomeView({
     <div className="animate-rise flex flex-col">
       <section className="relative mb-7 overflow-hidden rounded-[24px] bg-[#2f815c] px-6 py-7 text-white shadow-xl shadow-[#2f815c]/15 md:px-9 md:py-9">
         <div className="relative z-10 max-w-lg">
-          <p className="mb-2 text-sm font-medium text-[#c5e8ae]">
-            Hệ thống Logistics Đường Thủy Cà Mau - Bạc Liêu
+          <p className="mb-2 text-sm font-semibold text-[#c5e8ae]">
+            📅 {getFormattedCurrentDateLong()}
           </p>
           <h1 className="display-font text-3xl font-bold leading-tight md:text-4xl">
             Chào mừng trở lại,
@@ -2040,7 +2096,7 @@ function HomeView({
             <span className="text-[#c5e8ae]">kết nối mùa vụ hôm nay?</span>
           </h1>
           <p className="mt-3 max-w-sm text-sm leading-6 text-[#d7ebdc]">
-            Vận chuyển nông thủy sản minh bạch · Cắt giảm khâu trung gian · Bảo vệ môi trường
+            Hệ thống Logistics Đường Thủy Cà Mau - Bạc Liêu · Cắt giảm khâu trung gian · Theo dõi theo con nước
           </p>
         </div>
         <div className="absolute -right-6 -top-12 text-[190px] leading-none text-[#3b815e] opacity-50">
@@ -2188,13 +2244,11 @@ function HomeView({
                   </p>
                   <p className="mt-1 text-xs leading-5 text-[#557264]">
                     {journeyMode === "Ghép chuyến"
-                      ? `${vehicleInfo.name} · ${vehicleInfo.plate} · nhận chuyến lúc 14:30`
-                      : "Ghe Thành Công · AG 1888 · khởi hành 14:30 hôm nay"}
+                      ? `${vehicleInfo.name} · ${vehicleInfo.plate} · Tuyến: ${origin} → ${destination}`
+                      : `Ghe Thành Công · AG 1888 · Tuyến: ${origin} → ${destination} (${weight} ${produce})`}
                   </p>
-                  <p className="mt-2 text-xs font-bold text-[#db713f]">
-                    {journeyMode === "Ghép chuyến"
-                      ? `Phí nền tảng: ${vehicleInfo.type === "Ghe" || vehicleInfo.type === "Xà lan" ? "50.000đ" : "10.000đ"}/chuyến`
-                      : "Đã cắt bỏ cò đò - lợi nhuận nông hộ tăng thêm 15%"}
+                  <p className="mt-1.5 text-xs font-bold text-[#db713f]">
+                    Đang neo bến tại {origin} · Bấm để xem hành trình ngay →
                   </p>
                 </div>
                 <ChevronRight size={18} className="text-[#28704d]" />
@@ -2338,8 +2392,9 @@ function BoatOwnerHome({ onContract, setActiveTab }) {
   return (
     <div className="animate-rise">
       <section className="mb-7 rounded-[24px] bg-[#174c3a] px-6 py-7 text-white shadow-xl md:px-9">
-        <p className="text-sm text-[#bfe3b0]">
-          Xin chào, <VerifiedName name="Anh Tùng (Chủ ghe)" />
+        <p className="text-sm font-semibold text-[#bfe3b0]">
+          📅 {getFormattedCurrentDateLong()} · Xin chào,{" "}
+          <VerifiedName name="Anh Tùng (Chủ ghe)" />
         </p>
         <h1 className="display-font mt-2 text-3xl font-bold">
           Tối ưu từng chuyến ghe.
@@ -2565,58 +2620,103 @@ function ActivityView({ journeys: items, notify, onDetail }) {
   );
 }
 function JourneyCard({ journey, onDetail }) {
+  const origin = journey.origin || journey.route.split(" → ")[0];
+  const destination = journey.destination || journey.route.split(" → ")[1];
+
   return (
-    <article className="rounded-[20px] border border-[#e0ebe0] bg-white p-4 shadow-sm transition hover:border-[#b7d6ad]">
-      <div className="flex items-start justify-between">
-        <div className="flex gap-3">
+    <article className="rounded-[20px] border border-[#e0ebe0] bg-white p-4 shadow-sm transition hover:border-[#2f815c] hover:shadow-md">
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex gap-3 min-w-0">
           <div
-            className={`flex h-10 w-10 items-center justify-center rounded-xl ${journey.tone === "green" ? "bg-[#e9f5e6] text-[#4c9758]" : journey.tone === "blue" ? "bg-[#e8f1f5] text-[#51859c]" : "bg-[#f0f2ef] text-[#8b9e93]"}`}
+            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
+              journey.tone === "green"
+                ? "bg-[#e9f5e6] text-[#4c9758]"
+                : journey.tone === "blue"
+                  ? "bg-[#e8f1f5] text-[#51859c]"
+                  : "bg-[#f0f2ef] text-[#8b9e93]"
+            }`}
           >
             <Ship size={19} />
           </div>
-          <div>
-            <p className="text-sm font-bold">{journey.title}</p>
-            <p className="mt-0.5 text-xs text-[#799085]">
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <p className="text-sm font-bold text-[#183b32] truncate">
+                {journey.title}
+              </p>
+              {journey.weight && (
+                <span className="rounded-md bg-[#fff4df] px-1.5 py-0.5 text-[10px] font-bold text-[#d9733e]">
+                  {journey.weight}
+                </span>
+              )}
+            </div>
+            <p className="mt-0.5 text-xs text-[#799085] truncate">
               {journey.id} · {journey.route}
             </p>
           </div>
         </div>
         <span
-          className={`rounded-full px-2.5 py-1 text-[10px] font-bold ${journey.tone === "green" ? "bg-[#eff9e9] text-[#4c9758]" : journey.tone === "blue" ? "bg-[#edf5f8] text-[#51859c]" : "bg-[#f1f3f0] text-[#8b9e93]"}`}
+          className={`shrink-0 rounded-full px-2.5 py-1 text-[10px] font-bold ${
+            journey.progress === 0
+              ? "bg-[#fef7ee] text-[#d9733e]"
+              : journey.tone === "green"
+                ? "bg-[#eff9e9] text-[#4c9758]"
+                : journey.tone === "blue"
+                  ? "bg-[#edf5f8] text-[#51859c]"
+                  : "bg-[#f1f3f0] text-[#8b9e93]"
+          }`}
         >
           {journey.status}
         </span>
       </div>
-      {journey.progress > 0 && (
-        <div className="mt-4 rounded-xl bg-[#eef6ec] p-3">
-          <div className="mb-2 flex justify-between text-[10px] font-semibold text-[#6d8876]">
-            <span>{journey.route.split(" → ")[0]}</span>
-            <span>{journey.route.split(" → ")[1]}</span>
-          </div>
-          <div className="relative h-1.5 rounded-full bg-[#d5e7d1]">
-            <div
-              className="h-full rounded-full bg-[#55a161]"
-              style={{ width: `${journey.progress}%` }}
-            />
-            <span
-              className="absolute -top-1.5 h-4 w-4 rounded-full border-2 border-white bg-[#e9784b] shadow"
-              style={{ left: `calc(${journey.progress}% - 8px)` }}
-            />
-          </div>
+
+      {/* Progress Corridor Timeline */}
+      <div className="mt-4 rounded-xl bg-[#f5faf3] border border-[#e8f2e6] p-3">
+        <div className="mb-2 flex items-center justify-between text-[11px] font-semibold text-[#557264]">
+          <span className="truncate max-w-[48%]">📍 {origin}</span>
+          <span className="truncate max-w-[48%] text-right">🏁 {destination}</span>
         </div>
-      )}
-      <div className="mt-4 flex items-center justify-between border-t border-[#edf2eb] pt-3 text-xs">
+        <div className="relative h-2 rounded-full bg-[#d5e7d1]">
+          <div
+            className="h-full rounded-full bg-[#3b9b66] transition-all duration-500"
+            style={{ width: `${Math.max(journey.progress, 4)}%` }}
+          />
+          <span
+            className="absolute -top-1.5 h-5 w-5 rounded-full border-2 border-white bg-[#e9784b] shadow-md flex items-center justify-center text-[8px] text-white font-bold"
+            style={{
+              left: `calc(${Math.max(Math.min(journey.progress, 96), 0)}% - 10px)`,
+            }}
+          >
+            🚢
+          </span>
+        </div>
+        <div className="mt-2 flex items-center justify-between text-[10px] text-[#71877b]">
+          <span>
+            {journey.progress === 0
+              ? `Đang ở bến xuất phát (${origin})`
+              : journey.progress >= 100
+                ? `Đã cập bến giao nhận (${destination})`
+                : `Đang chạy trên luồng sông (${journey.progress}%)`}
+          </span>
+          <span className="font-bold text-[#2f815c]">
+            {journey.createdAt || "Hôm nay"}
+          </span>
+        </div>
+      </div>
+
+      <div className="mt-3 flex items-center justify-between border-t border-[#edf2eb] pt-2.5 text-xs">
         <div>
-          <span className="text-[#8b9e93]">{journey.boat} · </span>
-          <b>{journey.plate}</b>
+          <span className="text-[#8b9e93]">Phương tiện: </span>
+          <b className="text-[#183b32]">
+            {journey.boat} ({journey.plate})
+          </b>
         </div>
         <span className="font-semibold text-[#6d8876]">{journey.eta}</span>
       </div>
       <button
         onClick={() => onDetail(journey)}
-        className="mt-3 flex w-full items-center justify-center gap-1 rounded-lg bg-[#edf6e9] py-2.5 text-xs font-bold text-[#28704d]"
+        className="mt-3 flex w-full items-center justify-center gap-1 rounded-xl bg-[#edf6e9] hover:bg-[#e0f1db] py-2.5 text-xs font-bold text-[#28704d] transition active:scale-[0.99]"
       >
-        Xem chi tiết lộ trình <ChevronRight size={14} />
+        Xem chi tiết lộ trình trên sông <ChevronRight size={14} />
       </button>
     </article>
   );
@@ -2706,7 +2806,7 @@ function PaymentView({
         <Transaction
           icon={Check}
           title="Hoàn cước chuyến HT-1982"
-          date="22/08/2026"
+          date="Hôm qua, 15:45"
           amount={`+${fee.toLocaleString("vi-VN")}đ`}
           positive
         />
@@ -3253,74 +3353,222 @@ function ProfilePanel({ panel, onClose, notify, onLogout }) {
 }
 
 function JourneyDetail({ journey, onClose }) {
-  const marker = journey.mapMarker || "9.176,105.15";
-  const stops = journey.stops || journey.route.split(" → ");
+  const origin =
+    journey.origin ||
+    journey.route.split(" → ")[0] ||
+    "Xã Ninh Quới (Bạc Liêu)";
+  const destination =
+    journey.destination ||
+    journey.route.split(" → ")[1] ||
+    "Xã Phước Long (Bạc Liêu)";
+  const stops = journey.stops || [
+    origin,
+    "Luồng sông trung chuyển",
+    destination,
+  ];
+
+  // Dynamic Map URL centered on current journey location
+  const mapCenterLocation =
+    journey.progress >= 90
+      ? destination
+      : journey.progress <= 10
+        ? origin
+        : stops[1] || origin;
+  const mapUrl = getInteractiveMapUrl(mapCenterLocation, 0.04);
+
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-[#183b32]/35 p-0 backdrop-blur-sm sm:items-center sm:p-5">
-      <div className="w-full max-w-lg rounded-t-[24px] bg-white p-5 shadow-2xl sm:rounded-[24px]">
-        <div className="mb-4 flex items-center justify-between">
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[.15em] text-[#8ba095]">
-              Lộ trình cụ thể · {journey.id}
-            </p>
-            <h2 className="display-font text-xl font-bold">{journey.title}</h2>
+    <ModalShell onClose={onClose}>
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="rounded-full bg-[#edf6e9] px-2.5 py-0.5 text-[10px] font-bold text-[#28704d]">
+              {journey.id}
+            </span>
+            <span className="text-[10px] text-[#71877b]">
+              Khởi tạo: {journey.createdAt || "Hôm nay"}
+            </span>
           </div>
-          <button
-            onClick={onClose}
-            className="rounded-full bg-[#f1f6ef] p-2 text-[#397153]"
-            aria-label="Đóng"
-          >
-            <X size={18} />
-          </button>
+          <h2 className="display-font mt-1 text-xl font-bold text-[#183b32]">
+            {journey.title}
+          </h2>
         </div>
-        <div className="relative h-64 overflow-hidden rounded-2xl bg-[#dcebd3]">
-          <iframe
-            title="Bản đồ lộ trình Cà Mau"
-            className="h-full w-full border-0"
-            src={`https://www.openstreetmap.org/export/embed.html?bbox=104.75%2C8.55%2C105.35%2C9.45&layer=mapnik&marker=${marker}`}
-          />
-          <div className="absolute left-3 top-3 flex items-center gap-2 rounded-lg bg-white/95 px-3 py-2 text-xs font-bold text-[#28704d] shadow">
-            <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-[#e9784b]" />
-            Vị trí {journey.boat}
-          </div>
-          <div className="absolute bottom-3 right-3 rounded-lg bg-[#183b32]/90 px-3 py-2 text-[10px] font-bold text-white">
-            Đang ở {stops[1] || "Cà Mau"}
-          </div>
-        </div>
-        <div className="mt-4 rounded-xl bg-[#f1f6ef] p-3 text-xs">
-          <span className="font-bold text-[#8ba095]">
-            Các chặng trong Cà Mau
+        <button
+          onClick={onClose}
+          className="rounded-full bg-[#f1f6ef] p-2 text-[#397153] hover:bg-[#e2ece0] transition"
+          aria-label="Đóng"
+        >
+          <X size={18} />
+        </button>
+      </div>
+
+      {/* Embedded Dynamic GPS Waterway Map */}
+      <div className="relative h-60 overflow-hidden rounded-2xl bg-[#dcebd3] border border-[#d5e7d1]">
+        <iframe
+          title={`Bản đồ lộ trình ${journey.route}`}
+          className="h-full w-full border-0"
+          src={mapUrl}
+          loading="lazy"
+        />
+        <div className="absolute left-3 top-3 flex items-center gap-2 rounded-xl bg-white/95 px-3 py-2 text-xs font-bold text-[#183b32] shadow backdrop-blur border border-[#e0ebe0]">
+          <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-[#e9784b]" />
+          <span>
+            Vị trí {journey.boat}:{" "}
+            <strong className="text-[#2f815c]">
+              {journey.progress <= 10
+                ? origin
+                : journey.progress >= 90
+                  ? destination
+                  : stops[1] || origin}
+            </strong>
           </span>
-          <div className="mt-2 flex flex-wrap items-center gap-2">
-            {stops.map((stop, index) => (
-              <span
-                key={`${stop}-${index}`}
-                className="flex items-center gap-2"
-              >
-                <b className="rounded-full bg-white px-2.5 py-1.5 text-[#28704d]">
-                  {stop}
-                </b>
-                {index < stops.length - 1 && (
-                  <ChevronRight size={13} className="text-[#a0afa5]" />
-                )}
-              </span>
-            ))}
-          </div>
         </div>
-        <div className="mt-3 grid grid-cols-2 gap-3 text-xs">
-          <div className="rounded-xl bg-[#f1f6ef] p-3">
-            <span className="text-[#8ba095]">Tuyến đi</span>
-            <b className="mt-1 block">{journey.route}</b>
+        <div className="absolute bottom-3 right-3 rounded-xl bg-[#183b32]/95 px-3 py-1.5 text-[10px] font-bold text-white shadow backdrop-blur">
+          {journey.progress <= 5
+            ? "Đang neo bến xuất phát"
+            : journey.progress >= 100
+              ? "Đã cập bến an toàn"
+              : `Tiến độ: ${journey.progress}%`}
+        </div>
+      </div>
+
+      {/* Step-by-Step Waterway Corridor Flow */}
+      <div className="mt-4 rounded-2xl border border-[#e2ede0] bg-[#f8fbf7] p-3.5">
+        <p className="text-[10px] font-bold uppercase tracking-wider text-[#8ba095] mb-2.5">
+          Tiến trình luồng sông Cà Mau - Bạc Liêu:
+        </p>
+        <div className="space-y-2.5 text-xs">
+          {/* Step 1: Origin */}
+          <div className="flex items-start gap-2.5">
+            <div
+              className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold ${
+                journey.progress >= 0
+                  ? "bg-[#2f815c] text-white ring-4 ring-[#2f815c]/15"
+                  : "bg-[#dce8dc] text-[#71877b]"
+              }`}
+            >
+              1
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center justify-between">
+                <p className="font-bold text-[#183b32]">
+                  Bến xuất phát: {origin}
+                </p>
+                <span
+                  className={`text-[10px] font-bold ${
+                    journey.progress <= 10
+                      ? "text-[#e9784b]"
+                      : "text-[#28704d]"
+                  }`}
+                >
+                  {journey.progress <= 10
+                    ? "🟢 Đang bốc hàng lên ghe"
+                    : "✅ Đã rời bến"}
+                </span>
+              </div>
+              <p className="text-[10px] text-[#71877b] mt-0.5">
+                Tiếp nhận nông sản & neo đậu bến bãi an toàn
+              </p>
+            </div>
           </div>
-          <div className="rounded-xl bg-[#f1f6ef] p-3">
-            <span className="text-[#8ba095]">Trạng thái</span>
-            <b className="mt-1 block text-[#4c9758]">
-              {journey.status} · {journey.eta}
-            </b>
+
+          {/* Step 2: River transit */}
+          <div className="flex items-start gap-2.5">
+            <div
+              className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold ${
+                journey.progress > 10
+                  ? "bg-[#2f815c] text-white ring-4 ring-[#2f815c]/15"
+                  : "bg-[#e5eee4] text-[#8ba095]"
+              }`}
+            >
+              2
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center justify-between">
+                <p className="font-bold text-[#183b32]">
+                  Lưu thông trên luồng: {stops[1] || "Khúc sông trung chuyển"}
+                </p>
+                <span
+                  className={`text-[10px] font-bold ${
+                    journey.progress > 10 && journey.progress < 100
+                      ? "text-[#2f815c]"
+                      : journey.progress >= 100
+                        ? "text-[#28704d]"
+                        : "text-[#8ba095]"
+                  }`}
+                >
+                  {journey.progress > 10 && journey.progress < 100
+                    ? "🌊 Đang chạy đúng con nước"
+                    : journey.progress >= 100
+                      ? "✅ Đã vượt qua"
+                      : "⏳ Chờ xuất bến"}
+                </span>
+              </div>
+              <p className="text-[10px] text-[#71877b] mt-0.5">
+                Giám sát tĩnh không cầu & nước triều dâng
+              </p>
+            </div>
+          </div>
+
+          {/* Step 3: Destination */}
+          <div className="flex items-start gap-2.5">
+            <div
+              className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[11px] font-bold ${
+                journey.progress >= 100
+                  ? "bg-[#2f815c] text-white ring-4 ring-[#2f815c]/15"
+                  : "bg-[#e5eee4] text-[#8ba095]"
+              }`}
+            >
+              3
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center justify-between">
+                <p className="font-bold text-[#183b32]">
+                  Bến giao nhận: {destination}
+                </p>
+                <span
+                  className={`text-[10px] font-bold ${
+                    journey.progress >= 100
+                      ? "text-[#28704d]"
+                      : "text-[#8ba095]"
+                  }`}
+                >
+                  {journey.progress >= 100
+                    ? "🏁 Đã cập bến giao nhận"
+                    : "⏳ Đang đón phương tiện"}
+                </span>
+              </div>
+              <p className="text-[10px] text-[#71877b] mt-0.5">
+                Nghiệm thu chất lượng nông sản & hoàn tất
+              </p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Journey Details Specs */}
+      <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+        <div className="rounded-xl border border-[#e0ebe0] bg-[#f8fbf7] p-2.5">
+          <span className="text-[10px] text-[#71877b]">Phương tiện</span>
+          <b className="mt-0.5 block text-[#183b32] truncate">
+            {journey.boat} ({journey.plate})
+          </b>
+        </div>
+        <div className="rounded-xl border border-[#e0ebe0] bg-[#f8fbf7] p-2.5">
+          <span className="text-[10px] text-[#71877b]">Khối lượng hàng</span>
+          <b className="mt-0.5 block text-[#e9784b]">
+            {journey.weight || "Theo hợp đồng"}
+          </b>
+        </div>
+        <div className="rounded-xl border border-[#e0ebe0] bg-[#f8fbf7] p-2.5">
+          <span className="text-[10px] text-[#71877b]">Thủy triều & luồng</span>
+          <b className="mt-0.5 block text-[#28704d]">Nước lớn · Thuận dòng</b>
+        </div>
+        <div className="rounded-xl border border-[#e0ebe0] bg-[#f8fbf7] p-2.5">
+          <span className="text-[10px] text-[#71877b]">Thời gian (ETA)</span>
+          <b className="mt-0.5 block text-[#183b32] truncate">{journey.eta}</b>
+        </div>
+      </div>
+    </ModalShell>
   );
 }
 
@@ -3407,7 +3655,7 @@ function HistoryModal({ onClose, fee }) {
         <Transaction
           icon={Check}
           title="Hoàn cước chuyến HT-1982"
-          date="22/08/2026"
+          date="Hôm qua, 15:45"
           amount={`+${fee.toLocaleString("vi-VN")}đ`}
           positive
         />
@@ -3551,8 +3799,8 @@ function ContractModal({ onClose, notify }) {
   const fields = [
     ["Tên người mua / chủ ghe", "Anh Tùng · Ghe Thành Công"],
     ["Tên nông dân", "Ngọc Anh · HTX Ninh Quới"],
-    ["Loại nông sản", "Lúa"],
-    ["Ngày thu hoạch dự kiến", "28/08/2026"],
+    ["Loại nông sản", "Lúa ST25 Bạc Liêu"],
+    ["Ngày thu hoạch dự kiến", getCurrentDateShort()],
     ["Khối lượng", "50 tấn · Lô HTX-NQ-08"],
     ["Giá chốt cố định", "7.200.000đ / tấn"],
   ];
