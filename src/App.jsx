@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Activity,
   Anchor,
@@ -37,6 +37,24 @@ import {
   Users,
   Route,
   Gauge,
+  Eye,
+  EyeOff,
+  UserPlus,
+  LogIn,
+  QrCode,
+  Smartphone,
+  CheckCircle2,
+  ArrowRight,
+  RefreshCw,
+  UserCheck,
+  SlidersHorizontal,
+  Waves,
+  Compass,
+  Fish,
+  Wheat,
+  Boxes,
+  Navigation2,
+  CheckCheck,
 } from "lucide-react";
 
 const navItems = [
@@ -122,75 +140,374 @@ const notices = [
   },
 ];
 const caMauLocations = [
-  "Phường Cà Mau",
-  "Phường An Xuyên",
-  "Phường Tân Thành",
-  "Xã Đất Mũi",
-  "Xã Năm Căn",
-  "Xã Trần Văn Thời",
-  "Xã Cái Nước",
-  "Xã U Minh",
-  "Xã Thới Bình",
-  "Xã Phú Tân",
-  "Xã Hồng Dân",
-  "Xã Ninh Quới",
-  "Xã Phước Long",
-  "Xã Vĩnh Phú Tây",
-  "Xã Phong Thạnh Tây",
-  "Xã Gành Hào",
-  "Xã Vĩnh Lợi",
-  "Phường Bạc Liêu",
+  "Xã Ninh Quới (Bạc Liêu)",
+  "Xã Phước Long (Bạc Liêu)",
+  "Xã Hồng Dân (Bạc Liêu)",
+  "Thị xã Giá Rai (Bạc Liêu)",
+  "Thị trấn Hộ Phòng (Bạc Liêu)",
+  "Xã Gành Hào (Bạc Liêu)",
+  "Xã Phong Thạnh Tây (Bạc Liêu)",
+  "Xã Vĩnh Lợi (Bạc Liêu)",
+  "Phường Bạc Liêu (TP Bạc Liêu)",
+  "Phường Cà Mau (TP Cà Mau)",
+  "Phường An Xuyên (Cà Mau)",
+  "Phường Tân Thành (Cà Mau)",
+  "Xã Năm Căn (Cà Mau)",
+  "Cảng cá Sông Đốc (Cà Mau)",
+  "Xã Trần Văn Thời (Cà Mau)",
+  "Xã Cái Nước (Cà Mau)",
+  "Xã Thới Bình (Cà Mau)",
+  "Xã U Minh (Cà Mau)",
+  "Xã Đầm Dơi (Cà Mau)",
+  "Xã Phú Tân (Cà Mau)",
+  "Xã Đất Mũi (Cà Mau)",
 ];
+
+const locationCoordinates = {
+  "Xã Ninh Quới (Bạc Liêu)": [9.458, 105.421],
+  "Xã Ninh Quới": [9.458, 105.421],
+  "Xã Phước Long (Bạc Liêu)": [9.382, 105.518],
+  "Xã Phước Long": [9.382, 105.518],
+  "Xã Hồng Dân (Bạc Liêu)": [9.512, 105.442],
+  "Xã Hồng Dân": [9.512, 105.442],
+  "Thị xã Giá Rai (Bạc Liêu)": [9.227, 105.448],
+  "Thị xã Giá Rai": [9.227, 105.448],
+  "Thị trấn Hộ Phòng (Bạc Liêu)": [9.215, 105.385],
+  "Thị trấn Hộ Phòng": [9.215, 105.385],
+  "Xã Gành Hào (Bạc Liêu)": [9.023, 105.418],
+  "Xã Gành Hào": [9.023, 105.418],
+  "Xã Phong Thạnh Tây (Bạc Liêu)": [9.25, 105.63],
+  "Xã Phong Thạnh Tây": [9.25, 105.63],
+  "Xã Vĩnh Lợi (Bạc Liêu)": [9.283, 105.881],
+  "Xã Vĩnh Lợi": [9.283, 105.881],
+  "Phường Bạc Liêu (TP Bạc Liêu)": [9.294, 105.724],
+  "Phường Bạc Liêu": [9.294, 105.724],
+  "Phường Cà Mau (TP Cà Mau)": [9.176, 105.15],
+  "Phường Cà Mau": [9.176, 105.15],
+  "Phường An Xuyên (Cà Mau)": [9.163, 105.145],
+  "Phường An Xuyên": [9.163, 105.145],
+  "Phường Tân Thành (Cà Mau)": [9.186, 105.17],
+  "Phường Tân Thành": [9.186, 105.17],
+  "Xã Năm Căn (Cà Mau)": [8.758, 104.985],
+  "Xã Năm Căn": [8.758, 104.985],
+  "Cảng cá Sông Đốc (Cà Mau)": [9.045, 104.835],
+  "Cảng cá Sông Đốc": [9.045, 104.835],
+  "Xã Trần Văn Thời (Cà Mau)": [9.05, 104.99],
+  "Xã Trần Văn Thời": [9.05, 104.99],
+  "Xã Cái Nước (Cà Mau)": [9.004, 105.023],
+  "Xã Cái Nước": [9.004, 105.023],
+  "Xã Thới Bình (Cà Mau)": [9.352, 105.184],
+  "Xã Thới Bình": [9.352, 105.184],
+  "Xã U Minh (Cà Mau)": [9.385, 104.952],
+  "Xã U Minh": [9.385, 104.952],
+  "Xã Đầm Dơi (Cà Mau)": [8.985, 105.215],
+  "Xã Đầm Dơi": [8.985, 105.215],
+  "Xã Phú Tân (Cà Mau)": [8.98, 104.78],
+  "Xã Phú Tân": [8.98, 104.78],
+  "Xã Đất Mũi (Cà Mau)": [8.607, 104.835],
+  "Xã Đất Mũi": [8.607, 104.835],
+};
+
+function locationPoint(location) {
+  return locationCoordinates[location] || locationCoordinates["Xã Ninh Quới (Bạc Liêu)"] || [9.458, 105.421];
+}
+
+function getInteractiveMapUrl(locationOrCoord, zoomPadding = 0.04) {
+  let lat, lon;
+  if (Array.isArray(locationOrCoord)) {
+    [lat, lon] = locationOrCoord;
+  } else if (typeof locationOrCoord === "string") {
+    [lat, lon] = locationPoint(locationOrCoord);
+  } else {
+    lat = 9.458;
+    lon = 105.421;
+  }
+  const west = (Number(lon) - zoomPadding).toFixed(4);
+  const east = (Number(lon) + zoomPadding).toFixed(4);
+  const south = (Number(lat) - zoomPadding).toFixed(4);
+  const north = (Number(lat) + zoomPadding).toFixed(4);
+  return `https://www.openstreetmap.org/export/embed.html?bbox=${west}%2C${south}%2C${east}%2C${north}&layer=mapnik&marker=${lat}%2C${lon}`;
+}
+
+const riverSegments = [
+  {
+    id: "quan-lo",
+    name: "Kênh Quản Lộ - Phụng Hiệp",
+    shortName: "Quản Lộ - Phụng Hiệp",
+    route: "Ninh Quới ↔ Phước Long ↔ Cà Mau",
+    origin: "Xã Ninh Quới (Bạc Liêu)",
+    destination: "Xã Phước Long (Bạc Liêu)",
+    lat: 9.458,
+    lon: 105.421,
+    distance: "18.5 km",
+    duration: "1h 15m",
+    tide: "Nước lớn (+1.2m)",
+    tideStatus: "Thuận dòng",
+    clearance: "Tĩnh không 4.5m",
+    traffic: "Ghe tải đến 30 tấn lưu thông tốt",
+    salinity: "0.4‰ (Nước ngọt)",
+    highlights: "Vựa lúa ST25 & Nông sản Bạc Liêu",
+  },
+  {
+    id: "ca-mau-bac-lieu",
+    name: "Sông Cà Mau - Bạc Liêu",
+    shortName: "Sông Cà Mau - Bạc Liêu",
+    route: "Giá Rai ↔ Hộ Phòng ↔ TP Cà Mau",
+    origin: "Thị xã Giá Rai (Bạc Liêu)",
+    destination: "Phường Cà Mau (TP Cà Mau)",
+    lat: 9.227,
+    lon: 105.448,
+    distance: "28.0 km",
+    duration: "2h 00m",
+    tide: "Nước ròng nhẹ (-0.3m)",
+    tideStatus: "Bình thường",
+    clearance: "Tĩnh không 5.2m",
+    traffic: "Tuyến QL1A thủy - ghe tàu liên tỉnh tấp nập",
+    salinity: "4.2‰",
+    highlights: "Chợ đầu mối thủy hải sản Giá Rai",
+  },
+  {
+    id: "ganh-hao",
+    name: "Sông & Cửa biển Gành Hào",
+    shortName: "Sông Gành Hào",
+    route: "TP Cà Mau ↔ Đông Hải ↔ Gành Hào",
+    origin: "Phường Cà Mau (TP Cà Mau)",
+    destination: "Xã Gành Hào (Bạc Liêu)",
+    lat: 9.023,
+    lon: 105.418,
+    distance: "42.0 km",
+    duration: "2h 45m",
+    tide: "Triều cường (+1.8m)",
+    tideStatus: "Nước dâng",
+    clearance: "Luồng sâu cho xà lan lớn",
+    traffic: "Cửa biển mở rộng - tàu bè ra vào liên tục",
+    salinity: "18.5‰ (Nước mặn)",
+    highlights: "Cảng cá & Tôm biển xuất khẩu",
+  },
+  {
+    id: "bay-hap",
+    name: "Sông Bảy Háp & Sông Cửa Lớn",
+    shortName: "Sông Bảy Háp - Năm Căn",
+    route: "Cái Nước ↔ Năm Căn ↔ Đất Mũi",
+    origin: "Xã Năm Căn (Cà Mau)",
+    destination: "Xã Đất Mũi (Cà Mau)",
+    lat: 8.758,
+    lon: 104.985,
+    distance: "35.0 km",
+    duration: "2h 15m",
+    tide: "Nước triều dâng (+1.4m)",
+    tideStatus: "Thuận dòng",
+    clearance: "Luồng sông rộng sâu >8m",
+    traffic: "Vận chuyển Cua biển & Tôm sinh thái",
+    salinity: "22.0‰",
+    highlights: "Thủ phủ Cua Năm Căn & Tôm rừng",
+  },
+  {
+    id: "song-trem",
+    name: "Sông Trẹm & Kênh U Minh",
+    shortName: "Sông Trẹm - U Minh",
+    route: "Thới Bình ↔ U Minh Hạ",
+    origin: "Xã Thới Bình (Cà Mau)",
+    destination: "Xã U Minh (Cà Mau)",
+    lat: 9.352,
+    lon: 105.184,
+    distance: "22.0 km",
+    duration: "1h 30m",
+    tide: "Dòng chảy êm ả",
+    tideStatus: "Nước ngọt",
+    clearance: "Tĩnh không 3.8m",
+    traffic: "Ghe chở chuối sáp, mật ong, tràm",
+    salinity: "0.2‰",
+    highlights: "Nông sản rừng tràm sinh thái",
+  },
+  {
+    id: "song-doc",
+    name: "Cửa biển Sông Đốc",
+    shortName: "Cửa biển Sông Đốc",
+    route: "Trần Văn Thời ↔ Cảng cá Sông Đốc",
+    origin: "Xã Trần Văn Thời (Cà Mau)",
+    destination: "Cảng cá Sông Đốc (Cà Mau)",
+    lat: 9.045,
+    lon: 104.835,
+    distance: "31.0 km",
+    duration: "2h 10m",
+    tide: "Biển Tây triều cường",
+    tideStatus: "Nước lớn",
+    clearance: "Cửa biển rộng",
+    traffic: "Cảng cá quy mô lớn nhất vùng",
+    salinity: "25.0‰",
+    highlights: "Thủy sản biển & Chế biến khô",
+  },
+];
+
+function ProduceIcon({ type, className = "w-5 h-5" }) {
+  switch (type) {
+    case "crab":
+      return (
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500/15 to-orange-500/15 text-[#c25e2e] ring-1 ring-amber-500/25">
+          <Boxes className={className} strokeWidth={2.2} />
+        </div>
+      );
+    case "rice":
+      return (
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400/20 to-yellow-500/15 text-[#b8860b] ring-1 ring-yellow-500/30">
+          <Wheat className={className} strokeWidth={2.2} />
+        </div>
+      );
+    case "shrimp":
+      return (
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500/15 to-cyan-500/15 text-[#1b75bb] ring-1 ring-blue-500/25">
+          <Fish className={className} strokeWidth={2.2} />
+        </div>
+      );
+    case "salted_crab":
+      return (
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500/15 to-teal-500/15 text-[#1e7b57] ring-1 ring-emerald-500/25">
+          <Boxes className={className} strokeWidth={2.2} />
+        </div>
+      );
+    case "mango":
+    default:
+      return (
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-lime-500/20 to-emerald-500/15 text-[#2f815c] ring-1 ring-emerald-500/25">
+          <Leaf className={className} strokeWidth={2.2} />
+        </div>
+      );
+  }
+}
+
 const vehicleTypes = [
   { name: "Xà lan", fee: 50000 },
   { name: "Ghe", fee: 50000 },
   { name: "Vỏ", fee: 10000 },
   { name: "Xuồng", fee: 10000 },
 ];
+
 const cargoRequests = [
   {
-    name: "Tôm sú tươi",
-    amount: "500 kg",
-    route: "Xã Phước Long → Xã Ninh Quới",
-    time: "Cần chuyến hôm nay",
-    icon: "🦐",
+    id: "CG-101",
+    type: "crab",
+    name: "Cua biển Năm Căn",
+    subName: "Cua gạch & Cua Y loại 1",
+    standard: "OCOP 4 Sao · Chỉ dẫn địa lý Năm Căn",
+    amount: "150 kg",
+    packaging: "Thùng xốp sục khí oxy",
+    route: "Xã Năm Căn (Cà Mau) → Phường Cà Mau (TP Cà Mau)",
+    origin: "Xã Năm Căn (Cà Mau)",
+    destination: "Phường Cà Mau (TP Cà Mau)",
+    time: "Cần ghe trước 15:00 hôm nay",
+    sender: "HTX Cua Sinh Thái Năm Căn",
+    phone: "0918 234 567",
+    urgency: "Hỏa tốc",
+    priceEst: "45.000đ/thùng",
+    tempReq: "Sục khí liên tục tươi sống",
+    matchRate: "98%",
   },
   {
-    name: "Lúa",
+    id: "CG-102",
+    type: "rice",
+    name: "Lúa ST25 Bạc Liêu",
+    subName: "Mô hình Tôm - Lúa Hồng Dân",
+    standard: "VietGAP · Thu hoạch tươi",
     amount: "5 tấn",
-    route: "Xã Hồng Dân → Xã Vĩnh Lợi",
-    time: "Cần chuyến ngày mai",
-    icon: "🌾",
+    packaging: "Bao dệt 50kg chống ẩm",
+    route: "Xã Ninh Quới (Bạc Liêu) → Xã Phước Long (Bạc Liêu)",
+    origin: "Xã Ninh Quới (Bạc Liêu)",
+    destination: "Xã Phước Long (Bạc Liêu)",
+    time: "Khởi hành sáng mai (nước lớn)",
+    sender: "HTX Nông Nghiệp Ninh Quới",
+    phone: "0988 345 678",
+    urgency: "Tiêu chuẩn",
+    priceEst: "350.000đ/tấn",
+    tempReq: "Khô ráo, bạt phủ kín",
+    matchRate: "96%",
   },
   {
-    name: "Cua biển",
-    amount: "100 kg",
-    route: "Xã Ninh Quới → Xã Phong Thạnh Tây",
-    time: "Cần chuyến hôm nay",
-    icon: "🦀",
+    id: "CG-103",
+    type: "shrimp",
+    name: "Tôm sú sinh thái",
+    subName: "Tôm rừng ngập mặn Năm Căn",
+    standard: "Chứng nhận Sinh thái Naturland",
+    amount: "300 kg",
+    packaging: "Thùng xốp giữ lạnh 4°C",
+    route: "Xã Đất Mũi (Cà Mau) → Cảng cá Sông Đốc (Cà Mau)",
+    origin: "Xã Đất Mũi (Cà Mau)",
+    destination: "Cảng cá Sông Đốc (Cà Mau)",
+    time: "Cần ghe đi gấp trong 2h",
+    sender: "Tổ hợp tác Tôm Rừng Đất Mũi",
+    phone: "0944 567 890",
+    urgency: "Hỏa tốc",
+    priceEst: "60.000đ/thùng",
+    tempReq: "Bảo quản đá vảy 2-4°C",
+    matchRate: "94%",
+  },
+  {
+    id: "CG-104",
+    type: "salted_crab",
+    name: "Ba khía Rạch Gốc",
+    subName: "Đặc sản Di sản văn hóa",
+    standard: "OCOP 3 Sao · Ba khía muối",
+    amount: "400 kg",
+    packaging: "Can nhựa niêm phong",
+    route: "Xã Đất Mũi (Cà Mau) → Phường Bạc Liêu (TP Bạc Liêu)",
+    origin: "Xã Đất Mũi (Cà Mau)",
+    destination: "Phường Bạc Liêu (TP Bạc Liêu)",
+    time: "Chuyến định kỳ thứ 4 & thứ 7",
+    sender: "Cơ sở Ba Khía Rạch Gốc",
+    phone: "0913 888 999",
+    urgency: "Định kỳ",
+    priceEst: "20.000đ/thùng",
+    tempReq: "Nhiệt độ phòng thoáng mát",
+    matchRate: "92%",
+  },
+  {
+    id: "CG-105",
+    type: "mango",
+    name: "Xoài Cát & Trái cây",
+    subName: "Xoài cát chu ngọt thanh",
+    standard: "GlobalGAP · Trái tuyển chọn",
+    amount: "2 tấn",
+    packaging: "Sọt nhựa lót mút xốp",
+    route: "Xã Thới Bình (Cà Mau) → Thị xã Giá Rai (Bạc Liêu)",
+    origin: "Xã Thới Bình (Cà Mau)",
+    destination: "Thị xã Giá Rai (Bạc Liêu)",
+    time: "Giao trước 17:00 chiều nay",
+    sender: "Vựa Trái Cây Thới Bình",
+    phone: "0939 123 456",
+    urgency: "Trong ngày",
+    priceEst: "250.000đ/tấn",
+    tempReq: "Che mát, tránh va đập",
+    matchRate: "90%",
   },
 ];
+
 const availableVehicles = [
   {
     name: "Ghe Thành Công",
     type: "Ghe",
     capacity: "5 tấn",
-    route: "Xã Ninh Quới → Xã Phước Long",
+    route: "Xã Ninh Quới (Bạc Liêu) → Xã Phước Long (Bạc Liêu)",
     fee: "50.000đ/chuyến",
+    captain: "Anh Thành",
+    phone: "0918 111 222",
   },
   {
     name: "Vỏ Minh Anh",
     type: "Vỏ",
     capacity: "500 kg",
-    route: "Xã Hồng Dân → Xã Vĩnh Lợi",
+    route: "Xã Hồng Dân (Bạc Liêu) → Xã Vĩnh Lợi (Bạc Liêu)",
     fee: "10.000đ/chuyến",
+    captain: "Anh Minh",
+    phone: "0919 333 444",
   },
   {
     name: "Xà lan Phúc Lộc",
     type: "Xà lan",
     capacity: "20 tấn",
-    route: "Xã Phong Thạnh Tây → Xã Gành Hào",
+    route: "Xã Phong Thạnh Tây (Bạc Liêu) → Xã Gành Hào (Bạc Liêu)",
     fee: "50.000đ/chuyến",
+    captain: "Anh Phúc",
+    phone: "0988 555 666",
   },
 ];
 
@@ -208,10 +525,10 @@ function App() {
     () => localStorage.getItem("hanhTrinhXanh.role") || "farmer",
   );
   const [activeTab, setActiveTab] = useState("home");
-  const [origin, setOrigin] = useState("Xã Ninh Quới");
-  const [destination, setDestination] = useState("Xã Phước Long");
-  const [produce, setProduce] = useState("Xoài Cao Lãnh");
-  const [weight, setWeight] = useState("2 tấn");
+  const [origin, setOrigin] = useState("Xã Ninh Quới (Bạc Liêu)");
+  const [destination, setDestination] = useState("Xã Phước Long (Bạc Liêu)");
+  const [produce, setProduce] = useState("Lúa ST25 Bạc Liêu");
+  const [weight, setWeight] = useState("5 tấn");
   const [journeyMode, setJourneyMode] = useState("Tìm phương tiện");
   const [vehicleInfo, setVehicleInfo] = useState({
     type: "Ghe",
@@ -224,6 +541,7 @@ function App() {
   const [balance, setBalance] = useState(12480000);
   const [toast, setToast] = useState("");
   const [bellOpen, setBellOpen] = useState(false);
+  const [customSearchOpen, setCustomSearchOpen] = useState(false);
   const [selectedJourney, setSelectedJourney] = useState(null);
   const [routePreview, setRoutePreview] = useState(false);
   const [profilePanel, setProfilePanel] = useState(null);
@@ -291,7 +609,17 @@ function App() {
     setAuthenticated(false);
   };
   if (!authenticated) {
-    return <LoginView onAuthenticated={() => setAuthenticated(true)} />;
+    return (
+      <LoginView
+        onAuthenticated={(assignedRole) => {
+          if (assignedRole) {
+            setRole(assignedRole);
+            localStorage.setItem("hanhTrinhXanh.role", assignedRole);
+          }
+          setAuthenticated(true);
+        }}
+      />
+    );
   }
   return (
     <div className="app-shell">
@@ -364,6 +692,7 @@ function App() {
                 vehicleInfo,
                 role,
                 onContract: () => setContractOpen(true),
+                onOpenCustomSearch: () => setCustomSearchOpen(true),
               }}
             />
           )}
@@ -428,6 +757,18 @@ function App() {
           </div>
         )}
       </div>
+      {customSearchOpen && (
+        <CustomSearchModal
+          onClose={() => setCustomSearchOpen(false)}
+          onSelectCargo={setSelectedCargo}
+          onSelectVehicle={setSelectedVehicle}
+          setOrigin={setOrigin}
+          setDestination={setDestination}
+          setProduce={setProduce}
+          setWeight={setWeight}
+          notify={notify}
+        />
+      )}
       {selectedJourney && (
         <JourneyDetail
           journey={selectedJourney}
@@ -494,96 +835,683 @@ function App() {
   );
 }
 
+function ZaloIcon({ className = "w-5 h-5" }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="48" height="48" rx="12" fill="#0068FF" />
+      <path
+        d="M12.5 30L19.5 30L12.5 17.5V15H24.5V19H17.5L24.5 31.5V34H12.5V30Z"
+        fill="white"
+      />
+      <path
+        d="M29 15H25.5V34H29V15Z"
+        fill="white"
+      />
+      <path
+        d="M34.5 20C34.5 17.2 36.8 15 39.5 15C42.2 15 44.5 17.2 44.5 20V34H41V20C41 19.2 40.3 18.5 39.5 18.5C38.7 18.5 38 19.2 38 20V34H34.5V20Z"
+        fill="white"
+      />
+    </svg>
+  );
+}
+
+function ZaloAuthModal({ onClose, onConfirm }) {
+  const [tab, setTab] = useState("quick"); // "quick" | "qr"
+  const [loading, setLoading] = useState(false);
+
+  const handleAuthorize = () => {
+    setLoading(true);
+    setTimeout(() => {
+      onConfirm({
+        name: "Nguyễn Văn Hùng (Zalo)",
+        phone: "0918 889 999",
+        role: "farmer",
+        authMethod: "zalo",
+      });
+    }, 850);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm animate-fade-in">
+      <div className="relative w-full max-w-sm overflow-hidden rounded-[28px] border border-[#d6e5ff] bg-white shadow-2xl animate-rise">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-[#0068FF] to-[#0052cc] p-5 text-white">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/20 backdrop-blur shadow-inner">
+                <span className="font-black text-base tracking-tighter text-white">Zalo</span>
+              </div>
+              <div>
+                <p className="text-[10px] font-bold text-blue-100 uppercase tracking-wider">Cổng xác thực</p>
+                <h3 className="text-base font-bold">Đăng nhập với Zalo</h3>
+              </div>
+            </div>
+            <button
+              onClick={onClose}
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white/80 hover:bg-white/20 transition active:scale-95"
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          {/* Sub tabs */}
+          <div className="mt-4 grid grid-cols-2 gap-1 rounded-xl bg-black/20 p-1 text-xs font-semibold">
+            <button
+              type="button"
+              onClick={() => setTab("quick")}
+              className={`flex items-center justify-center gap-1.5 rounded-lg py-2 transition ${
+                tab === "quick" ? "bg-white text-[#0068FF] shadow-sm font-bold" : "text-white/80 hover:text-white"
+              }`}
+            >
+              <Smartphone size={14} /> 1-Chạm Zalo
+            </button>
+            <button
+              type="button"
+              onClick={() => setTab("qr")}
+              className={`flex items-center justify-center gap-1.5 rounded-lg py-2 transition ${
+                tab === "qr" ? "bg-white text-[#0068FF] shadow-sm font-bold" : "text-white/80 hover:text-white"
+              }`}
+            >
+              <QrCode size={14} /> Quét mã QR
+            </button>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="p-5">
+          {tab === "quick" ? (
+            <div className="space-y-4 text-center">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-[#0068FF]/15 to-[#2f815c]/15 ring-4 ring-[#0068FF]/10">
+                <span className="display-font text-xl font-bold text-[#0068FF]">VH</span>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-900 text-base flex items-center justify-center gap-1.5">
+                  Nguyễn Văn Hùng <CheckCircle2 size={16} className="text-[#0068FF]" />
+                </h4>
+                <p className="text-xs text-gray-500 mt-0.5">Số Zalo liên kết: 0918 ••• 999</p>
+                <span className="mt-2 inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-0.5 text-[11px] font-semibold text-[#0068FF]">
+                  <ShieldCheck size={12} /> Đã liên kết Zalo & VNeID
+                </span>
+              </div>
+
+              <div className="rounded-2xl border border-slate-100 bg-slate-50/90 p-3.5 text-left text-xs text-gray-600 space-y-2">
+                <p className="font-bold text-gray-800">Quyền truy cập cho Hành Trình Xanh:</p>
+                <div className="flex items-center gap-2 text-[11px] text-gray-600">
+                  <Check size={13} className="text-emerald-600" /> Tên hiển thị và ảnh đại diện Zalo
+                </div>
+                <div className="flex items-center gap-2 text-[11px] text-gray-600">
+                  <Check size={13} className="text-emerald-600" /> Số điện thoại xác thực giao nhận nông sản
+                </div>
+              </div>
+
+              <button
+                disabled={loading}
+                onClick={handleAuthorize}
+                className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#0068FF] hover:bg-[#0057d9] active:scale-[0.98] py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-500/25 transition disabled:opacity-70"
+              >
+                {loading ? (
+                  <>
+                    <RefreshCw size={16} className="animate-spin" /> Đang xác thực tài khoản...
+                  </>
+                ) : (
+                  <>
+                    <ShieldCheck size={17} /> Cho phép & Đăng nhập ngay
+                  </>
+                )}
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-4 text-center">
+              <p className="text-xs text-gray-600 leading-5">
+                Mở ứng dụng <strong>Zalo</strong> trên điện thoại, chọn biểu tượng <strong>Quét mã QR</strong> để đăng nhập tức thì.
+              </p>
+              <div className="relative mx-auto flex h-44 w-44 items-center justify-center rounded-2xl border-2 border-dashed border-[#0068FF]/30 bg-blue-50/40 p-4">
+                <div className="relative flex flex-col items-center justify-center">
+                  <QrCode size={100} className="text-[#0068FF]" />
+                  <div className="mt-2 rounded bg-[#0068FF] px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider text-white">
+                    HÀNH TRÌNH XANH
+                  </div>
+                </div>
+              </div>
+              <button
+                disabled={loading}
+                onClick={handleAuthorize}
+                className="w-full flex items-center justify-center gap-2 rounded-xl bg-[#0068FF] hover:bg-[#0057d9] py-3 text-xs font-bold text-white transition active:scale-[0.98]"
+              >
+                {loading ? (
+                  <>
+                    <RefreshCw size={14} className="animate-spin" /> Đang xác nhận...
+                  </>
+                ) : (
+                  "Mô phỏng đã quét thành công trên Zalo"
+                )}
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function LoginView({ onAuthenticated }) {
+  const [authMode, setAuthMode] = useState("login"); // "login" | "register"
+
+  // Login form state
   const [phone, setPhone] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState("");
+  const [otpTimer, setOtpTimer] = useState(0);
+
+  // Register form state
+  const [regFullName, setRegFullName] = useState("");
+  const [regPhone, setRegPhone] = useState("");
+  const [regRole, setRegRole] = useState("farmer"); // "farmer" | "boatOwner" | "trader"
+  const [regPassword, setRegPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [agreeTerms, setAgreeTerms] = useState(true);
   const [kycUploaded, setKycUploaded] = useState(false);
-  const submit = () => {
+
+  // Modal & Feedback
+  const [zaloModalOpen, setZaloModalOpen] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
+
+  const showToast = (msg) => {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(""), 2800);
+  };
+
+  // Countdown timer for OTP
+  useEffect(() => {
+    let interval = null;
+    if (otpSent && otpTimer > 0) {
+      interval = setInterval(() => {
+        setOtpTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [otpSent, otpTimer]);
+
+  const handleSendOtp = () => {
+    if (!phone.trim() || phone.length < 9) {
+      showToast("Vui lòng nhập số điện thoại hợp lệ (từ 9 - 11 chữ số)");
+      return;
+    }
+    setOtpSent(true);
+    setOtpTimer(60);
+    showToast("Mã OTP đã được gửi đến " + phone + " (Mã demo: 123456)");
+  };
+
+  const handleFillDemoOtp = () => {
+    setOtp("123456");
+    showToast("Đã tự động điền mã OTP: 123456");
+  };
+
+  const handleLoginSubmit = () => {
     if (!otpSent) {
-      setOtpSent(true);
+      handleSendOtp();
+      return;
+    }
+    if (!otp || otp.length < 6) {
+      showToast("Vui lòng nhập đủ 6 chữ số mã OTP (Mã demo: 123456)");
       return;
     }
     localStorage.setItem("hanhTrinhXanh.authenticated", "true");
     localStorage.setItem("hanhTrinhXanh.phone", phone);
-    onAuthenticated();
+    localStorage.setItem("hanhTrinhXanh.name", "Ngọc Anh");
+    localStorage.setItem("hanhTrinhXanh.role", "farmer");
+    localStorage.setItem("hanhTrinhXanh.authMethod", "phone_otp");
+    showToast("Đăng nhập thành công!");
+    setTimeout(() => {
+      onAuthenticated("farmer", "Ngọc Anh");
+    }, 250);
   };
+
+  const handleRegisterSubmit = () => {
+    if (!regFullName.trim()) {
+      showToast("Vui lòng nhập Họ và tên của bạn");
+      return;
+    }
+    if (!regPhone.trim() || regPhone.length < 9) {
+      showToast("Vui lòng nhập Số điện thoại hợp lệ (9 - 11 số)");
+      return;
+    }
+    if (!regPassword || regPassword.length < 6) {
+      showToast("Mật khẩu / Mã PIN cần tối thiểu 6 ký tự");
+      return;
+    }
+    if (!agreeTerms) {
+      showToast("Vui lòng đồng ý với Điều khoản dịch vụ");
+      return;
+    }
+
+    const assignedRole = regRole === "boatOwner" ? "owner" : "farmer";
+    localStorage.setItem("hanhTrinhXanh.authenticated", "true");
+    localStorage.setItem("hanhTrinhXanh.phone", regPhone);
+    localStorage.setItem("hanhTrinhXanh.name", regFullName.trim());
+    localStorage.setItem("hanhTrinhXanh.role", assignedRole);
+    localStorage.setItem("hanhTrinhXanh.kyc", kycUploaded ? "verified" : "pending");
+    localStorage.setItem("hanhTrinhXanh.authMethod", "register");
+
+    showToast("Tạo tài khoản thành công! Đang chuyển tiếp...");
+    setTimeout(() => {
+      onAuthenticated(assignedRole, regFullName.trim());
+    }, 350);
+  };
+
+  const handleZaloSuccess = (userData) => {
+    setZaloModalOpen(false);
+    localStorage.setItem("hanhTrinhXanh.authenticated", "true");
+    localStorage.setItem("hanhTrinhXanh.phone", userData.phone);
+    localStorage.setItem("hanhTrinhXanh.name", userData.name);
+    localStorage.setItem("hanhTrinhXanh.role", userData.role);
+    localStorage.setItem("hanhTrinhXanh.authMethod", "zalo");
+    showToast("Đăng nhập Zalo thành công! Xin chào " + userData.name);
+    setTimeout(() => {
+      onAuthenticated(userData.role, userData.name);
+    }, 300);
+  };
+
+  const handleQuickDemo = (demoRole) => {
+    const isFarmer = demoRole === "farmer";
+    const demoName = isFarmer ? "Ngọc Anh (Nông dân)" : "Nguyễn Thành Công (Chủ ghe)";
+    const demoPhone = isFarmer ? "0912 345 678" : "0988 777 666";
+    localStorage.setItem("hanhTrinhXanh.authenticated", "true");
+    localStorage.setItem("hanhTrinhXanh.phone", demoPhone);
+    localStorage.setItem("hanhTrinhXanh.name", demoName);
+    localStorage.setItem("hanhTrinhXanh.role", isFarmer ? "farmer" : "owner");
+    localStorage.setItem("hanhTrinhXanh.authMethod", "demo_quick");
+    showToast(`Đang vào với vai trò ${isFarmer ? "Nông dân" : "Chủ ghe"}...`);
+    setTimeout(() => {
+      onAuthenticated(isFarmer ? "farmer" : "owner", demoName);
+    }, 200);
+  };
+
   return (
-    <div className="app-shell flex min-h-screen items-center justify-center p-5">
-      <main className="w-full max-w-md rounded-[28px] border border-[#dfeade] bg-white p-6 shadow-2xl shadow-[#2f815c]/10 sm:p-8">
-        <div className="mb-8 flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#2f815c] text-white">
-            <Leaf size={24} />
+    <div className="app-shell flex min-h-screen items-center justify-center p-4 sm:p-6">
+      <main className="w-full max-w-lg rounded-[32px] border border-[#dfeade] bg-white p-6 shadow-2xl shadow-[#2f815c]/12 sm:p-8 animate-rise">
+        {/* Logo & Brand Header */}
+        <div className="mb-6 flex items-center justify-between border-b border-[#eef4ec] pb-5">
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-[#2f815c] to-[#1f5c40] text-white shadow-lg shadow-[#2f815c]/25">
+              <Leaf size={24} />
+            </div>
+            <div>
+              <p className="display-font text-xl font-bold tracking-tight text-[#183b32]">
+                Hành trình xanh
+              </p>
+              <p className="text-xs text-[#799085]">
+                Logistics nông sản đường thủy xanh
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="display-font text-xl font-bold">Hành trình xanh</p>
-            <p className="text-xs text-[#799085]">
-              Vận chuyển nông sản minh bạch
-            </p>
-          </div>
+          <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-[#edf6e9] px-2.5 py-1 text-[11px] font-bold text-[#28704d]">
+            <Sparkles size={13} /> Bản mới v2.0
+          </span>
         </div>
-        <p className="mb-2 text-[10px] font-bold uppercase tracking-[.18em] text-[#8ba095]">
-          Định danh số
-        </p>
-        <h1 className="display-font text-3xl font-bold text-[#183b32]">
-          Chào mừng trở lại
-        </h1>
-        <p className="mt-2 text-sm leading-6 text-[#71877b]">
-          Đăng nhập để kết nối mùa vụ với những chuyến ghe hiệu quả hơn.
-        </p>
-        <label className="mt-6 block text-xs font-bold text-[#557264]">
-          Số điện thoại
-          <input
-            value={phone}
-            onChange={(event) => setPhone(event.target.value)}
-            className="mt-2 w-full rounded-xl border border-[#dce8dc] px-3 py-3 outline-none focus:border-[#4c9758]"
-            placeholder="09xx xxx xxx"
-            inputMode="tel"
-          />
-        </label>
-        {otpSent && (
-          <label className="mt-3 block text-xs font-bold text-[#557264]">
-            Mã OTP giả
-            <input
-              value={otp}
-              onChange={(event) => setOtp(event.target.value)}
-              className="mt-2 w-full rounded-xl border border-[#dce8dc] px-3 py-3 tracking-[.35em] outline-none focus:border-[#4c9758]"
-              placeholder="123456"
-              inputMode="numeric"
-            />
-          </label>
-        )}
-        <button
-          disabled={!phone || (otpSent && !otp)}
-          onClick={submit}
-          className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-[#e9784b] py-3.5 text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          {otpSent ? (
-            <>
-              <ShieldCheck size={17} /> Xác nhận OTP
-            </>
-          ) : (
-            "Nhận OTP"
-          )}
-        </button>
-        <div className="mt-5 rounded-2xl bg-[#f1f6ef] p-4">
-          <div className="flex items-center gap-2 text-sm font-bold text-[#28704d]">
-            <ShieldCheck size={17} /> Hồ sơ KYC mô phỏng
-          </div>
-          <p className="mt-1 text-xs leading-5 text-[#71877b]">
-            Tải đủ CCCD mặt trước và sau để nhận dấu xác thực xanh.
-          </p>
+
+        {/* Tab Switcher: Đăng nhập vs Đăng ký mới */}
+        <div className="mb-6 grid grid-cols-2 gap-1 rounded-2xl bg-[#edf4ea] p-1.5 text-xs font-bold text-[#678072]">
           <button
-            onClick={() => setKycUploaded(true)}
-            className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-[#9fc898] bg-white py-3 text-xs font-bold text-[#397153]"
+            type="button"
+            onClick={() => setAuthMode("login")}
+            className={`flex items-center justify-center gap-2 rounded-xl py-2.5 transition-all duration-200 ${
+              authMode === "login"
+                ? "bg-[#2f815c] text-white shadow-md shadow-[#2f815c]/20"
+                : "hover:text-[#183b32]"
+            }`}
           >
-            <Upload size={15} />{" "}
-            {kycUploaded
-              ? "Đã tải 2 ảnh CCCD"
-              : "Tải lên ảnh CCCD mặt trước / sau"}
+            <LogIn size={15} /> Đăng nhập
+          </button>
+          <button
+            type="button"
+            onClick={() => setAuthMode("register")}
+            className={`flex items-center justify-center gap-2 rounded-xl py-2.5 transition-all duration-200 ${
+              authMode === "register"
+                ? "bg-[#2f815c] text-white shadow-md shadow-[#2f815c]/20"
+                : "hover:text-[#183b32]"
+            }`}
+          >
+            <UserPlus size={15} /> Tạo tài khoản mới
           </button>
         </div>
+
+        {/* ================= MODE: ĐĂNG NHẬP ================= */}
+        {authMode === "login" && (
+          <div className="animate-fade-in space-y-5">
+            <div>
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-[.18em] text-[#8ba095]">
+                Xác thực danh tính
+              </p>
+              <h1 className="display-font text-2xl font-bold text-[#183b32] sm:text-3xl">
+                Chào mừng trở lại!
+              </h1>
+              <p className="mt-1.5 text-xs leading-5 text-[#71877b]">
+                Đăng nhập để quản lý mùa vụ, gửi nông sản và kết nối chuyến ghe nhanh chóng.
+              </p>
+            </div>
+
+            {/* Phone Number Input */}
+            <div>
+              <label className="block text-xs font-bold text-[#4d6b5c]">
+                Số điện thoại đăng nhập
+                <div className="relative mt-2 flex items-center">
+                  <span className="absolute left-3.5 text-xs font-semibold text-[#8ba095]">
+                    🇻🇳 +84
+                  </span>
+                  <input
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="w-full rounded-2xl border border-[#dce8dc] bg-[#fbfdfa] py-3.5 pl-16 pr-4 text-sm font-semibold text-[#183b32] outline-none transition focus:border-[#2f815c] focus:bg-white focus:ring-4 focus:ring-[#2f815c]/10"
+                    placeholder="09xx xxx xxx"
+                    inputMode="tel"
+                  />
+                </div>
+              </label>
+            </div>
+
+            {/* OTP Input (Shown after Send OTP clicked) */}
+            {otpSent && (
+              <div className="rounded-2xl border border-[#d6e9d2] bg-[#f4faf2] p-4 animate-slide-down">
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-bold text-[#28704d]">
+                    Mã xác thực OTP (6 chữ số)
+                  </label>
+                  <button
+                    type="button"
+                    onClick={handleFillDemoOtp}
+                    className="flex items-center gap-1 text-[11px] font-bold text-[#e9784b] hover:underline"
+                  >
+                    ⚡ Điền nhanh 123456
+                  </button>
+                </div>
+                <input
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  maxLength={6}
+                  className="mt-2 w-full rounded-xl border border-[#c3dec0] bg-white py-3 text-center text-lg font-bold tracking-[.35em] text-[#183b32] outline-none focus:border-[#2f815c] focus:ring-4 focus:ring-[#2f815c]/10"
+                  placeholder="123456"
+                  inputMode="numeric"
+                />
+                <div className="mt-2.5 flex items-center justify-between text-[11px] text-[#71877b]">
+                  <span>Mã mô phỏng: <strong className="text-[#28704d]">123456</strong></span>
+                  {otpTimer > 0 ? (
+                    <span className="font-semibold text-[#8ba095]">Gửi lại sau {otpTimer}s</span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleSendOtp}
+                      className="font-bold text-[#28704d] hover:underline"
+                    >
+                      Gửi lại mã OTP
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Submit Phone Button */}
+            <button
+              type="button"
+              disabled={!phone || (otpSent && !otp)}
+              onClick={handleLoginSubmit}
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#e9784b] hover:bg-[#de6c3e] active:scale-[0.98] py-3.5 text-sm font-bold text-white shadow-lg shadow-[#e9784b]/20 transition-all disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {otpSent ? (
+                <>
+                  <ShieldCheck size={18} /> Xác nhận OTP & Đăng nhập
+                </>
+              ) : (
+                <>
+                  Nhận mã OTP <ArrowRight size={16} />
+                </>
+              )}
+            </button>
+
+            {/* Divider */}
+            <div className="relative my-4 flex items-center justify-center">
+              <div className="w-full border-t border-[#e6eee4]"></div>
+              <span className="absolute bg-white px-3 text-[11px] font-bold uppercase tracking-wider text-[#98aba0]">
+                Hoặc đăng nhập nhanh
+              </span>
+            </div>
+
+            {/* Zalo Login Button */}
+            <button
+              type="button"
+              onClick={() => setZaloModalOpen(true)}
+              className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#0068FF] hover:bg-[#0057d9] active:scale-[0.98] py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-500/20 transition-all"
+            >
+              <ZaloIcon className="h-5 w-5" />
+              <span>Đăng nhập bằng Zalo</span>
+            </button>
+
+            {/* Fast Demo Access */}
+            <div className="rounded-2xl border border-[#e2ede0] bg-[#f8fbf7] p-3.5">
+              <p className="mb-2 text-center text-[11px] font-bold uppercase tracking-wider text-[#799085]">
+                🚀 Dùng thử nhanh 1-chạm (Không cần OTP)
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleQuickDemo("farmer")}
+                  className="flex items-center justify-center gap-1.5 rounded-xl border border-[#cee2c9] bg-white py-2.5 text-xs font-bold text-[#28704d] hover:bg-[#edf6e9] active:scale-95 transition shadow-sm"
+                >
+                  🌾 Nông dân / HTX
+                </button>
+                <button
+                  type="button"
+                  onClick={() => handleQuickDemo("owner")}
+                  className="flex items-center justify-center gap-1.5 rounded-xl border border-[#cee2c9] bg-white py-2.5 text-xs font-bold text-[#28704d] hover:bg-[#edf6e9] active:scale-95 transition shadow-sm"
+                >
+                  🚢 Chủ ghe chở hàng
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ================= MODE: TẠO TÀI KHOẢN MỚI (REGISTER) ================= */}
+        {authMode === "register" && (
+          <div className="animate-fade-in space-y-4">
+            <div>
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-[.18em] text-[#8ba095]">
+                Dành cho thành viên mới
+              </p>
+              <h1 className="display-font text-2xl font-bold text-[#183b32] sm:text-3xl">
+                Tạo tài khoản
+              </h1>
+              <p className="mt-1 text-xs leading-5 text-[#71877b]">
+                Tham gia mạng lưới logistics đường thủy xanh để tối ưu vận chuyển nông sản.
+              </p>
+            </div>
+
+            {/* Full Name */}
+            <div>
+              <label className="block text-xs font-bold text-[#4d6b5c]">
+                Họ và tên
+                <div className="relative mt-1.5 flex items-center">
+                  <UserRound size={17} className="absolute left-3.5 text-[#8ba095]" />
+                  <input
+                    value={regFullName}
+                    onChange={(e) => setRegFullName(e.target.value)}
+                    className="w-full rounded-2xl border border-[#dce8dc] bg-[#fbfdfa] py-3 pl-10 pr-4 text-sm font-semibold text-[#183b32] outline-none transition focus:border-[#2f815c] focus:bg-white focus:ring-4 focus:ring-[#2f815c]/10"
+                    placeholder="Ví dụ: Nguyễn Văn Hùng"
+                  />
+                </div>
+              </label>
+            </div>
+
+            {/* Phone */}
+            <div>
+              <label className="block text-xs font-bold text-[#4d6b5c]">
+                Số điện thoại
+                <div className="relative mt-1.5 flex items-center">
+                  <Phone size={17} className="absolute left-3.5 text-[#8ba095]" />
+                  <input
+                    value={regPhone}
+                    onChange={(e) => setRegPhone(e.target.value)}
+                    className="w-full rounded-2xl border border-[#dce8dc] bg-[#fbfdfa] py-3 pl-10 pr-4 text-sm font-semibold text-[#183b32] outline-none transition focus:border-[#2f815c] focus:bg-white focus:ring-4 focus:ring-[#2f815c]/10"
+                    placeholder="09xx xxx xxx"
+                    inputMode="tel"
+                  />
+                </div>
+              </label>
+            </div>
+
+            {/* Select Role */}
+            <div>
+              <label className="block text-xs font-bold text-[#4d6b5c] mb-1.5">
+                Vai trò chính của bạn
+              </label>
+              <div className="grid grid-cols-3 gap-2">
+                <button
+                  type="button"
+                  onClick={() => setRegRole("farmer")}
+                  className={`flex flex-col items-center justify-center rounded-2xl border p-2.5 text-center transition active:scale-95 ${
+                    regRole === "farmer"
+                      ? "border-[#2f815c] bg-[#edf6e9] text-[#1f5c40] ring-2 ring-[#2f815c]/20"
+                      : "border-[#dfeade] bg-[#fbfdfa] text-[#71877b] hover:bg-[#f4faf2]"
+                  }`}
+                >
+                  <span className="text-xl">🌾</span>
+                  <span className="mt-1 text-[11px] font-bold leading-tight">Nông dân / HTX</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRegRole("boatOwner")}
+                  className={`flex flex-col items-center justify-center rounded-2xl border p-2.5 text-center transition active:scale-95 ${
+                    regRole === "boatOwner"
+                      ? "border-[#2f815c] bg-[#edf6e9] text-[#1f5c40] ring-2 ring-[#2f815c]/20"
+                      : "border-[#dfeade] bg-[#fbfdfa] text-[#71877b] hover:bg-[#f4faf2]"
+                  }`}
+                >
+                  <span className="text-xl">🚢</span>
+                  <span className="mt-1 text-[11px] font-bold leading-tight">Chủ ghe / Sà lan</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRegRole("trader")}
+                  className={`flex flex-col items-center justify-center rounded-2xl border p-2.5 text-center transition active:scale-95 ${
+                    regRole === "trader"
+                      ? "border-[#2f815c] bg-[#edf6e9] text-[#1f5c40] ring-2 ring-[#2f815c]/20"
+                      : "border-[#dfeade] bg-[#fbfdfa] text-[#71877b] hover:bg-[#f4faf2]"
+                  }`}
+                >
+                  <span className="text-xl">🏪</span>
+                  <span className="mt-1 text-[11px] font-bold leading-tight">Thương lái</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Password / PIN */}
+            <div>
+              <label className="block text-xs font-bold text-[#4d6b5c]">
+                Mật khẩu / Mã PIN bảo mật
+                <div className="relative mt-1.5 flex items-center">
+                  <LockKeyhole size={17} className="absolute left-3.5 text-[#8ba095]" />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={regPassword}
+                    onChange={(e) => setRegPassword(e.target.value)}
+                    className="w-full rounded-2xl border border-[#dce8dc] bg-[#fbfdfa] py-3 pl-10 pr-11 text-sm font-semibold text-[#183b32] outline-none transition focus:border-[#2f815c] focus:bg-white focus:ring-4 focus:ring-[#2f815c]/10"
+                    placeholder="Tối thiểu 6 ký tự hoặc số"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 text-[#8ba095] hover:text-[#183b32]"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+              </label>
+            </div>
+
+            {/* KYC Identity Uploader */}
+            <div className="rounded-2xl border border-[#d6e8d2] bg-[#f4faf2] p-3.5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs font-bold text-[#28704d]">
+                  <ShieldCheck size={16} /> Định danh số CCCD / VNeID
+                </div>
+                {kycUploaded && (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-[#2f815c] px-2 py-0.5 text-[10px] font-bold text-white">
+                    <Check size={10} /> Đã xác thực
+                  </span>
+                )}
+              </div>
+              <p className="mt-1 text-[11px] leading-4 text-[#71877b]">
+                Tải lên 2 mặt CCCD để nhận huy hiệu xác thực tín nhiệm xanh.
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setKycUploaded(!kycUploaded);
+                  showToast(kycUploaded ? "Đã hủy tải ảnh CCCD" : "Đã tải lên 2 mặt CCCD thành công!");
+                }}
+                className={`mt-2.5 flex w-full items-center justify-center gap-2 rounded-xl py-2.5 text-xs font-bold transition active:scale-95 ${
+                  kycUploaded
+                    ? "border border-[#2f815c] bg-white text-[#2f815c]"
+                    : "border border-dashed border-[#9fc898] bg-white text-[#397153] hover:bg-[#eef6ec]"
+                }`}
+              >
+                <Upload size={14} />
+                {kycUploaded ? "Đã đính kèm ảnh CCCD (Click để đổi)" : "Tải ảnh CCCD mặt trước & sau"}
+              </button>
+            </div>
+
+            {/* Terms checkbox */}
+            <label className="flex items-start gap-2.5 text-xs text-[#557264] cursor-pointer">
+              <input
+                type="checkbox"
+                checked={agreeTerms}
+                onChange={(e) => setAgreeTerms(e.target.checked)}
+                className="mt-0.5 h-4 w-4 rounded border-[#9fc898] text-[#2f815c] focus:ring-[#2f815c]"
+              />
+              <span className="leading-5">
+                Tôi đồng ý với <strong>Điều khoản dịch vụ</strong> và <strong>Quy chế bảo vệ môi trường đường thủy</strong> của Hành Trình Xanh.
+              </span>
+            </label>
+
+            {/* Submit Register Button */}
+            <button
+              type="button"
+              onClick={handleRegisterSubmit}
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#2f815c] hover:bg-[#256c4c] active:scale-[0.98] py-3.5 text-sm font-bold text-white shadow-lg shadow-[#2f815c]/25 transition-all"
+            >
+              <UserCheck size={18} /> Đăng ký tài khoản ngay
+            </button>
+
+            {/* Footer switcher */}
+            <p className="text-center text-xs text-[#71877b]">
+              Đã có tài khoản?{" "}
+              <button
+                type="button"
+                onClick={() => setAuthMode("login")}
+                className="font-bold text-[#2f815c] hover:underline"
+              >
+                Đăng nhập tại đây
+              </button>
+            </p>
+          </div>
+        )}
       </main>
+
+      {/* Floating Toast Notification */}
+      {toastMsg && (
+        <div className="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full bg-[#183b32] px-5 py-3 text-xs font-semibold text-white shadow-2xl animate-rise">
+          <Check size={15} className="text-[#9bdf74]" />
+          {toastMsg}
+        </div>
+      )}
+
+      {/* Zalo Authentication Modal */}
+      {zaloModalOpen && (
+        <ZaloAuthModal
+          onClose={() => setZaloModalOpen(false)}
+          onConfirm={handleZaloSuccess}
+        />
+      )}
     </div>
   );
 }
@@ -638,6 +1566,429 @@ function Field({ label, icon: Icon, children }) {
     </label>
   );
 }
+function InteractiveRiverMap({
+  origin,
+  destination,
+  setOrigin,
+  setDestination,
+  onRouteDetail,
+}) {
+  const [activeSegmentId, setActiveSegmentId] = useState("quan-lo");
+  const [selectedLocation, setSelectedLocation] = useState(null);
+
+  // Active segment
+  const currentSegment =
+    riverSegments.find((s) => s.id === activeSegmentId) || riverSegments[0];
+
+  // Dynamic location to display on map
+  const displayLocation = selectedLocation || origin || currentSegment.origin;
+  const mapUrl = getInteractiveMapUrl(displayLocation, 0.04);
+
+  const handleSelectSegment = (segment) => {
+    setActiveSegmentId(segment.id);
+    setSelectedLocation(segment.origin);
+    if (setOrigin) setOrigin(segment.origin);
+    if (setDestination) setDestination(segment.destination);
+  };
+
+  const handleSetAsOrigin = () => {
+    if (setOrigin && displayLocation) {
+      setOrigin(displayLocation);
+    }
+  };
+
+  const handleSetAsDestination = () => {
+    if (setDestination && displayLocation) {
+      setDestination(displayLocation);
+    }
+  };
+
+  return (
+    <div className="overflow-hidden rounded-[24px] border border-[#d6e8d4] bg-white shadow-sm transition hover:shadow-md">
+      {/* Map Header with Real-time Waterway Status */}
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#eef5ec] bg-[#fbfdfa] px-4 py-3 sm:px-5">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#2f815c]/10 text-[#2f815c]">
+            <Compass size={17} />
+          </div>
+          <div>
+            <h4 className="text-xs font-bold text-[#183b32] sm:text-sm">
+              Mạng lưới Sông ngòi Cà Mau - Bạc Liêu
+            </h4>
+            <p className="text-[10px] text-[#71877b]">
+              Định vị vệ tinh · Giám sát con nước & tĩnh không cầu
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="flex items-center gap-1 rounded-full bg-[#edf6e9] px-2.5 py-1 text-[10px] font-bold text-[#28704d]">
+            <Waves size={12} className="text-[#3b9b66]" />
+            {currentSegment.tide}
+          </span>
+          <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-[#fef5ec] px-2.5 py-1 text-[10px] font-bold text-[#d9733e]">
+            {currentSegment.clearance}
+          </span>
+        </div>
+      </div>
+
+      {/* Waterway Fast Selector Switcher */}
+      <div className="border-b border-[#eef5ec] bg-white p-2.5">
+        <p className="mb-1.5 px-1 text-[10px] font-bold uppercase tracking-wider text-[#8ba095]">
+          Chọn nhanh khúc sông trọng điểm:
+        </p>
+        <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
+          {riverSegments.map((seg) => {
+            const isActive = activeSegmentId === seg.id;
+            return (
+              <button
+                key={seg.id}
+                type="button"
+                onClick={() => handleSelectSegment(seg)}
+                className={`flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold transition active:scale-95 ${
+                  isActive
+                    ? "bg-[#2f815c] text-white shadow-sm shadow-[#2f815c]/25 font-bold"
+                    : "border border-[#e0ece0] bg-[#f8fbf7] text-[#557264] hover:bg-[#edf6e9]"
+                }`}
+              >
+                <span>🌊</span>
+                <span>{seg.shortName}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Embedded Dynamic OpenStreetMap */}
+      <div className="relative h-64 w-full bg-[#d8eed4] sm:h-72">
+        <iframe
+          title="Bản đồ sông ngòi Cà Mau - Bạc Liêu"
+          className="h-full w-full border-0"
+          src={mapUrl}
+          loading="lazy"
+        />
+
+        {/* Live Floating Location Badge */}
+        <div className="absolute left-3 top-3 z-10 flex max-w-[85%] items-center gap-2 rounded-xl bg-white/95 px-3 py-2 text-xs font-bold text-[#183b32] shadow-md backdrop-blur border border-[#e0ebe0]">
+          <span className="flex h-2.5 w-2.5 shrink-0 animate-pulse rounded-full bg-[#e9784b]" />
+          <span className="truncate">
+            Đang trỏ: <strong className="text-[#2f815c]">{displayLocation}</strong>
+          </span>
+        </div>
+
+        {/* Action button */}
+        <div className="absolute bottom-3 right-3 z-10 flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={onRouteDetail}
+            className="flex items-center gap-1.5 rounded-xl bg-[#183b32]/95 hover:bg-[#183b32] px-3.5 py-2 text-[11px] font-bold text-white shadow-lg backdrop-blur transition active:scale-95"
+          >
+            <Map size={13} /> Xem lộ trình toàn tuyến
+          </button>
+        </div>
+      </div>
+
+      {/* Navigation Metrics & River Information Panel */}
+      <div className="bg-[#f8fbf7] p-4">
+        <div className="grid grid-cols-2 gap-2 text-xs sm:grid-cols-4">
+          <div className="rounded-xl border border-[#e2ede0] bg-white p-2.5">
+            <p className="text-[10px] text-[#71877b]">Khúc sông</p>
+            <p className="mt-0.5 font-bold text-[#183b32] truncate">{currentSegment.name}</p>
+          </div>
+          <div className="rounded-xl border border-[#e2ede0] bg-white p-2.5">
+            <p className="text-[10px] text-[#71877b]">Cự ly thủy ước tính</p>
+            <p className="mt-0.5 font-bold text-[#2f815c]">{currentSegment.distance} (~{currentSegment.duration})</p>
+          </div>
+          <div className="rounded-xl border border-[#e2ede0] bg-white p-2.5">
+            <p className="text-[10px] text-[#71877b]">Khả năng lưu thông</p>
+            <p className="mt-0.5 font-bold text-[#28704d] truncate">{currentSegment.traffic}</p>
+          </div>
+          <div className="rounded-xl border border-[#e2ede0] bg-white p-2.5">
+            <p className="text-[10px] text-[#71877b]">Độ mặn cảm biến</p>
+            <p className="mt-0.5 font-bold text-[#e9784b]">{currentSegment.salinity}</p>
+          </div>
+        </div>
+
+        {/* Quick Assign Buttons */}
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 pt-2.5 border-t border-[#e8f2e6]">
+          <div className="text-[11px] text-[#71877b]">
+            <p>
+              Tuyến sông: <strong className="text-[#183b32]">{currentSegment.route}</strong>
+            </p>
+            {origin && destination && (
+              <p className="text-[10px] text-[#2f815c] font-semibold mt-0.5">
+                Chuyến đang chọn: {origin} → {destination}
+              </p>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleSetAsOrigin}
+              className="rounded-xl border border-[#2f815c] bg-white px-3 py-1.5 text-[11px] font-bold text-[#2f815c] hover:bg-[#edf6e9] transition active:scale-95"
+            >
+              🎯 Gán làm Điểm Đi
+            </button>
+            <button
+              type="button"
+              onClick={handleSetAsDestination}
+              className="rounded-xl bg-[#2f815c] px-3 py-1.5 text-[11px] font-bold text-white hover:bg-[#256a4b] transition active:scale-95"
+            >
+              🏁 Gán làm Điểm Đến
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CustomSearchModal({
+  onClose,
+  setOrigin,
+  setDestination,
+  setProduce,
+  setWeight,
+  notify,
+}) {
+  const [selectedProduce, setSelectedProduce] = useState("Tất cả");
+  const [filterOrigin, setFilterOrigin] = useState("Tất cả");
+  const [filterDestination, setFilterDestination] = useState("Tất cả");
+  const [filterUrgency, setFilterUrgency] = useState("Tất cả");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const produceCategories = [
+    { id: "Tất cả", label: "Tất cả" },
+    { id: "crab", label: "🦀 Cua biển Năm Căn" },
+    { id: "rice", label: "🌾 Lúa ST25 Bạc Liêu" },
+    { id: "shrimp", label: "🦐 Tôm sú sinh thái" },
+    { id: "salted_crab", label: "📦 Ba khía Rạch Gốc" },
+    { id: "mango", label: "🍋 Xoài Cát & Trái cây" },
+  ];
+
+  // Filter cargo requests
+  const filteredCargos = cargoRequests.filter((cargo) => {
+    if (selectedProduce !== "Tất cả" && cargo.type !== selectedProduce) return false;
+    if (filterOrigin !== "Tất cả" && cargo.origin !== filterOrigin) return false;
+    if (filterDestination !== "Tất cả" && cargo.destination !== filterDestination) return false;
+    if (filterUrgency !== "Tất cả" && cargo.urgency !== filterUrgency) return false;
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      const matchText = `${cargo.name} ${cargo.subName} ${cargo.route} ${cargo.sender}`.toLowerCase();
+      if (!matchText.includes(q)) return false;
+    }
+    return true;
+  });
+
+  const handleApplyToBooking = (cargo) => {
+    if (setOrigin) setOrigin(cargo.origin);
+    if (setDestination) setDestination(cargo.destination);
+    if (setProduce) setProduce(cargo.name);
+    if (setWeight) setWeight(cargo.amount);
+    if (notify) notify(`Đã nạp yêu cầu: ${cargo.name} (${cargo.amount})`);
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 sm:p-5 backdrop-blur-sm animate-fade-in">
+      <div className="relative flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-[28px] border border-[#d6e8d2] bg-white shadow-2xl animate-rise">
+        {/* Header */}
+        <div className="border-b border-[#eef5ec] bg-gradient-to-r from-[#2f815c] to-[#1f5c40] p-5 text-white">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/20 backdrop-blur shadow-inner">
+                <SlidersHorizontal size={20} className="text-white" />
+              </div>
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-wider text-[#c5e8ae]">
+                  Bộ lọc Logistics Đường Thủy Cà Mau - Bạc Liêu
+                </p>
+                <h3 className="text-lg font-bold">Tìm kiếm theo yêu cầu</h3>
+              </div>
+            </div>
+            <button
+              onClick={onClose}
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white/80 hover:bg-white/20 transition active:scale-95"
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          {/* Search Input */}
+          <div className="relative mt-4">
+            <Search size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/60" />
+            <input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full rounded-xl bg-white/15 py-2.5 pl-10 pr-4 text-xs font-semibold text-white placeholder:text-white/60 outline-none backdrop-blur focus:bg-white/25 focus:ring-2 focus:ring-white/30"
+              placeholder="Nhập tên nông sản, địa danh, HTX (vd: Cua Năm Căn, Ninh Quới, Lúa ST25)..."
+            />
+          </div>
+        </div>
+
+        {/* Filter Bar */}
+        <div className="border-b border-[#eef5ec] bg-[#fbfdfa] p-4 space-y-3">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-wider text-[#8ba095] mb-1.5">
+              Loại nông sản đặc sản Cà Mau & Bạc Liêu:
+            </p>
+            <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
+              {produceCategories.map((cat) => (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => setSelectedProduce(cat.id)}
+                  className={`shrink-0 rounded-xl px-3 py-1.5 text-xs font-semibold transition active:scale-95 ${
+                    selectedProduce === cat.id
+                      ? "bg-[#2f815c] text-white shadow-sm shadow-[#2f815c]/25 font-bold"
+                      : "border border-[#e0ebe0] bg-white text-[#557264] hover:bg-[#edf6e9]"
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            <div>
+              <label className="block text-[10px] font-bold text-[#71877b] mb-1">
+                Điểm gửi hàng (Điểm đi)
+              </label>
+              <select
+                value={filterOrigin}
+                onChange={(e) => setFilterOrigin(e.target.value)}
+                className="w-full rounded-xl border border-[#dce8dc] bg-white p-2 text-xs font-semibold text-[#183b32] outline-none focus:border-[#2f815c]"
+              >
+                <option value="Tất cả">Tất cả điểm đi</option>
+                {caMauLocations.map((loc) => (
+                  <option key={loc} value={loc}>
+                    {loc}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="block text-[10px] font-bold text-[#71877b] mb-1">
+                Điểm giao nhận (Điểm đến)
+              </label>
+              <select
+                value={filterDestination}
+                onChange={(e) => setFilterDestination(e.target.value)}
+                className="w-full rounded-xl border border-[#dce8dc] bg-white p-2 text-xs font-semibold text-[#183b32] outline-none focus:border-[#2f815c]"
+              >
+                <option value="Tất cả">Tất cả điểm đến</option>
+                {caMauLocations.map((loc) => (
+                  <option key={loc} value={loc}>
+                    {loc}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="col-span-2 sm:col-span-1">
+              <label className="block text-[10px] font-bold text-[#71877b] mb-1">
+                Mức độ khẩn cấp
+              </label>
+              <select
+                value={filterUrgency}
+                onChange={(e) => setFilterUrgency(e.target.value)}
+                className="w-full rounded-xl border border-[#dce8dc] bg-white p-2 text-xs font-semibold text-[#183b32] outline-none focus:border-[#2f815c]"
+              >
+                <option value="Tất cả">Tất cả thời gian</option>
+                <option value="Hỏa tốc">Hỏa tốc trong ngày</option>
+                <option value="Tiêu chuẩn">Tiêu chuẩn</option>
+                <option value="Định kỳ">Lịch định kỳ</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Results List */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          <div className="flex items-center justify-between text-xs text-[#71877b]">
+            <span>
+              Tìm thấy <strong className="text-[#2f815c]">{filteredCargos.length}</strong> yêu cầu phù hợp
+            </span>
+            {(selectedProduce !== "Tất cả" || filterOrigin !== "Tất cả" || filterDestination !== "Tất cả" || searchQuery) && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedProduce("Tất cả");
+                  setFilterOrigin("Tất cả");
+                  setFilterDestination("Tất cả");
+                  setSearchQuery("");
+                }}
+                className="text-[11px] font-bold text-[#e9784b] hover:underline"
+              >
+                Đặt lại bộ lọc
+              </button>
+            )}
+          </div>
+
+          {filteredCargos.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-[#cfe0cc] bg-[#fbfdfa] p-8 text-center">
+              <Boxes size={36} className="mx-auto text-[#8ba095]" />
+              <p className="mt-2 text-sm font-bold text-[#183b32]">Không tìm thấy yêu cầu phù hợp</p>
+              <p className="mt-1 text-xs text-[#71877b]">
+                Vui lòng thử nới lỏng bộ lọc hoặc chọn khu vực lân cận trên bản đồ sông Cà Mau - Bạc Liêu.
+              </p>
+            </div>
+          ) : (
+            filteredCargos.map((cargo) => (
+              <div
+                key={cargo.id}
+                className="rounded-2xl border border-[#e0ebe0] bg-white p-4 shadow-sm transition hover:border-[#2f815c] hover:shadow-md"
+              >
+                <div className="flex items-start gap-3.5">
+                  <ProduceIcon type={cargo.type} />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-2">
+                      <h4 className="font-bold text-sm text-[#183b32] truncate">{cargo.name}</h4>
+                      <span className="shrink-0 rounded-full bg-[#edf6e9] px-2 py-0.5 text-[10px] font-bold text-[#28704d]">
+                        Khớp AI {cargo.matchRate}
+                      </span>
+                    </div>
+
+                    <p className="text-[11px] text-[#4d705d] font-semibold mt-0.5">
+                      {cargo.subName} · <span className="text-[#8ba095]">{cargo.standard}</span>
+                    </p>
+
+                    <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[11px] text-[#71877b]">
+                      <span className="flex items-center gap-1 rounded-md bg-[#f1f6ef] px-2 py-1 font-semibold text-[#183b32]">
+                        <Navigation2 size={12} className="text-[#2f815c]" /> {cargo.route}
+                      </span>
+                      <span className="rounded-md bg-[#fff4df] px-2 py-1 font-bold text-[#d9733e]">
+                        {cargo.amount}
+                      </span>
+                      <span className="rounded-md bg-[#f5f8f4] px-2 py-1 text-[#557264]">
+                        {cargo.packaging}
+                      </span>
+                    </div>
+
+                    <div className="mt-3 flex items-center justify-between pt-2.5 border-t border-[#f0f6ee] text-xs">
+                      <span className="text-[11px] text-[#799085]">
+                        Gửi bởi: <strong className="text-[#183b32]">{cargo.sender}</strong>
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleApplyToBooking(cargo)}
+                          className="flex items-center gap-1 rounded-xl bg-[#2f815c] hover:bg-[#256a4b] px-3.5 py-1.5 text-xs font-bold text-white shadow-sm transition active:scale-95"
+                        >
+                          <CheckCheck size={14} /> Ghép chuyến ngay
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function HomeView({
   origin,
   setOrigin,
@@ -661,6 +2012,7 @@ function HomeView({
   onRouteDetail,
   role,
   onContract,
+  onOpenCustomSearch,
 }) {
   if (role === "boatOwner") {
     return (
@@ -672,15 +2024,15 @@ function HomeView({
       <section className="relative mb-7 overflow-hidden rounded-[24px] bg-[#2f815c] px-6 py-7 text-white shadow-xl shadow-[#2f815c]/15 md:px-9 md:py-9">
         <div className="relative z-10 max-w-lg">
           <p className="mb-2 text-sm font-medium text-[#c5e8ae]">
-            Thứ hai, 24 tháng 8, 2026
+            Hệ thống Logistics Đường Thủy Cà Mau - Bạc Liêu
           </p>
           <h1 className="display-font text-3xl font-bold leading-tight md:text-4xl">
-            Chào Ngọc Anh,
+            Chào mừng trở lại,
             <br />
-            <span className="text-[#c5e8ae]">mùa này đi đâu?</span>
+            <span className="text-[#c5e8ae]">kết nối mùa vụ hôm nay?</span>
           </h1>
           <p className="mt-3 max-w-sm text-sm leading-6 text-[#d7ebdc]">
-            Nhanh chóng · tiết kiệm · tận nơi
+            Vận chuyển nông thủy sản minh bạch · Cắt giảm khâu trung gian · Bảo vệ môi trường
           </p>
         </div>
         <div className="absolute -right-6 -top-12 text-[190px] leading-none text-[#3b815e] opacity-50">
@@ -694,13 +2046,13 @@ function HomeView({
       <div className="order-2 mb-7 grid grid-cols-3 gap-2">
         <button
           onClick={() => setJourneyMode("Tìm phương tiện")}
-          className="rounded-xl bg-[#e9784b] px-2 py-3 text-[11px] font-bold text-white"
+          className="rounded-xl bg-[#e9784b] px-2 py-3 text-[11px] font-bold text-white shadow-sm transition active:scale-95"
         >
           Tìm ghe ghép chuyến
         </button>
         <button
           onClick={onContract}
-          className="rounded-xl border border-[#bde0a9] bg-white px-2 py-3 text-[11px] font-bold text-[#28704d]"
+          className="rounded-xl border border-[#bde0a9] bg-white px-2 py-3 text-[11px] font-bold text-[#28704d] shadow-sm transition active:scale-95"
         >
           Tạo hợp đồng
         </button>
@@ -710,7 +2062,7 @@ function HomeView({
               .getElementById("luong-xanh-htx")
               ?.scrollIntoView({ behavior: "smooth" })
           }
-          className="rounded-xl border border-[#bde0a9] bg-white px-2 py-3 text-[11px] font-bold text-[#28704d]"
+          className="rounded-xl border border-[#bde0a9] bg-white px-2 py-3 text-[11px] font-bold text-[#28704d] shadow-sm transition active:scale-95"
         >
           Gom đơn HTX
         </button>
@@ -740,7 +2092,7 @@ function HomeView({
               : "Dùng phương tiện đã đăng ký để nhận chuyến cùng tuyến."}
           </p>
           <div className="grid gap-3 md:grid-cols-2">
-            <Field label="Điểm đi" icon={MapPin}>
+            <Field label="Điểm đi (Bến xuất phát)" icon={MapPin}>
               <select
                 value={origin}
                 onChange={(event) => setOrigin(event.target.value)}
@@ -750,7 +2102,7 @@ function HomeView({
                 ))}
               </select>
             </Field>
-            <Field label="Điểm đến" icon={Navigation}>
+            <Field label="Điểm đến (Bến giao nhận)" icon={Navigation}>
               <select
                 value={destination}
                 onChange={(event) => setDestination(event.target.value)}
@@ -760,19 +2112,18 @@ function HomeView({
                 ))}
               </select>
             </Field>
-            <Field label="Loại nông sản" icon={Package}>
+            <Field label="Loại nông sản đặc sản" icon={Package}>
               <select
                 value={produce}
                 onChange={(event) => setProduce(event.target.value)}
               >
-                <option>Xoài Cao Lãnh</option>
-                <option>Lúa</option>
-                <option>Thanh long ruột đỏ</option>
-                <option>Tôm sú tươi</option>
-                <option>Cua biển</option>
-                <option>Gạo thơm</option>
-                <option>Cá đồng</option>
-                <option>Trái cây miền Tây</option>
+                <option>Lúa ST25 Bạc Liêu</option>
+                <option>Cua biển Năm Căn</option>
+                <option>Tôm sú sinh thái</option>
+                <option>Ba khía Rạch Gốc</option>
+                <option>Xoài Cát & Trái cây</option>
+                <option>Mật ong U Minh</option>
+                <option>Thủy sản biển Sông Đốc</option>
               </select>
             </Field>
             <Field label="Khối lượng cần chở" icon={MoreHorizontal}>
@@ -788,18 +2139,20 @@ function HomeView({
                 <option>2 tấn</option>
                 <option>5 tấn</option>
                 <option>10 tấn</option>
+                <option>20 tấn</option>
+                <option>50 tấn</option>
               </select>
             </Field>
           </div>
           <button
             disabled={matching}
             onClick={findBoat}
-            className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#e9784b] px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#e9784b]/20 transition hover:bg-[#d7653a] disabled:cursor-wait disabled:opacity-70"
+            className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#e9784b] px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#e9784b]/20 transition hover:bg-[#d7653a] disabled:cursor-wait disabled:opacity-70 active:scale-[0.99]"
           >
             {matching ? (
               <>
                 <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-                AI đang tính tuyến tối ưu...
+                AI đang tính toán tuyến sông & con nước...
               </>
             ) : (
               <>
@@ -833,7 +2186,7 @@ function HomeView({
                   <p className="mt-2 text-xs font-bold text-[#db713f]">
                     {journeyMode === "Ghép chuyến"
                       ? `Phí nền tảng: ${vehicleInfo.type === "Ghe" || vehicleInfo.type === "Xà lan" ? "50.000đ" : "10.000đ"}/chuyến`
-                      : "Đã cắt bỏ cò đò - lợi nhuận tăng thêm 15%"}
+                      : "Đã cắt bỏ cò đò - lợi nhuận nông hộ tăng thêm 15%"}
                   </p>
                 </div>
                 <ChevronRight size={18} className="text-[#28704d]" />
@@ -850,34 +2203,47 @@ function HomeView({
         <SectionTitle
           eyebrow="Đang cần chuyến"
           title="Hàng hóa quanh bạn"
-          action="Tìm theo nhu cầu"
-          onAction={() => setJourneyMode("Tìm phương tiện")}
+          action="Tìm theo yêu cầu"
+          onAction={onOpenCustomSearch}
         />
         <div className="grid gap-3 sm:grid-cols-2">
           {cargoRequests.map((cargo) => (
             <button
-              key={cargo.name}
+              key={cargo.id}
               onClick={() => {
                 setProduce(cargo.name);
                 setWeight(cargo.amount);
+                setOrigin(cargo.origin);
+                setDestination(cargo.destination);
                 setJourneyMode("Tìm phương tiện");
                 onCargoDetail(cargo);
               }}
-              className="flex items-center gap-3 rounded-[16px] border border-[#e0ebe0] bg-white p-3 text-left shadow-sm transition hover:border-[#b7d6ad]"
+              className="flex items-start gap-3.5 rounded-[20px] border border-[#e0ebe0] bg-white p-4 text-left shadow-sm transition hover:border-[#2f815c] hover:shadow-md active:scale-[0.99]"
             >
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#fff4df] text-xl">
-                {cargo.icon}
-              </span>
-              <span className="min-w-0 flex-1">
-                <b className="block text-sm">{cargo.name}</b>
-                <span className="mt-1 block truncate text-[11px] text-[#799085]">
-                  {cargo.route}
+              <ProduceIcon type={cargo.type} />
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center justify-between gap-1">
+                  <b className="block text-sm text-[#183b32] truncate">{cargo.name}</b>
+                  <span className="shrink-0 rounded-full bg-[#edf6e9] px-2 py-0.5 text-[9px] font-bold text-[#28704d]">
+                    {cargo.standard.split(" · ")[0]}
+                  </span>
+                </div>
+                <span className="mt-0.5 block truncate text-[11px] font-semibold text-[#4d705d]">
+                  {cargo.subName}
                 </span>
-                <span className="mt-1 block text-[10px] font-bold text-[#e9784b]">
-                  {cargo.amount} · {cargo.time}
-                </span>
-              </span>
-              <ChevronRight size={16} className="text-[#9caf9f]" />
+                <div className="mt-2 flex items-center justify-between text-[11px]">
+                  <span className="font-semibold text-[#71877b] truncate max-w-[170px]">
+                    📍 {cargo.route}
+                  </span>
+                  <span className="font-bold text-[#e9784b] shrink-0">
+                    {cargo.amount}
+                  </span>
+                </div>
+                <div className="mt-2 flex items-center justify-between border-t border-[#f0f6ee] pt-2 text-[10px] text-[#8ba095]">
+                  <span>{cargo.packaging}</span>
+                  <span className="font-bold text-[#2f815c]">{cargo.time}</span>
+                </div>
+              </div>
             </button>
           ))}
         </div>
@@ -897,23 +2263,23 @@ function HomeView({
                 setJourneyMode("Ghép chuyến");
                 onVehicleDetail(vehicle);
               }}
-              className="min-w-[230px] rounded-[16px] border border-[#e0ebe0] bg-white p-4 text-left shadow-sm hover:border-[#b7d6ad]"
+              className="min-w-[240px] rounded-[18px] border border-[#e0ebe0] bg-white p-4 text-left shadow-sm hover:border-[#2f815c] transition"
             >
               <div className="flex items-center justify-between">
-                <span className="flex items-center gap-2 text-sm font-bold">
-                  <Ship size={17} className="text-[#397153]" />
+                <span className="flex items-center gap-2 text-sm font-bold text-[#183b32]">
+                  <Ship size={17} className="text-[#2f815c]" />
                   {vehicle.name}
                 </span>
                 <span className="rounded-full bg-[#edf6e9] px-2 py-1 text-[10px] font-bold text-[#4c9758]">
                   Đang trống
                 </span>
               </div>
-              <p className="mt-3 text-xs text-[#6e8579]">
-                {vehicle.type} · tải {vehicle.capacity}
+              <p className="mt-2.5 text-xs text-[#6e8579]">
+                {vehicle.type} · tải trọng {vehicle.capacity} · Thuyền trưởng: {vehicle.captain}
               </p>
-              <p className="mt-1 text-[11px] text-[#799085]">{vehicle.route}</p>
-              <p className="mt-3 text-xs font-bold text-[#d96e44]">
-                Phí {vehicle.fee}
+              <p className="mt-1 text-[11px] text-[#799085] truncate">{vehicle.route}</p>
+              <p className="mt-2.5 text-xs font-bold text-[#d96e44]">
+                Phí cước {vehicle.fee}
               </p>
             </button>
           ))}
@@ -921,44 +2287,37 @@ function HomeView({
       </section>
       <section className="order-4 mb-8">
         <SectionTitle
-          eyebrow="Theo dõi dòng chảy"
-          title="Bản đồ luồng tuyến"
+          eyebrow="Theo dõi dòng chảy thực tế"
+          title="Bản đồ luồng sông Cà Mau - Bạc Liêu"
           action="Xem chi tiết"
           onAction={onRouteDetail}
         />
-        <div className="relative h-52 overflow-hidden rounded-[20px] bg-[#86b99b] shadow-sm">
-          <iframe
-            title="Bản đồ sông Cà Mau"
-            className="h-full w-full border-0"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=104.75%2C8.55%2C105.35%2C9.45&layer=mapnik&marker=9.176%2C105.15"
-          />
-          <div className="absolute left-4 top-4 rounded-lg bg-white/90 px-3 py-2 text-[11px] font-bold text-[#245b42] shadow-sm">
-            <span className="mr-1.5 inline-block h-2 w-2 rounded-full bg-[#e9784b]" />
-            Ghe của bạn
-          </div>
-          <div className="absolute bottom-4 right-4 rounded-lg bg-[#174c3a]/90 px-3 py-2 text-[10px] font-semibold text-white">
-            Cập nhật trực tiếp · 14:12
-          </div>
-        </div>
+        <InteractiveRiverMap
+          origin={origin}
+          destination={destination}
+          setOrigin={setOrigin}
+          setDestination={setDestination}
+          onRouteDetail={onRouteDetail}
+        />
       </section>
       <section className="order-5">
         <SectionTitle
-          eyebrow="Mạng lưới cảm biến"
-          title="Cảnh báo môi trường"
+          eyebrow="Mạng lưới cảm biến môi trường"
+          title="Cảnh báo môi trường nước"
           action="Xem tất cả"
           onAction={() => setActiveTab("notifications")}
         />
         <div className="grid gap-3 sm:grid-cols-2">
           <EnvironmentCard
-            name="Khúc sông A"
-            value="2‰"
-            label="An toàn"
+            name="Kênh Quản Lộ (Ninh Quới - Phước Long)"
+            value="0.4‰"
+            label="Nước ngọt an toàn"
             tone="safe"
           />
           <EnvironmentCard
-            name="Khúc sông B"
-            value="5‰"
-            label="Nguy hiểm"
+            name="Cửa biển Gành Hào & Sông Đốc"
+            value="18.5‰"
+            label="Nước mặn triều dâng"
             tone="danger"
           />
         </div>
@@ -972,18 +2331,17 @@ function BoatOwnerHome({ onContract, setActiveTab }) {
     <div className="animate-rise">
       <section className="mb-7 rounded-[24px] bg-[#174c3a] px-6 py-7 text-white shadow-xl md:px-9">
         <p className="text-sm text-[#bfe3b0]">
-          Xin chào, <VerifiedName name="Anh Tùng" />
+          Xin chào, <VerifiedName name="Anh Tùng (Chủ ghe)" />
         </p>
         <h1 className="display-font mt-2 text-3xl font-bold">
           Tối ưu từng chuyến ghe.
         </h1>
         <p className="mt-3 text-sm leading-6 text-[#d7ebdc]">
-          Nhận nguồn hàng phù hợp, chạy đầy tải và giảm chuyến rỗng trên tuyến
-          Cái Cui.
+          Nhận nguồn hàng nông sản phù hợp, chạy đầy tải và giảm chuyến rỗng trên toàn tuyến Cà Mau - Bạc Liêu.
         </p>
         <button
           onClick={() => setActiveTab("profile")}
-          className="mt-5 rounded-xl bg-[#e9784b] px-4 py-3 text-xs font-bold"
+          className="mt-5 rounded-xl bg-[#e9784b] px-4 py-3 text-xs font-bold shadow-md transition active:scale-95"
         >
           Cập nhật trọng tải trống
         </button>
@@ -995,28 +2353,38 @@ function BoatOwnerHome({ onContract, setActiveTab }) {
       <div className="space-y-3">
         {cargoRequests.map((cargo) => (
           <article
-            key={cargo.name}
-            className="rounded-[18px] border border-[#e0ebe0] bg-white p-4 shadow-sm"
+            key={cargo.id}
+            className="rounded-[20px] border border-[#e0ebe0] bg-white p-4 shadow-sm transition hover:border-[#2f815c]"
           >
-            <div className="flex items-start gap-3">
-              <span className="text-2xl">{cargo.icon}</span>
-              <div className="flex-1">
-                <p className="text-sm font-bold">
-                  <VerifiedName name="HTX Ninh Quới" />
+            <div className="flex items-start gap-3.5">
+              <ProduceIcon type={cargo.type} />
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-bold text-[#183b32]">
+                    <VerifiedName name={cargo.sender} />
+                  </p>
+                  <span className="rounded-full bg-[#edf6e9] px-2 py-0.5 text-[10px] font-bold text-[#28704d]">
+                    {cargo.standard.split(" · ")[0]}
+                  </span>
+                </div>
+                <p className="mt-1 text-xs font-semibold text-[#4d705d]">
+                  {cargo.name} ({cargo.subName}) · {cargo.amount}
                 </p>
                 <p className="mt-1 text-xs text-[#71877b]">
-                  {cargo.name} · {cargo.amount} · {cargo.route}
+                  📍 {cargo.route}
                 </p>
-                <p className="mt-2 text-[10px] font-bold text-[#e9784b]">
-                  {cargo.time}
-                </p>
+                <div className="mt-2 flex items-center justify-between">
+                  <p className="text-[11px] font-bold text-[#e9784b]">
+                    {cargo.time} · {cargo.packaging}
+                  </p>
+                  <button
+                    onClick={onContract}
+                    className="rounded-xl bg-[#2f815c] px-3.5 py-1.5 text-xs font-bold text-white shadow-sm transition hover:bg-[#256a4b] active:scale-95"
+                  >
+                    Đề xuất nhận chuyến
+                  </button>
+                </div>
               </div>
-              <button
-                onClick={onContract}
-                className="rounded-lg bg-[#edf6e9] px-3 py-2 text-[10px] font-bold text-[#28704d]"
-              >
-                Đề xuất
-              </button>
             </div>
           </article>
         ))}
@@ -1024,7 +2392,7 @@ function BoatOwnerHome({ onContract, setActiveTab }) {
       <div className="mt-6 grid grid-cols-2 gap-3">
         <button
           onClick={() => setActiveTab("activity")}
-          className="rounded-2xl bg-white p-4 text-left shadow-sm"
+          className="rounded-2xl bg-white p-4 text-left shadow-sm border border-[#e0ebe0] hover:border-[#2f815c] transition"
         >
           <Route className="text-[#397153]" size={20} />
           <b className="mt-3 block text-sm">Tối ưu tuyến đường</b>
@@ -1034,12 +2402,12 @@ function BoatOwnerHome({ onContract, setActiveTab }) {
         </button>
         <button
           onClick={() => setActiveTab("profile")}
-          className="rounded-2xl bg-white p-4 text-left shadow-sm"
+          className="rounded-2xl bg-white p-4 text-left shadow-sm border border-[#e0ebe0] hover:border-[#2f815c] transition"
         >
           <Gauge className="text-[#e9784b]" size={20} />
           <b className="mt-3 block text-sm">Trọng tải trống</b>
           <span className="mt-1 block text-xs text-[#799085]">
-            Còn 3,2 tấn hôm nay
+            Còn 5,0 tấn hôm nay
           </span>
         </button>
       </div>
@@ -1460,6 +2828,19 @@ function ProfileView({
   const [editingVehicle, setEditingVehicle] = useState(false);
   const updateVehicle = (field, value) =>
     setVehicleInfo((current) => ({ ...current, [field]: value }));
+
+  const currentUserName =
+    localStorage.getItem("hanhTrinhXanh.name") ||
+    (role === "farmer" ? "Ngọc Anh" : "Nguyễn Thành Công");
+  const userInitials =
+    currentUserName
+      .split(" ")
+      .filter(Boolean)
+      .slice(-2)
+      .map((w) => w[0])
+      .join("")
+      .toUpperCase() || "NA";
+
   return (
     <div className="animate-rise">
       <PageHeading
@@ -1476,11 +2857,11 @@ function ProfileView({
       />
       <section className="mb-5 flex items-center gap-4 rounded-[20px] border border-[#e0ebe0] bg-white p-5 shadow-sm">
         <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#dcebd3] text-xl font-bold text-[#397153]">
-          NA
+          {userInitials}
         </div>
         <div>
           <h2 className="display-font text-xl font-bold">
-            <VerifiedName name="Ngọc Anh" />
+            <VerifiedName name={currentUserName} />
           </h2>
           <p className="mt-1 text-xs text-[#799085]">
             {role === "farmer" ? "Nông dân / HTX" : "Chủ ghe"} · Thành viên từ
@@ -1681,48 +3062,81 @@ function BellPanel({ onClose, onOpenMessages }) {
 }
 
 function RoutePreview({ onClose }) {
-  const route = ["Xã Ninh Quới", "Xã Hồng Dân", "Xã Phước Long"];
+  const [activeSeg, setActiveSeg] = useState(riverSegments[0]);
+  const mapUrl = getInteractiveMapUrl(activeSeg.origin, 0.05);
+
   return (
     <ModalShell onClose={onClose}>
       <div className="mb-4 flex items-center justify-between">
         <div>
           <p className="text-[10px] font-bold uppercase tracking-[.15em] text-[#8ba095]">
-            Bản đồ luồng tuyến
+            Mạng lưới thủy đạo liên tỉnh
           </p>
-          <h2 className="display-font text-xl font-bold">
-            Các tuyến sông Cà Mau
+          <h2 className="display-font text-xl font-bold text-[#183b32]">
+            Luồng sông Cà Mau - Bạc Liêu
           </h2>
         </div>
         <button
           onClick={onClose}
           aria-label="Đóng"
-          className="rounded-full bg-[#f1f6ef] p-2 text-[#397153]"
+          className="rounded-full bg-[#f1f6ef] p-2 text-[#397153] hover:bg-[#e4efe2] transition"
         >
           <X size={18} />
         </button>
       </div>
-      <div className="relative h-64 overflow-hidden rounded-2xl">
+
+      {/* Segment Selector Tabs */}
+      <div className="mb-3 flex gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
+        {riverSegments.map((seg) => {
+          const isSelected = activeSeg.id === seg.id;
+          return (
+            <button
+              key={seg.id}
+              onClick={() => setActiveSeg(seg)}
+              className={`shrink-0 rounded-xl px-3 py-1.5 text-xs font-semibold transition active:scale-95 ${
+                isSelected
+                  ? "bg-[#2f815c] text-white shadow-sm font-bold"
+                  : "border border-[#e0ece0] bg-[#f8fbf7] text-[#557264] hover:bg-[#edf6e9]"
+              }`}
+            >
+              🌊 {seg.shortName}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Dynamic Map Frame */}
+      <div className="relative h-64 overflow-hidden rounded-2xl border border-[#dce8dc]">
         <iframe
-          title="Luồng tuyến Cà Mau"
+          title="Luồng tuyến Cà Mau - Bạc Liêu"
           className="h-full w-full border-0"
-          src="https://www.openstreetmap.org/export/embed.html?bbox=104.75%2C8.55%2C105.35%2C9.45&layer=mapnik&marker=9.176%2C105.15"
+          src={mapUrl}
+          loading="lazy"
         />
-        <div className="absolute left-3 top-3 rounded-lg bg-white/95 px-3 py-2 text-xs font-bold text-[#28704d] shadow">
-          <Map size={14} className="mr-1 inline" />
-          Luồng chính đang mở
+        <div className="absolute left-3 top-3 flex items-center gap-1.5 rounded-lg bg-white/95 px-3 py-2 text-xs font-bold text-[#28704d] shadow">
+          <Map size={14} className="text-[#2f815c]" />
+          <span>{activeSeg.name}</span>
+        </div>
+        <div className="absolute bottom-3 right-3 rounded-lg bg-[#183b32]/95 px-3 py-1.5 text-[10px] font-bold text-white shadow">
+          {activeSeg.tide} · {activeSeg.clearance}
         </div>
       </div>
-      <div className="mt-4 rounded-xl bg-[#f1f6ef] p-3">
-        <p className="text-xs font-bold text-[#8ba095]">
-          Tuyến đề xuất hôm nay
-        </p>
-        <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
-          {route.map((stop, index) => (
-            <span key={stop} className="flex items-center gap-2">
-              <b className="rounded-full bg-white px-2.5 py-1.5 text-[#28704d]">
+
+      {/* Stops & specs */}
+      <div className="mt-4 rounded-xl bg-[#f1f6ef] p-3 text-xs">
+        <div className="flex items-center justify-between">
+          <p className="font-bold text-[#8ba095]">
+            Chặng đường: <strong className="text-[#183b32]">{activeSeg.route}</strong>
+          </p>
+          <span className="font-bold text-[#2f815c]">{activeSeg.distance} ({activeSeg.duration})</span>
+        </div>
+        <div className="mt-2.5 flex flex-wrap items-center gap-2">
+          {activeSeg.stops.map((stop, index) => (
+            <span key={stop} className="flex items-center gap-1.5">
+              <b className="rounded-lg bg-white px-2.5 py-1 text-[#28704d] shadow-sm">
                 {stop}
               </b>
-              {index < route.length - 1 && (
+              {index < activeSeg.stops.length - 1 && (
                 <ChevronRight size={13} className="text-[#9caf9f]" />
               )}
             </span>
@@ -2014,13 +3428,17 @@ function CargoDetail({ cargo, onClose, onAccept }) {
   return (
     <ModalShell onClose={onClose}>
       <div className="mb-5 flex items-start justify-between">
-        <div>
-          <p className="text-[10px] font-bold uppercase tracking-[.15em] text-[#8ba095]">
-            Yêu cầu đang cần chuyến
-          </p>
-          <h2 className="display-font mt-1 text-2xl font-bold">
-            {cargo.icon} {cargo.name}
-          </h2>
+        <div className="flex items-center gap-3">
+          <ProduceIcon type={cargo.type} />
+          <div>
+            <span className="rounded-full bg-[#edf6e9] px-2 py-0.5 text-[10px] font-bold text-[#28704d]">
+              {cargo.standard}
+            </span>
+            <h2 className="display-font mt-0.5 text-xl font-bold text-[#183b32]">
+              {cargo.name}
+            </h2>
+            <p className="text-xs text-[#557264]">{cargo.subName}</p>
+          </div>
         </div>
         <button
           onClick={onClose}
@@ -2030,29 +3448,41 @@ function CargoDetail({ cargo, onClose, onAccept }) {
           <X size={18} />
         </button>
       </div>
-      <div className="space-y-3 rounded-2xl bg-[#f1f6ef] p-4 text-sm">
+      <div className="space-y-2.5 rounded-2xl bg-[#f1f6ef] p-4 text-xs sm:text-sm">
         <div className="flex justify-between">
-          <span className="text-[#799085]">Khối lượng</span>
-          <b>{cargo.amount}</b>
+          <span className="text-[#799085]">Khối lượng hàng</span>
+          <b className="text-[#e9784b] text-base">{cargo.amount}</b>
         </div>
         <div className="flex justify-between gap-4">
-          <span className="text-[#799085]">Điểm đi</span>
-          <b className="text-right">{cargo.route.split(" → ")[0]}</b>
+          <span className="text-[#799085]">Bến xuất phát (Điểm đi)</span>
+          <b className="text-right text-[#183b32]">{cargo.origin || cargo.route.split(" → ")[0]}</b>
         </div>
         <div className="flex justify-between gap-4">
-          <span className="text-[#799085]">Điểm đến</span>
-          <b className="text-right">{cargo.route.split(" → ")[1]}</b>
+          <span className="text-[#799085]">Bến giao nhận (Điểm đến)</span>
+          <b className="text-right text-[#183b32]">{cargo.destination || cargo.route.split(" → ")[1]}</b>
         </div>
         <div className="flex justify-between">
-          <span className="text-[#799085]">Thời gian</span>
-          <b>{cargo.time.replace("Cần chuyến ", "")}</b>
+          <span className="text-[#799085]">Quy cách đóng gói</span>
+          <b>{cargo.packaging}</b>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-[#799085]">Bảo quản đặc biệt</span>
+          <b className="text-[#2f815c]">{cargo.tempReq || "Khô ráo"}</b>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-[#799085]">Thời gian yêu cầu</span>
+          <b>{cargo.time}</b>
+        </div>
+        <div className="flex justify-between border-t border-[#dfeade] pt-2">
+          <span className="text-[#799085]">Đơn vị gửi hàng</span>
+          <b className="text-[#28704d]">{cargo.sender}</b>
         </div>
       </div>
       <button
         onClick={onAccept}
-        className="mt-4 w-full rounded-xl bg-[#1f6b4b] py-3.5 text-sm font-bold text-white"
+        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#2f815c] hover:bg-[#246747] py-3.5 text-sm font-bold text-white shadow-lg shadow-[#2f815c]/25 transition active:scale-[0.98]"
       >
-        Nhận chuyến này
+        <CheckCheck size={18} /> Nhận vận chuyển lô hàng này
       </button>
     </ModalShell>
   );
