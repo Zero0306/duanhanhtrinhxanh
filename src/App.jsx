@@ -56,18 +56,20 @@ import {
   Navigation2,
   CheckCheck,
   ArrowLeft,
+  LayoutGrid,
+  LayoutDashboard,
+  TrendingUp,
+  Star,
 } from "lucide-react";
 import appLogo from "./assets/logo.png";
-const navItems = [
+const userNavItems = [
   { id: "home", label: "Trang chủ", mobileLabel: "Home", icon: Home },
-  { id: "activity", label: "Hoạt động", mobileLabel: "Chuyến", icon: Activity },
-  { id: "payment", label: "Thanh toán", mobileLabel: "Ví", icon: Wallet },
-  {
-    id: "notifications",
-    label: "Tin nhắn",
-    mobileLabel: "Tin nhắn",
-    icon: MessageCircle,
-  },
+  { id: "menu", label: "Chức năng", mobileLabel: "Menu", icon: LayoutGrid },
+  { id: "profile", label: "Tôi", mobileLabel: "Tôi", icon: UserRound },
+];
+const adminNavItems = [
+  { id: "admin_dashboard", label: "Tổng quan", mobileLabel: "Tổng quan", icon: LayoutDashboard },
+  { id: "admin_users", label: "Người dùng", mobileLabel: "Users", icon: Users },
   { id: "profile", label: "Tôi", mobileLabel: "Tôi", icon: UserRound },
 ];
 
@@ -655,11 +657,19 @@ function App() {
   const changeRole = (nextRole) => {
     setRole(nextRole);
     localStorage.setItem("hanhTrinhXanh.role", nextRole);
-    setActiveTab("home");
+    if (nextRole === "admin") {
+      setActiveTab("admin_dashboard");
+    } else {
+      setActiveTab("home");
+    }
     notify(
       nextRole === "farmer"
-        ? "Đã chuyển sang Nông dân / HTX"
-        : "Đã chuyển sang Chủ ghe",
+        ? "Đã chuyển sang Nông dân"
+        : nextRole === "cooperative"
+          ? "Đã chuyển sang HTX"
+          : nextRole === "admin"
+            ? "Đã chuyển sang Admin"
+            : "Đã chuyển sang Chủ ghe",
     );
   };
   const logout = () => {
@@ -717,14 +727,7 @@ function App() {
                 <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-[#e9784b]" />
               )}
             </button>
-            <button
-              onClick={logout}
-              title="Bấm để đăng xuất và quay lại màn hình Đăng nhập"
-              className="flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-[#d96e44] shadow-sm hover:bg-[#fff3ed] transition active:scale-95"
-            >
-              <LogOut size={14} />
-              <span className="hidden xs:inline sm:inline">Đăng xuất</span>
-            </button>
+            {/* Đã xóa nút đăng xuất khỏi header theo yêu cầu */}
             <div className="hidden items-center gap-2 rounded-full bg-white py-1.5 pl-1.5 pr-3 text-xs font-semibold shadow-sm sm:flex">
               <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#dcebd3] text-[#397153]">
                 NA
@@ -772,6 +775,13 @@ function App() {
               }}
             />
           )}
+          {activeTab === "menu" && (
+            <MenuView setActiveTab={setActiveTab} />
+          )}
+          {activeTab === "admin_dashboard" && <AdminDashboard />}
+          {activeTab === "admin_users" && (
+            <div className="animate-rise p-4"><PageHeading eyebrow="Quản lý" title="Người dùng" /><p className="mt-4 text-[#799085]">Chưa có dữ liệu</p></div>
+          )}
           {activeTab === "activity" && (
             <ActivityView
               journeys={activeJourneys}
@@ -809,22 +819,26 @@ function App() {
             />
           )}
         </main>
-        <nav className="fixed bottom-0 left-0 right-0 z-20 mx-auto grid w-full max-w-[620px] grid-cols-5 items-center border-t border-[#e5ece3] bg-white/95 px-1 pb-[max(10px,env(safe-area-inset-bottom))] pt-2 shadow-[0_-8px_30px_rgba(36,77,52,.08)] backdrop-blur sm:px-2 md:bottom-4 md:rounded-2xl md:border md:pb-2">
-          {navItems.map(({ id, label, mobileLabel, icon: Icon }) => (
-            <button
-              key={id}
-              onClick={() => setActiveTab(id)}
-              className={`flex min-w-0 flex-1 flex-col items-center gap-1 rounded-xl px-0.5 py-1.5 text-center text-[9px] font-semibold leading-3 transition sm:px-2 sm:text-[10px] sm:leading-normal ${activeTab === id ? "bg-[#edf6e9] text-[#28704d]" : "text-[#8b9e93] hover:text-[#397153]"}`}
-            >
-              <Icon size={19} strokeWidth={activeTab === id ? 2.5 : 1.8} />
-              <span className="max-w-full whitespace-nowrap sm:hidden">
-                {mobileLabel}
-              </span>
-              <span className="hidden max-w-full whitespace-nowrap sm:block">
-                {label}
-              </span>
-            </button>
-          ))}
+        <nav className={`fixed bottom-0 left-0 right-0 z-20 mx-auto grid w-full max-w-[620px] ${role === "admin" ? "grid-cols-3" : "grid-cols-3"} items-center border-t border-[#e5ece3] bg-white/95 px-1 pb-[max(10px,env(safe-area-inset-bottom))] pt-2 shadow-[0_-8px_30px_rgba(36,77,52,.08)] backdrop-blur sm:px-2 md:bottom-4 md:rounded-2xl md:border md:pb-2`}>
+          {(role === "admin" ? adminNavItems : userNavItems).map(({ id, label, mobileLabel, icon: Icon }) => {
+            const isMenuChildActive = (id === "menu" && ["activity", "payment", "notifications"].includes(activeTab));
+            const isActive = activeTab === id || isMenuChildActive;
+            return (
+              <button
+                key={id}
+                onClick={() => setActiveTab(id)}
+                className={`flex min-w-0 flex-1 flex-col items-center gap-1 rounded-xl px-0.5 py-1.5 text-center text-[9px] font-semibold leading-3 transition sm:px-2 sm:text-[10px] sm:leading-normal ${isActive ? "bg-[#edf6e9] text-[#28704d]" : "text-[#8b9e93] hover:text-[#397153]"}`}
+              >
+                <Icon size={19} strokeWidth={isActive ? 2.5 : 1.8} />
+                <span className="max-w-full whitespace-nowrap sm:hidden">
+                  {mobileLabel}
+                </span>
+                <span className="hidden max-w-full whitespace-nowrap sm:block">
+                  {label}
+                </span>
+              </button>
+            );
+          })}
         </nav>
         {toast && (
           <div className="fixed bottom-24 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-[#183b32] px-4 py-3 text-xs font-semibold text-white shadow-xl md:bottom-10">
@@ -866,10 +880,14 @@ function App() {
           onClose={() => setSelectedCargo(null)}
           onAccept={() => {
             setSelectedCargo(null);
-            createJourney("Tìm phương tiện", {
+            createJourney(role === "boatOwner" ? "Nhận chuyến" : "Tìm phương tiện", {
               title: selectedCargo.name,
               route: selectedCargo.route,
+              weight: selectedCargo.amount,
             });
+            if (role === "boatOwner") {
+              notify(`Đã nhận chuyến: ${selectedCargo.name}`);
+            }
           }}
         />
       )}
@@ -1274,7 +1292,7 @@ function LoginView({ onAuthenticated }) {
                 Số điện thoại đăng nhập
                 <div className="relative mt-2 flex items-center">
                   <span className="absolute left-3.5 text-xs font-semibold text-[#8ba095]">
-                    🇻🇳 +84
+                    �� +84
                   </span>
                   <input
                     value={phone}
@@ -1299,7 +1317,7 @@ function LoginView({ onAuthenticated }) {
                     onClick={handleFillDemoOtp}
                     className="flex items-center gap-1 text-[11px] font-bold text-[#e9784b] hover:underline"
                   >
-                    ⚡ Điền nhanh 123456
+                     Điền nhanh 123456
                   </button>
                 </div>
                 <input
@@ -1366,7 +1384,7 @@ function LoginView({ onAuthenticated }) {
             {/* Fast Demo Access */}
             <div className="rounded-2xl border border-[#e2ede0] bg-[#f8fbf7] p-3.5">
               <p className="mb-2 text-center text-[11px] font-bold uppercase tracking-wider text-[#799085]">
-                🚀 Dùng thử nhanh 1-chạm (Không cần OTP)
+                 Dùng thử nhanh 1-chạm (Không cần OTP)
               </p>
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
                 <button
@@ -1374,21 +1392,21 @@ function LoginView({ onAuthenticated }) {
                   onClick={() => handleQuickDemo("farmer")}
                   className="flex items-center justify-center gap-1.5 rounded-xl border border-[#cee2c9] bg-white py-2.5 text-xs font-bold text-[#28704d] hover:bg-[#edf6e9] active:scale-95 transition shadow-sm"
                 >
-                  🌾 Nông dân
+                   Nông dân
                 </button>
                 <button
                   type="button"
                   onClick={() => handleQuickDemo("cooperative")}
                   className="flex items-center justify-center gap-1.5 rounded-xl border border-[#cee2c9] bg-white py-2.5 text-xs font-bold text-[#28704d] hover:bg-[#edf6e9] active:scale-95 transition shadow-sm"
                 >
-                  🏢 HTX
+                   HTX
                 </button>
                 <button
                   type="button"
                   onClick={() => handleQuickDemo("owner")}
                   className="flex items-center justify-center gap-1.5 rounded-xl border border-[#cee2c9] bg-white py-2.5 text-xs font-bold text-[#28704d] hover:bg-[#edf6e9] active:scale-95 transition shadow-sm"
                 >
-                  🚢 Chủ ghe
+                   Chủ ghe
                 </button>
               </div>
             </div>
@@ -1458,7 +1476,7 @@ function LoginView({ onAuthenticated }) {
                       : "border-[#dfeade] bg-[#fbfdfa] text-[#71877b] hover:bg-[#f4faf2]"
                   }`}
                 >
-                  <span className="text-xl">🌾</span>
+                  <span className="text-xl"></span>
                   <span className="mt-1 text-[11px] font-bold leading-tight">Nông dân</span>
                 </button>
                 <button
@@ -1470,7 +1488,7 @@ function LoginView({ onAuthenticated }) {
                       : "border-[#dfeade] bg-[#fbfdfa] text-[#71877b] hover:bg-[#f4faf2]"
                   }`}
                 >
-                  <span className="text-xl">🏢</span>
+                  <span className="text-xl"></span>
                   <span className="mt-1 text-[11px] font-bold leading-tight">HTX</span>
                 </button>
                 <button
@@ -1482,7 +1500,7 @@ function LoginView({ onAuthenticated }) {
                       : "border-[#dfeade] bg-[#fbfdfa] text-[#71877b] hover:bg-[#f4faf2]"
                   }`}
                 >
-                  <span className="text-xl">🚢</span>
+                  <span className="text-xl"></span>
                   <span className="mt-1 text-[11px] font-bold leading-tight">Chủ ghe</span>
                 </button>
                 <button
@@ -1494,7 +1512,7 @@ function LoginView({ onAuthenticated }) {
                       : "border-[#dfeade] bg-[#fbfdfa] text-[#71877b] hover:bg-[#f4faf2]"
                   }`}
                 >
-                  <span className="text-xl">🏪</span>
+                  <span className="text-xl"></span>
                   <span className="mt-1 text-[11px] font-bold leading-tight">Thương lái</span>
                 </button>
               </div>
@@ -1746,7 +1764,7 @@ function InteractiveRiverMap({
                     : "border border-[#e0ece0] bg-[#f8fbf7] text-[#557264] hover:bg-[#edf6e9]"
                 }`}
               >
-                <span>🌊</span>
+                <span></span>
                 <span>{seg.shortName}</span>
               </button>
             );
@@ -1822,14 +1840,14 @@ function InteractiveRiverMap({
               onClick={handleSetAsOrigin}
               className="rounded-xl border border-[#2f815c] bg-white px-3 py-1.5 text-[11px] font-bold text-[#2f815c] hover:bg-[#edf6e9] transition active:scale-95"
             >
-              🎯 Gán làm Điểm Đi
+              � Gán làm Điểm Đi
             </button>
             <button
               type="button"
               onClick={handleSetAsDestination}
               className="rounded-xl bg-[#2f815c] px-3 py-1.5 text-[11px] font-bold text-white hover:bg-[#256a4b] transition active:scale-95"
             >
-              🏁 Gán làm Điểm Đến
+               Gán làm Điểm Đến
             </button>
           </div>
         </div>
@@ -1854,9 +1872,9 @@ function CustomSearchModal({
 
   const produceCategories = [
     { id: "Tất cả", label: "Tất cả" },
-    { id: "rice", label: "🌾 Lúa (ST25, Một bụi...)" },
-    { id: "fruit", label: "🍋 Trái cây (Cam, Mít, Ổi...)" },
-    { id: "seafood", label: "🦀 Hải sản (Cua, Tôm, Cá...)" },
+    { id: "rice", label: " Lúa (ST25, Một bụi...)" },
+    { id: "fruit", label: " Trái cây (Cam, Mít, Ổi...)" },
+    { id: "seafood", label: " Hải sản (Cua, Tôm, Cá...)" },
   ];
 
   // Filter cargo requests
@@ -1936,14 +1954,14 @@ function CustomSearchModal({
               className="w-full rounded-xl border border-[#dce8dc] bg-white p-2.5 text-xs font-semibold text-[#183b32] outline-none focus:border-[#2f815c]"
             >
               <option value="Tất cả">-- Tất cả các loại --</option>
-              <optgroup label="🌾 Lúa">
+              <optgroup label=" Lúa">
                 <option value="rice_st25">Lúa ST25 Bạc Liêu</option>
                 <option value="rice_motbui">Lúa Một Bụi Đỏ</option>
                 <option value="rice_daithom">Lúa Đài Thơm 8</option>
                 <option value="rice_om18">Lúa OM18</option>
                 <option value="rice_huonglai">Lúa Hương Lài</option>
               </optgroup>
-              <optgroup label="🍋 Trái cây">
+              <optgroup label=" Trái cây">
                 <option value="fruit_cam">Cam sành</option>
                 <option value="fruit_mit">Mít Thái</option>
                 <option value="fruit_oi">Ổi nữ hoàng</option>
@@ -1951,7 +1969,7 @@ function CustomSearchModal({
                 <option value="fruit_chuoi">Chuối sáp</option>
                 <option value="fruit_xoai">Xoài Cát Hòa Lộc</option>
               </optgroup>
-              <optgroup label="🦀 Hải sản">
+              <optgroup label=" Hải sản">
                 <option value="seafood_cua">Cua biển Năm Căn</option>
                 <option value="seafood_tomsu">Tôm sú sinh thái</option>
                 <option value="seafood_tomthe">Tôm thẻ chân trắng</option>
@@ -2130,7 +2148,7 @@ function CooperativeDashboard({ onContract, setActiveTab }) {
     <div className="animate-rise">
       <section className="mb-7 rounded-[24px] bg-gradient-to-br from-[#183b32] to-[#2f815c] px-6 py-7 text-white shadow-xl md:px-9">
         <p className="text-sm font-semibold text-[#c5e8ae]">
-          🏢 {getFormattedCurrentDateLong()}
+           {getFormattedCurrentDateLong()}
         </p>
         <h1 className="display-font mt-2 text-3xl font-bold">
           Bảng điều khiển HTX
@@ -2301,7 +2319,7 @@ function HomeView({
 }) {
   if (role === "boatOwner") {
     return (
-      <BoatOwnerHome onContract={onContract} setActiveTab={setActiveTab} />
+      <BoatOwnerHome onCargoDetail={onCargoDetail} setActiveTab={setActiveTab} />
     );
   }
   if (role === "cooperative") {
@@ -2314,7 +2332,7 @@ function HomeView({
       <section className="relative mb-7 overflow-hidden rounded-[24px] bg-[#2f815c] px-6 py-7 text-white shadow-xl shadow-[#2f815c]/15 md:px-9 md:py-9">
         <div className="relative z-10 max-w-lg">
           <p className="mb-2 text-sm font-semibold text-[#c5e8ae]">
-            📅 {getFormattedCurrentDateLong()}
+             {getFormattedCurrentDateLong()}
           </p>
           <h1 className="display-font text-3xl font-bold leading-tight md:text-4xl">
             Chào mừng trở lại,
@@ -2409,14 +2427,14 @@ function HomeView({
                 className="w-full bg-transparent outline-none font-semibold text-[#183b32]"
               >
                 <option value="Tất cả">-- Tất cả các loại --</option>
-                <optgroup label="🌾 Lúa">
+                <optgroup label=" Lúa">
                   <option value="Lúa ST25 Bạc Liêu">Lúa ST25</option>
                   <option value="Lúa Một Bụi Đỏ">Lúa Một Bụi Đỏ</option>
                   <option value="Lúa Đài Thơm 8">Lúa Đài Thơm 8</option>
                   <option value="Lúa OM18">Lúa OM18</option>
                   <option value="Lúa Hương Lài">Lúa Hương Lài</option>
                 </optgroup>
-                <optgroup label="🍋 Trái cây">
+                <optgroup label=" Trái cây">
                   <option value="Cam sành">Cam sành</option>
                   <option value="Mít Thái">Mít Thái</option>
                   <option value="Ổi nữ hoàng">Ổi nữ hoàng</option>
@@ -2424,7 +2442,7 @@ function HomeView({
                   <option value="Chuối sáp">Chuối sáp</option>
                   <option value="Xoài Cát Hòa Lộc">Xoài Cát Hòa Lộc</option>
                 </optgroup>
-                <optgroup label="🦀 Hải sản">
+                <optgroup label=" Hải sản">
                   <option value="Cua biển Năm Căn">Cua biển Năm Căn</option>
                   <option value="Tôm sú sinh thái">Tôm sú sinh thái</option>
                   <option value="Tôm thẻ chân trắng">Tôm thẻ chân trắng</option>
@@ -2539,7 +2557,7 @@ function HomeView({
                 </span>
                 <div className="mt-2 flex items-center justify-between text-[11px]">
                   <span className="font-semibold text-[#71877b] truncate max-w-[170px]">
-                    📍 {cargo.route}
+                     {cargo.route}
                   </span>
                   <span className="font-bold text-[#e9784b] shrink-0">
                     {cargo.amount}
@@ -2644,12 +2662,12 @@ function HomeView({
   );
 }
 
-function BoatOwnerHome({ onContract, setActiveTab }) {
+function BoatOwnerHome({ onCargoDetail, setActiveTab }) {
   return (
     <div className="animate-rise">
       <section className="mb-7 rounded-[24px] bg-[#174c3a] px-6 py-7 text-white shadow-xl md:px-9">
         <p className="text-sm font-semibold text-[#bfe3b0]">
-          📅 {getFormattedCurrentDateLong()} · Xin chào,{" "}
+           {getFormattedCurrentDateLong()} · Xin chào,{" "}
           <VerifiedName name="Anh Tùng (Chủ ghe)" />
         </p>
         <h1 className="display-font mt-2 text-3xl font-bold">
@@ -2690,14 +2708,14 @@ function BoatOwnerHome({ onContract, setActiveTab }) {
                   {cargo.name} ({cargo.subName}) · {cargo.amount}
                 </p>
                 <p className="mt-1 text-xs text-[#71877b]">
-                  📍 {cargo.route}
+                   {cargo.route}
                 </p>
                 <div className="mt-2 flex items-center justify-between">
                   <p className="text-[11px] font-bold text-[#e9784b]">
                     {cargo.time} · {cargo.packaging}
                   </p>
                   <button
-                    onClick={onContract}
+                    onClick={() => onCargoDetail(cargo)}
                     className="rounded-xl bg-[#2f815c] px-3.5 py-1.5 text-xs font-bold text-white shadow-sm transition hover:bg-[#256a4b] active:scale-95"
                   >
                     Đề xuất nhận chuyến
@@ -2708,25 +2726,55 @@ function BoatOwnerHome({ onContract, setActiveTab }) {
           </article>
         ))}
       </div>
-      <div className="mt-6 grid grid-cols-2 gap-3">
+      <SectionTitle eyebrow="Tối ưu trọng tải rỗng" title="Gợi ý ghép chuyến" />
+      <div className="space-y-3 mb-6">
+        {[
+          { id: "GC-01", type: "tôm", sender: "Vựa Tôm Năm Căn", standard: "VietGAP", name: "Tôm sinh thái", subName: "Nguyên liệu tươi", amount: "150 kg", route: "Ninh Quới → Năm Căn", time: "Hôm nay, 14:00", packaging: "Thùng xốp đá", tempReq: "Lạnh" }
+        ].map((item) => (
+          <div key={item.id} className="flex items-center justify-between rounded-[20px] border border-[#bde0a9] bg-[#f7fcf3] p-4 shadow-sm">
+            <div>
+              <p className="text-sm font-bold text-[#183b32]">{item.name} · {item.amount}</p>
+              <p className="mt-1 text-[11px] text-[#71877b]">{item.route}</p>
+              <p className="mt-1 text-[11px] font-bold text-[#e9784b]">{item.time}</p>
+            </div>
+            <button
+              onClick={() => onCargoDetail(item)}
+              className="rounded-xl bg-[#28704d] px-3.5 py-1.5 text-xs font-bold text-white shadow-sm transition hover:bg-[#2f815c] active:scale-95"
+            >
+              Ghép ngay
+            </button>
+          </div>
+        ))}
+      </div>
+      <div className="mt-6 grid grid-cols-3 gap-3">
         <button
           onClick={() => setActiveTab("activity")}
-          className="rounded-2xl bg-white p-4 text-left shadow-sm border border-[#e0ebe0] hover:border-[#2f815c] transition"
+          className="rounded-2xl bg-white p-3 text-left shadow-sm border border-[#e0ebe0] hover:border-[#2f815c] transition"
         >
           <Route className="text-[#397153]" size={20} />
-          <b className="mt-3 block text-sm">Tối ưu tuyến đường</b>
-          <span className="mt-1 block text-xs text-[#799085]">
-            Ninh Quới - Phước Long
+          <b className="mt-2 block text-xs">Tối ưu tuyến</b>
+          <span className="mt-1 block text-[9px] text-[#799085]">
+            Ninh Quới
           </span>
         </button>
         <button
           onClick={() => setActiveTab("profile")}
-          className="rounded-2xl bg-white p-4 text-left shadow-sm border border-[#e0ebe0] hover:border-[#2f815c] transition"
+          className="rounded-2xl bg-white p-3 text-left shadow-sm border border-[#e0ebe0] hover:border-[#2f815c] transition"
         >
           <Gauge className="text-[#e9784b]" size={20} />
-          <b className="mt-3 block text-sm">Trọng tải trống</b>
-          <span className="mt-1 block text-xs text-[#799085]">
-            Còn 5,0 tấn hôm nay
+          <b className="mt-2 block text-xs">Tải trống</b>
+          <span className="mt-1 block text-[9px] text-[#799085]">
+            Còn 5 tấn
+          </span>
+        </button>
+        <button
+          onClick={() => setActiveTab("activity")}
+          className="rounded-2xl bg-[#edf6e9] p-3 text-left shadow-sm border border-[#bde0a9] hover:border-[#2f815c] transition"
+        >
+          <Package className="text-[#28704d]" size={20} />
+          <b className="mt-2 block text-xs text-[#28704d]">Ghép chuyến</b>
+          <span className="mt-1 block text-[9px] text-[#397153]">
+            Tự động lấp đầy
           </span>
         </button>
       </div>
@@ -2928,8 +2976,8 @@ function JourneyCard({ journey, onDetail }) {
       {/* Progress Corridor Timeline */}
       <div className="mt-4 rounded-xl bg-[#f5faf3] border border-[#e8f2e6] p-3">
         <div className="mb-2 flex items-center justify-between text-[11px] font-semibold text-[#557264]">
-          <span className="truncate max-w-[48%]">📍 {origin}</span>
-          <span className="truncate max-w-[48%] text-right">🏁 {destination}</span>
+          <span className="truncate max-w-[48%]"> {origin}</span>
+          <span className="truncate max-w-[48%] text-right"> {destination}</span>
         </div>
         <div className="relative h-2 rounded-full bg-[#d5e7d1]">
           <div
@@ -2942,7 +2990,7 @@ function JourneyCard({ journey, onDetail }) {
               left: `calc(${Math.max(Math.min(journey.progress, 96), 0)}% - 10px)`,
             }}
           >
-            🚢
+            
           </span>
         </div>
         <div className="mt-2 flex items-center justify-between text-[10px] text-[#71877b]">
@@ -3180,6 +3228,50 @@ function NotificationView({ notify }) {
     </div>
   );
 }
+function MenuView({ setActiveTab }) {
+  return (
+    <div className="animate-rise pb-24">
+      <PageHeading eyebrow="Tất cả chức năng" title="Chức năng" />
+      <div className="grid grid-cols-2 gap-4 mt-4 px-4">
+        <button onClick={() => setActiveTab("activity")} className="flex flex-col items-center justify-center p-6 bg-white rounded-[20px] shadow-sm border border-[#e5ece3] hover:border-[#397153] transition-colors">
+          <Activity className="text-[#397153] mb-3" size={32} />
+          <span className="font-bold text-sm text-[#183b32]">Quản lý chuyến</span>
+        </button>
+        <button onClick={() => setActiveTab("payment")} className="flex flex-col items-center justify-center p-6 bg-white rounded-[20px] shadow-sm border border-[#e5ece3] hover:border-[#397153] transition-colors">
+          <Wallet className="text-[#397153] mb-3" size={32} />
+          <span className="font-bold text-sm text-[#183b32]">Thanh toán & Ví</span>
+        </button>
+        <button onClick={() => setActiveTab("notifications")} className="flex flex-col items-center justify-center p-6 bg-white rounded-[20px] shadow-sm border border-[#e5ece3] hover:border-[#397153] transition-colors">
+          <MessageCircle className="text-[#397153] mb-3" size={32} />
+          <span className="font-bold text-sm text-[#183b32]">Tin nhắn</span>
+        </button>
+      </div>
+    </div>
+  );
+}
+
+function AdminDashboard() {
+  return (
+    <div className="animate-rise pb-24">
+      <PageHeading eyebrow="Bảng điều khiển" title="Tổng quan" />
+      <div className="mt-4 space-y-4 px-4">
+        <div className="p-5 bg-white rounded-[20px] shadow-sm border border-[#e5ece3]">
+          <h3 className="font-bold text-[#397153] flex items-center gap-2"><TrendingUp size={20}/> Thống kê chuyến đi</h3>
+          <p className="text-3xl font-black mt-2 text-[#183b32]">1,234 <span className="text-sm font-normal text-[#799085]">chuyến tháng này</span></p>
+        </div>
+        <div className="p-5 bg-white rounded-[20px] shadow-sm border border-[#e5ece3]">
+          <h3 className="font-bold text-[#397153] flex items-center gap-2"><Users size={20}/> Người dùng</h3>
+          <p className="text-3xl font-black mt-2 text-[#183b32]">5,678 <span className="text-sm font-normal text-[#799085]">thành viên</span></p>
+        </div>
+        <div className="p-5 bg-[#edf6e9] rounded-[20px] shadow-sm border border-[#bde0a9]">
+          <h3 className="font-bold text-[#28704d] flex items-center gap-2"><ShieldCheck size={20}/> Trạng thái hệ thống</h3>
+          <p className="text-sm mt-2 text-[#397153] font-medium">Hoạt động bình thường. Không có cảnh báo.</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function ProfileView({
   notify,
   vehicleInfo,
@@ -3244,7 +3336,7 @@ function ProfileView({
         <h2 className="display-font mt-1 text-lg font-bold">
           Chuyển đổi vai trò
         </h2>
-        <div className="mt-4 grid grid-cols-1 gap-2 rounded-xl bg-[#e4f1df] p-1 sm:grid-cols-3">
+        <div className="mt-4 grid grid-cols-2 gap-2 rounded-xl bg-[#e4f1df] p-1 sm:grid-cols-4">
           <button
             onClick={() => onRoleChange("farmer")}
             className={`rounded-lg px-2 py-3 text-xs font-bold ${role === "farmer" ? "bg-white text-[#28704d] shadow-sm" : "text-[#71877b]"}`}
@@ -3262,6 +3354,12 @@ function ProfileView({
             className={`rounded-lg px-2 py-3 text-xs font-bold ${role === "boatOwner" ? "bg-white text-[#28704d] shadow-sm" : "text-[#71877b]"}`}
           >
             Chủ ghe
+          </button>
+          <button
+            onClick={() => onRoleChange("admin")}
+            className={`rounded-lg px-2 py-3 text-xs font-bold ${role === "admin" ? "bg-white text-[#28704d] shadow-sm" : "text-[#71877b]"}`}
+          >
+            Admin
           </button>
         </div>
       </section>
@@ -3385,7 +3483,7 @@ function ProfileView({
         ))}
         <button
           onClick={() => onProfilePanel("Đăng xuất")}
-          className="flex w-full items-center gap-3 px-4 py-4 text-left text-sm font-semibold text-[#d96e44]"
+          className="flex w-full items-center gap-3 px-4 py-4 text-left text-sm font-semibold text-[#d96e44] border-t border-[#edf2eb]"
         >
           <LogOut size={18} />
           <span>Đăng xuất</span>
@@ -3469,7 +3567,7 @@ function RoutePreview({ onClose }) {
                   : "border border-[#e0ece0] bg-[#f8fbf7] text-[#557264] hover:bg-[#edf6e9]"
               }`}
             >
-              🌊 {seg.shortName}
+               {seg.shortName}
             </button>
           );
         })}
@@ -3513,7 +3611,6 @@ function RoutePreview({ onClose }) {
         </div>
       </div>
 
-      {/* Stops & specs */}
       <div className="mt-4 rounded-xl bg-[#f1f6ef] p-3 text-xs">
         <div className="flex items-center justify-between">
           <p className="font-bold text-[#8ba095]">
@@ -3563,7 +3660,7 @@ function ProfilePanel({ panel, onClose, notify, onLogout }) {
       "Đánh giá khách hàng",
       "Chuyến gần nhất: HT-3224",
       "Khách hàng Anh Tùng",
-      "⭐⭐⭐⭐⭐ 5/5 · Đúng giờ, thân thiện, giao hàng an toàn",
+      " 5/5 · Đúng giờ, thân thiện, giao hàng an toàn",
     ],
   }[panel];
   if (panel === "Đăng xuất")
@@ -3773,8 +3870,8 @@ function JourneyDetail({ journey, onClose }) {
                   }`}
                 >
                   {journey.progress <= 10
-                    ? "🟢 Đang bốc hàng lên ghe"
-                    : "✅ Đã rời bến"}
+                    ? " Đang bốc hàng lên ghe"
+                    : " Đã rời bến"}
                 </span>
               </div>
               <p className="text-[10px] text-[#71877b] mt-0.5">
@@ -3809,10 +3906,10 @@ function JourneyDetail({ journey, onClose }) {
                   }`}
                 >
                   {journey.progress > 10 && journey.progress < 100
-                    ? "🌊 Đang chạy đúng con nước"
+                    ? " Đang chạy đúng con nước"
                     : journey.progress >= 100
-                      ? "✅ Đã vượt qua"
-                      : "⏳ Chờ xuất bến"}
+                      ? " Đã vượt qua"
+                      : " Chờ xuất bến"}
                 </span>
               </div>
               <p className="text-[10px] text-[#71877b] mt-0.5">
@@ -3845,8 +3942,8 @@ function JourneyDetail({ journey, onClose }) {
                   }`}
                 >
                   {journey.progress >= 100
-                    ? "🏁 Đã cập bến giao nhận"
-                    : "⏳ Đang đón phương tiện"}
+                    ? " Đã cập bến giao nhận"
+                    : " Đang đón phương tiện"}
                 </span>
               </div>
               <p className="text-[10px] text-[#71877b] mt-0.5">
@@ -3880,6 +3977,27 @@ function JourneyDetail({ journey, onClose }) {
           <b className="mt-0.5 block text-[#183b32] truncate">{journey.eta}</b>
         </div>
       </div>
+      
+      {journey.status === "Đã hoàn thành" && (
+        <div className="mt-4 rounded-2xl border border-[#e2ede0] bg-white p-4 shadow-sm text-center">
+          <h3 className="font-bold text-[#183b32] mb-2">Đánh giá chuyến đi</h3>
+          <p className="text-xs text-[#71877b] mb-3">Vui lòng đánh giá trải nghiệm của bạn</p>
+          <div className="flex justify-center gap-2">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <button 
+                key={star} 
+                onClick={() => setRating(star)}
+                className={`${rating >= star ? "text-[#e9784b]" : "text-[#dce8dc]"} transition-transform hover:scale-110`}
+              >
+                <Star size={28} fill={rating >= star ? "currentColor" : "none"} strokeWidth={2} />
+              </button>
+            ))}
+          </div>
+          {rating > 0 && (
+            <p className="text-xs text-[#28704d] mt-2 font-bold animate-rise">Cảm ơn bạn đã đánh giá!</p>
+          )}
+        </div>
+      )}
     </ModalShell>
   );
 }

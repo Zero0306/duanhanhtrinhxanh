@@ -1,0 +1,833 @@
+﻿
+LineNumber Line                                                                                                        
+---------- ----                                                                                                        
+        62   { id: "home", label: "Trang chủ", mobileLabel: "Home", icon: Home },                                      
+        63   { id: "activity", label: "Hoạt động", mobileLabel: "Chuyến", icon: Activity },                            
+        64   { id: "payment", label: "Thanh toán", mobileLabel: "Ví", icon: Wallet },                                  
+        67     label: "Tin nhắn",                                                                                      
+        68     mobileLabel: "Tin nhắn",                                                                                
+        71   { id: "profile", label: "Tôi", mobileLabel: "Tôi", icon: UserRound },                                     
+        77     "Chủ Nhật",                                                                                             
+        78     "Thứ Hai",                                                                                              
+        79     "Thứ Ba",                                                                                               
+        80     "Thứ Tư",                                                                                               
+        81     "Thứ Năm",                                                                                              
+        82     "Thứ Sáu",                                                                                              
+        83     "Thứ Bảy",                                                                                              
+        89   return `${dayName}, ngày ${date} tháng ${month}, ${year}`;                                                
+       103     title: "Lúa ST25 Bạc Liêu",                                                                             
+       104     weight: "5 tấn",                                                                                        
+       105     origin: "Xã Ninh Quới (Bạc Liêu)",                                                                      
+       106     destination: "Xã Phước Long (Bạc Liêu)",                                                                
+       107     route: "Xã Ninh Quới (Bạc Liêu) → Xã Phước Long (Bạc Liêu)",                                            
+       108     boat: "Ghe Thành Công",                                                                                 
+       110     status: "Đang giao",                                                                                    
+       113     eta: "Còn 1 giờ 15 phút (Đang qua Kênh Quản Lộ)",                                                       
+       115     stops: ["Xã Ninh Quới (Bạc Liêu)", "Kênh Quản Lộ", "Xã Phước Long (Bạc Liêu)"],                         
+       116     createdAt: "Hôm nay, 10:15",                                                                            
+       120     title: "Cua biển Năm Căn",                                                                              
+       122     origin: "Xã Năm Căn (Cà Mau)",                                                                          
+       123     destination: "Phường Cà Mau (TP Cà Mau)",                                                               
+       124     route: "Xã Năm Căn (Cà Mau) → Phường Cà Mau (TP Cà Mau)",                                               
+       125     boat: "Ghe Phúc Lộc",                                                                                   
+       127     status: "Đã hoàn thành",                                                                                
+       130     eta: "Đã cập bến Cà Mau an toàn",                                                                       
+       132     stops: ["Xã Năm Căn (Cà Mau)", "Sông Bảy Háp", "Phường Cà Mau (TP Cà Mau)"],                            
+       133     createdAt: "Hôm qua, 14:30",                                                                            
+       137     title: "Tôm sú sinh thái",                                                                              
+       139     origin: "Xã Đất Mũi (Cà Mau)",                                                                          
+       140     destination: "Cảng cá Sông Đốc (Cà Mau)",                                                               
+       141     route: "Xã Đất Mũi (Cà Mau) → Cảng cá Sông Đốc (Cà Mau)",                                               
+       144     status: "Đã hủy",                                                                                       
+       147     eta: "Đã hủy bởi người gửi (biển động)",                                                                
+       149     stops: ["Xã Đất Mũi (Cà Mau)", "Cửa biển Sông Đốc", "Cảng cá Sông Đốc (Cà Mau)"],                       
+       157     title: "Cảnh báo độ mặn",                                                                               
+       158     text: "Khúc sông B đang ở mức 5‰. Hệ thống đã đề xuất tuyến thay thế.",                                 
+       159     time: "12 phút trước",                                                                                  
+       166     title: "AI ghép chuyến thành công",                                                                     
+       167     text: "Chuyến xoài Cao Lãnh đã tìm được ghe phù hợp, tiết kiệm 15%.",                                   
+       168     time: "1 giờ trước",                                                                                    
+       175     title: "Ghe đã cập bến",                                                                                
+       176     text: "Ghe Phúc Lộc đã hoàn tất giao lúa tại bến Ninh Kiều.",                                           
+       177     time: "Hôm qua",                                                                                        
+       183   "Xã Ninh Quới (Bạc Liêu)",                                                                                
+       184   "Xã Phước Long (Bạc Liêu)",                                                                               
+       185   "Xã Hồng Dân (Bạc Liêu)",                                                                                 
+       186   "Thị xã Giá Rai (Bạc Liêu)",                                                                              
+       187   "Thị trấn Hộ Phòng (Bạc Liêu)",                                                                           
+       188   "Xã Gành Hào (Bạc Liêu)",                                                                                 
+       189   "Xã Phong Thạnh Tây (Bạc Liêu)",                                                                          
+       190   "Xã Vĩnh Lợi (Bạc Liêu)",                                                                                 
+       191   "Phường Bạc Liêu (TP Bạc Liêu)",                                                                          
+       192   "Phường Cà Mau (TP Cà Mau)",                                                                              
+       193   "Phường An Xuyên (Cà Mau)",                                                                               
+       194   "Phường Tân Thành (Cà Mau)",                                                                              
+       195   "Xã Năm Căn (Cà Mau)",                                                                                    
+       196   "Cảng cá Sông Đốc (Cà Mau)",                                                                              
+       197   "Xã Trần Văn Thời (Cà Mau)",                                                                              
+       198   "Xã Cái Nước (Cà Mau)",                                                                                   
+       199   "Xã Thới Bình (Cà Mau)",                                                                                  
+       200   "Xã U Minh (Cà Mau)",                                                                                     
+       201   "Xã Đầm Dơi (Cà Mau)",                                                                                    
+       202   "Xã Phú Tân (Cà Mau)",                                                                                    
+       203   "Xã Đất Mũi (Cà Mau)",                                                                                    
+       207   "Xã Ninh Quới (Bạc Liêu)": [9.458, 105.421],                                                              
+       208   "Xã Ninh Quới": [9.458, 105.421],                                                                         
+       209   "Xã Phước Long (Bạc Liêu)": [9.382, 105.518],                                                             
+       210   "Xã Phước Long": [9.382, 105.518],                                                                        
+       211   "Xã Hồng Dân (Bạc Liêu)": [9.512, 105.442],                                                               
+       212   "Xã Hồng Dân": [9.512, 105.442],                                                                          
+       213   "Thị xã Giá Rai (Bạc Liêu)": [9.227, 105.448],                                                            
+       214   "Thị xã Giá Rai": [9.227, 105.448],                                                                       
+       215   "Thị trấn Hộ Phòng (Bạc Liêu)": [9.215, 105.385],                                                         
+       216   "Thị trấn Hộ Phòng": [9.215, 105.385],                                                                    
+       217   "Xã Gành Hào (Bạc Liêu)": [9.023, 105.418],                                                               
+       218   "Xã Gành Hào": [9.023, 105.418],                                                                          
+       219   "Xã Phong Thạnh Tây (Bạc Liêu)": [9.25, 105.63],                                                          
+       220   "Xã Phong Thạnh Tây": [9.25, 105.63],                                                                     
+       221   "Xã Vĩnh Lợi (Bạc Liêu)": [9.283, 105.881],                                                               
+       222   "Xã Vĩnh Lợi": [9.283, 105.881],                                                                          
+       223   "Phường Bạc Liêu (TP Bạc Liêu)": [9.294, 105.724],                                                        
+       224   "Phường Bạc Liêu": [9.294, 105.724],                                                                      
+       225   "Phường Cà Mau (TP Cà Mau)": [9.176, 105.15],                                                             
+       226   "Phường Cà Mau": [9.176, 105.15],                                                                         
+       227   "Phường An Xuyên (Cà Mau)": [9.163, 105.145],                                                             
+       228   "Phường An Xuyên": [9.163, 105.145],                                                                      
+       229   "Phường Tân Thành (Cà Mau)": [9.186, 105.17],                                                             
+       230   "Phường Tân Thành": [9.186, 105.17],                                                                      
+       231   "Xã Năm Căn (Cà Mau)": [8.758, 104.985],                                                                  
+       232   "Xã Năm Căn": [8.758, 104.985],                                                                           
+       233   "Cảng cá Sông Đốc (Cà Mau)": [9.045, 104.835],                                                            
+       234   "Cảng cá Sông Đốc": [9.045, 104.835],                                                                     
+       235   "Xã Trần Văn Thời (Cà Mau)": [9.05, 104.99],                                                              
+       236   "Xã Trần Văn Thời": [9.05, 104.99],                                                                       
+       237   "Xã Cái Nước (Cà Mau)": [9.004, 105.023],                                                                 
+       238   "Xã Cái Nước": [9.004, 105.023],                                                                          
+       239   "Xã Thới Bình (Cà Mau)": [9.352, 105.184],                                                                
+       240   "Xã Thới Bình": [9.352, 105.184],                                                                         
+       241   "Xã U Minh (Cà Mau)": [9.385, 104.952],                                                                   
+       242   "Xã U Minh": [9.385, 104.952],                                                                            
+       243   "Xã Đầm Dơi (Cà Mau)": [8.985, 105.215],                                                                  
+       244   "Xã Đầm Dơi": [8.985, 105.215],                                                                           
+       245   "Xã Phú Tân (Cà Mau)": [8.98, 104.78],                                                                    
+       246   "Xã Phú Tân": [8.98, 104.78],                                                                             
+       247   "Xã Đất Mũi (Cà Mau)": [8.607, 104.835],                                                                  
+       248   "Xã Đất Mũi": [8.607, 104.835],                                                                           
+       252   return locationCoordinates[location] || locationCoordinates["Xã Ninh Quới (Bạc Liêu)"] || [9.458, 105.4...
+       275     name: "Kênh Quản Lộ - Phụng Hiệp",                                                                      
+       276     shortName: "Quản Lộ - Phụng Hiệp",                                                                      
+       277     route: "Ninh Quới ↔ Phước Long ↔ Cà Mau",                                                               
+       278     origin: "Xã Ninh Quới (Bạc Liêu)",                                                                      
+       279     destination: "Xã Phước Long (Bạc Liêu)",                                                                
+       284     tide: "Nước lớn (+1.2m)",                                                                               
+       285     tideStatus: "Thuận dòng",                                                                               
+       286     clearance: "Tĩnh không 4.5m",                                                                           
+       287     traffic: "Ghe tải đến 30 tấn lưu thông tốt",                                                            
+       288     salinity: "0.4‰ (Nước ngọt)",                                                                           
+       289     highlights: "Vựa lúa ST25 & Nông sản Bạc Liêu",                                                         
+       293     name: "Sông Cà Mau - Bạc Liêu",                                                                         
+       294     shortName: "Sông Cà Mau - Bạc Liêu",                                                                    
+       295     route: "Giá Rai ↔ Hộ Phòng ↔ TP Cà Mau",                                                                
+       296     origin: "Thị xã Giá Rai (Bạc Liêu)",                                                                    
+       297     destination: "Phường Cà Mau (TP Cà Mau)",                                                               
+       302     tide: "Nước ròng nhẹ (-0.3m)",                                                                          
+       303     tideStatus: "Bình thường",                                                                              
+       304     clearance: "Tĩnh không 5.2m",                                                                           
+       305     traffic: "Tuyến QL1A thủy - ghe tàu liên tỉnh tấp nập",                                                 
+       306     salinity: "4.2‰",                                                                                       
+       307     highlights: "Chợ đầu mối thủy hải sản Giá Rai",                                                         
+       311     name: "Sông & Cửa biển Gành Hào",                                                                       
+       312     shortName: "Sông Gành Hào",                                                                             
+       313     route: "TP Cà Mau ↔ Đông Hải ↔ Gành Hào",                                                               
+       314     origin: "Phường Cà Mau (TP Cà Mau)",                                                                    
+       315     destination: "Xã Gành Hào (Bạc Liêu)",                                                                  
+       320     tide: "Triều cường (+1.8m)",                                                                            
+       321     tideStatus: "Nước dâng",                                                                                
+       322     clearance: "Luồng sâu cho xà lan lớn",                                                                  
+       323     traffic: "Cửa biển mở rộng - tàu bè ra vào liên tục",                                                   
+       324     salinity: "18.5‰ (Nước mặn)",                                                                           
+       325     highlights: "Cảng cá & Tôm biển xuất khẩu",                                                             
+       329     name: "Sông Bảy Háp & Sông Cửa Lớn",                                                                    
+       330     shortName: "Sông Bảy Háp - Năm Căn",                                                                    
+       331     route: "Cái Nước ↔ Năm Căn ↔ Đất Mũi",                                                                  
+       332     origin: "Xã Năm Căn (Cà Mau)",                                                                          
+       333     destination: "Xã Đất Mũi (Cà Mau)",                                                                     
+       338     tide: "Nước triều dâng (+1.4m)",                                                                        
+       339     tideStatus: "Thuận dòng",                                                                               
+       340     clearance: "Luồng sông rộng sâu >8m",                                                                   
+       341     traffic: "Vận chuyển Cua biển & Tôm sinh thái",                                                         
+       342     salinity: "22.0‰",                                                                                      
+       343     highlights: "Thủ phủ Cua Năm Căn & Tôm rừng",                                                           
+       347     name: "Sông Trẹm & Kênh U Minh",                                                                        
+       348     shortName: "Sông Trẹm - U Minh",                                                                        
+       349     route: "Thới Bình ↔ U Minh Hạ",                                                                         
+       350     origin: "Xã Thới Bình (Cà Mau)",                                                                        
+       351     destination: "Xã U Minh (Cà Mau)",                                                                      
+       356     tide: "Dòng chảy êm ả",                                                                                 
+       357     tideStatus: "Nước ngọt",                                                                                
+       358     clearance: "Tĩnh không 3.8m",                                                                           
+       359     traffic: "Ghe chở chuối sáp, mật ong, tràm",                                                            
+       360     salinity: "0.2‰",                                                                                       
+       361     highlights: "Nông sản rừng tràm sinh thái",                                                             
+       365     name: "Cửa biển Sông Đốc",                                                                              
+       366     shortName: "Cửa biển Sông Đốc",                                                                         
+       367     route: "Trần Văn Thời ↔ Cảng cá Sông Đốc",                                                              
+       368     origin: "Xã Trần Văn Thời (Cà Mau)",                                                                    
+       369     destination: "Cảng cá Sông Đốc (Cà Mau)",                                                               
+       374     tide: "Biển Tây triều cường",                                                                           
+       375     tideStatus: "Nước lớn",                                                                                 
+       376     clearance: "Cửa biển rộng",                                                                             
+       377     traffic: "Cảng cá quy mô lớn nhất vùng",                                                                
+       378     salinity: "25.0‰",                                                                                      
+       379     highlights: "Thủy sản biển & Chế biến khô",                                                             
+       421   { name: "Xà lan", fee: 50000 },                                                                           
+       423   { name: "Vỏ", fee: 10000 },                                                                               
+       424   { name: "Xuồng", fee: 10000 },                                                                            
+       431     name: "Cua biển Năm Căn",                                                                               
+       432     subName: "Cua gạch & Cua Y loại 1",                                                                     
+       433     standard: "OCOP 4 Sao · Chỉ dẫn địa lý Năm Căn",                                                        
+       435     packaging: "Thùng xốp sục khí oxy",                                                                     
+       436     route: "Xã Năm Căn (Cà Mau) → Phường Cà Mau (TP Cà Mau)",                                               
+       437     origin: "Xã Năm Căn (Cà Mau)",                                                                          
+       438     destination: "Phường Cà Mau (TP Cà Mau)",                                                               
+       439     time: "Cần ghe trước 15:00 hôm nay",                                                                    
+       440     sender: "HTX Cua Sinh Thái Năm Căn",                                                                    
+       442     urgency: "Hỏa tốc",                                                                                     
+       443     priceEst: "45.000đ/thùng",                                                                              
+       444     tempReq: "Sục khí liên tục tươi sống",                                                                  
+       450     name: "Lúa ST25 Bạc Liêu",                                                                              
+       451     subName: "Mô hình Tôm - Lúa Hồng Dân",                                                                  
+       452     standard: "VietGAP · Thu hoạch tươi",                                                                   
+       453     amount: "5 tấn",                                                                                        
+       454     packaging: "Bao dệt 50kg chống ẩm",                                                                     
+       455     route: "Xã Ninh Quới (Bạc Liêu) → Xã Phước Long (Bạc Liêu)",                                            
+       456     origin: "Xã Ninh Quới (Bạc Liêu)",                                                                      
+       457     destination: "Xã Phước Long (Bạc Liêu)",                                                                
+       458     time: "Khởi hành sáng mai (nước lớn)",                                                                  
+       459     sender: "HTX Nông Nghiệp Ninh Quới",                                                                    
+       461     urgency: "Tiêu chuẩn",                                                                                  
+       462     priceEst: "350.000đ/tấn",                                                                               
+       463     tempReq: "Khô ráo, bạt phủ kín",                                                                        
+       469     name: "Tôm sú sinh thái",                                                                               
+       470     subName: "Tôm rừng ngập mặn Năm Căn",                                                                   
+       471     standard: "Chứng nhận Sinh thái Naturland",                                                             
+       473     packaging: "Thùng xốp giữ lạnh 4°C",                                                                    
+       474     route: "Xã Đất Mũi (Cà Mau) → Cảng cá Sông Đốc (Cà Mau)",                                               
+       475     origin: "Xã Đất Mũi (Cà Mau)",                                                                          
+       476     destination: "Cảng cá Sông Đốc (Cà Mau)",                                                               
+       477     time: "Cần ghe đi gấp trong 2h",                                                                        
+       478     sender: "Tổ hợp tác Tôm Rừng Đất Mũi",                                                                  
+       480     urgency: "Hỏa tốc",                                                                                     
+       481     priceEst: "60.000đ/thùng",                                                                              
+       482     tempReq: "Bảo quản đá vảy 2-4°C",                                                                       
+       488     name: "Ba khía Rạch Gốc",                                                                               
+       489     subName: "Đặc sản Di sản văn hóa",                                                                      
+       490     standard: "OCOP 3 Sao · Ba khía muối",                                                                  
+       492     packaging: "Can nhựa niêm phong",                                                                       
+       493     route: "Xã Đất Mũi (Cà Mau) → Phường Bạc Liêu (TP Bạc Liêu)",                                           
+       494     origin: "Xã Đất Mũi (Cà Mau)",                                                                          
+       495     destination: "Phường Bạc Liêu (TP Bạc Liêu)",                                                           
+       496     time: "Chuyến định kỳ thứ 4 & thứ 7",                                                                   
+       497     sender: "Cơ sở Ba Khía Rạch Gốc",                                                                       
+       499     urgency: "Định kỳ",                                                                                     
+       500     priceEst: "20.000đ/thùng",                                                                              
+       501     tempReq: "Nhiệt độ phòng thoáng mát",                                                                   
+       507     name: "Xoài Cát & Trái cây",                                                                            
+       508     subName: "Xoài cát chu ngọt thanh",                                                                     
+       509     standard: "GlobalGAP · Trái tuyển chọn",                                                                
+       510     amount: "2 tấn",                                                                                        
+       511     packaging: "Sọt nhựa lót mút xốp",                                                                      
+       512     route: "Xã Thới Bình (Cà Mau) → Thị xã Giá Rai (Bạc Liêu)",                                             
+       513     origin: "Xã Thới Bình (Cà Mau)",                                                                        
+       514     destination: "Thị xã Giá Rai (Bạc Liêu)",                                                               
+       515     time: "Giao trước 17:00 chiều nay",                                                                     
+       516     sender: "Vựa Trái Cây Thới Bình",                                                                       
+       518     urgency: "Trong ngày",                                                                                  
+       519     priceEst: "250.000đ/tấn",                                                                               
+       520     tempReq: "Che mát, tránh va đập",                                                                       
+       527     name: "Ghe Thành Công",                                                                                 
+       529     capacity: "5 tấn",                                                                                      
+       530     route: "Xã Ninh Quới (Bạc Liêu) → Xã Phước Long (Bạc Liêu)",                                            
+       531     fee: "50.000đ/chuyến",                                                                                  
+       532     captain: "Anh Thành",                                                                                   
+       536     name: "Vỏ Minh Anh",                                                                                    
+       537     type: "Vỏ",                                                                                             
+       539     route: "Xã Hồng Dân (Bạc Liêu) → Xã Vĩnh Lợi (Bạc Liêu)",                                               
+       540     fee: "10.000đ/chuyến",                                                                                  
+       545     name: "Xà lan Phúc Lộc",                                                                                
+       546     type: "Xà lan",                                                                                         
+       547     capacity: "20 tấn",                                                                                     
+       548     route: "Xã Phong Thạnh Tây (Bạc Liêu) → Xã Gành Hào (Bạc Liêu)",                                        
+       549     fee: "50.000đ/chuyến",                                                                                  
+       550     captain: "Anh Phúc",                                                                                    
+       569   const [origin, setOrigin] = useState("Xã Ninh Quới (Bạc Liêu)");                                          
+       570   const [destination, setDestination] = useState("Xã Phước Long (Bạc Liêu)");                               
+       571   const [produce, setProduce] = useState("Lúa ST25 Bạc Liêu");                                              
+       572   const [weight, setWeight] = useState("5 tấn");                                                            
+       573   const [journeyMode, setJourneyMode] = useState("Tìm phương tiện");                                        
+       576     name: "Ghe Thành Công",                                                                                 
+       578     capacity: "5 tấn",                                                                                      
+       608     const originLoc = details.origin || origin || "Xã Ninh Quới (Bạc Liêu)";                                
+       610       details.destination || destination || "Xã Phước Long (Bạc Liêu)";                                     
+       611     const route = details.route || `${originLoc} → ${destinationLoc}`;                                      
+       612     const itemTitle = details.title || produce || "Lúa ST25 Bạc Liêu";                                      
+       613     const itemWeight = details.weight || weight || "5 tấn";                                                 
+       616       (mode === "Tìm phương tiện" ? "Ghe Thành Công" : vehicleInfo.name);                                   
+       619       (mode === "Tìm phương tiện" ? "AG 1888" : vehicleInfo.plate);                                         
+       631       status: "Chuẩn bị xuất phát",                                                                         
+       633       progress: 0, // Vừa mới ghép chuyến: luôn ở vạch xuất phát (0%)                                       
+       634       eta: `Đang neo bến bốc hàng tại ${originLoc} · Khởi hành theo con nước`,                              
+       636       stops: [originLoc, "Luồng sông trung chuyển", destinationLoc],                                        
+       637       createdAt: `Hôm nay, ${new Date().toLocaleTimeString("vi-VN", {                                       
+       645     notify(`Đã tạo chuyến: ${itemTitle} (${originLoc} → ${destinationLoc})`);                               
+       649       vehicleInfo.type === "Ghe" || vehicleInfo.type === "Xà lan"                                           
+       653     notify(`Thanh toán cước ${fee.toLocaleString("vi-VN")}đ thành công`);                                   
+       661         ? "Đã chuyển sang Nông dân / HTX"                                                                   
+       662         : "Đã chuyển sang Chủ ghe",                                                                         
+       693               aria-label="Quay lại"                                                                         
+       698               <img src={appLogo} alt="Hành Trình Xanh Logo" className="w-full h-full object-cover" />       
+       702                 Hành trình xanh                                                                             
+       705                 Nhanh chóng · tiết kiệm · tận nơi                                                           
+       713               aria-label="Thông báo"                                                                        
+       722               title="Bấm để đăng xuất và quay lại màn hình Đăng nhập"                                       
+       726               <span className="hidden xs:inline sm:inline">Đăng xuất</span>                                 
+       732               <VerifiedName name="Ngọc Anh" />                                                              
+       791                 vehicleInfo.type === "Ghe" || vehicleInfo.type === "Xà lan"                                 
+       808               onKycUpload={() => notify("Đã tải ảnh CCCD lên hồ sơ demo")}                                  
+       869             createJourney("Tìm phương tiện", {                                                              
+       882             createJourney("Ghép chuyến", {                                                                  
+       883               title: "Chuyến đặt phương tiện",                                                              
+       901             vehicleInfo.type === "Ghe" || vehicleInfo.type === "Xà lan"                                     
+       942         name: "Nguyễn Văn Hùng (Zalo)",                                                                     
+       961                 <p className="text-[10px] font-bold text-blue-100 uppercase tracking-wider">Cổng xác thực...
+       962                 <h3 className="text-base font-bold">Đăng nhập với Zalo</h3>                                 
+       982               <Smartphone size={14} /> 1-Chạm Zalo                                                          
+       991               <QrCode size={14} /> Quét mã QR                                                               
+      1005                   Nguyễn Văn Hùng <CheckCircle2 size={16} className="text-[#0068FF]" />                     
+      1007                 <p className="text-xs text-gray-500 mt-0.5">Số Zalo liên kết: 0918 ••• 999</p>              
+      1009                   <ShieldCheck size={12} /> Đã liên kết Zalo & VNeID                                        
+      1014                 <p className="font-bold text-gray-800">Quyền truy cập cho Hành Trình Xanh:</p>              
+      1016                   <Check size={13} className="text-emerald-600" /> Tên hiển thị và ảnh đại diện Zalo        
+      1019                   <Check size={13} className="text-emerald-600" /> Số điện thoại xác thực giao nhận nông sản
+      1030                     <RefreshCw size={16} className="animate-spin" /> Đang xác thực tài khoản...             
+      1034                     <ShieldCheck size={17} /> Cho phép & Đăng nhập ngay                                     
+      1042                 Mở ứng dụng <strong>Zalo</strong> trên điện thoại, chọn biểu tượng <strong>Quét mã QR</st...
+      1048                     HÀNH TRÌNH XANH                                                                         
+      1059                     <RefreshCw size={14} className="animate-spin" /> Đang xác nhận...                       
+      1062                   "Mô phỏng đã quét thành công trên Zalo"                                                   
+      1113       showToast("Vui lòng nhập số điện thoại hợp lệ (từ 9 - 11 chữ số)");                                   
+      1118     showToast("Mã OTP đã được gửi đến " + phone + " (Mã demo: 123456)");                                    
+      1123     showToast("Đã tự động điền mã OTP: 123456");                                                            
+      1132       showToast("Vui lòng nhập đủ 6 chữ số mã OTP (Mã demo: 123456)");                                      
+      1137     localStorage.setItem("hanhTrinhXanh.name", "Ngọc Anh");                                                 
+      1140     showToast("Đăng nhập thành công!");                                                                     
+      1142       onAuthenticated("farmer", "Ngọc Anh");                                                                
+      1148       showToast("Vui lòng nhập Họ và tên của bạn");                                                         
+      1152       showToast("Vui lòng nhập Số điện thoại hợp lệ (9 - 11 số)");                                          
+      1156       showToast("Mật khẩu / Mã PIN cần tối thiểu 6 ký tự");                                                 
+      1160       showToast("Vui lòng đồng ý với Điều khoản dịch vụ");                                                  
+      1172     showToast("Tạo tài khoản thành công! Đang chuyển tiếp...");                                             
+      1185     showToast("Đăng nhập Zalo thành công! Xin chào " + userData.name);                                      
+      1194     const demoName = isCoop ? "Nguyễn Văn A (Ban quản trị HTX)" : (isFarmer ? "Ngọc Anh (Nông dân)" : "Ng...
+      1201     showToast(`Đang vào với vai trò ${isCoop ? "Quản lý HTX" : (isFarmer ? "Nông dân" : "Chủ ghe")}...`);   
+      1214               <img src={appLogo} alt="Hành Trình Xanh Logo" className="w-full h-full object-cover" />       
+      1218                 Hành trình xanh                                                                             
+      1221                 Logistics nông sản đường thủy xanh                                                          
+      1226             <Sparkles size={13} /> Bản mới v2.0                                                             
+      1230         {/* Tab Switcher: Đăng nhập vs Đăng ký mới */}                                                      
+      1241             <LogIn size={15} /> Đăng nhập                                                                   
+      1252             <UserPlus size={15} /> Tạo tài khoản mới                                                        
+      1256         {/* ================= MODE: ĐĂNG NHẬP ================= */}                                         
+      1261                 Xác thực danh tính                                                                          
+      1264                 Chào mừng trở lại!                                                                          
+      1267                 Đăng nhập để quản lý mùa vụ, gửi nông sản và kết nối chuyến ghe nhanh chóng.                
+      1274                 Số điện thoại đăng nhập                                                                     
+      1277                     🇻🇳 +84                                                                                
+      1295                     Mã xác thực OTP (6 chữ số)                                                              
+      1302                     ⚡ Điền nhanh 123456                                                                     
+      1314                   <span>Mã mô phỏng: <strong className="text-[#28704d]">123456</strong></span>              
+      1316                     <span className="font-semibold text-[#8ba095]">Gửi lại sau {otpTimer}s</span>           
+      1323                       Gửi lại mã OTP                                                                        
+      1339                   <ShieldCheck size={18} /> Xác nhận OTP & Đăng nhập                                        
+      1343                   Nhận mã OTP <ArrowRight size={16} />                                                      
+      1352                 Hoặc đăng nhập nhanh                                                                        
+      1363               <span>Đăng nhập bằng Zalo</span>                                                              
+      1369                 🚀 Dùng thử nhanh 1-chạm (Không cần OTP)                                                    
+      1377                   🌾 Nông dân                                                                               
+      1384                   🏢 HTX                                                                                    
+      1391                   🚢 Chủ ghe                                                                                
+      1398         {/* ================= MODE: TẠO TÀI KHOẢN MỚI (REGISTER) ================= */}                      
+      1403                 Dành cho thành viên mới                                                                     
+      1406                 Tạo tài khoản                                                                               
+      1409                 Tham gia mạng lưới logistics đường thủy xanh để tối ưu vận chuyển nông sản.                 
+      1416                 Họ và tên                                                                                   
+      1423                     placeholder="Ví dụ: Nguyễn Văn Hùng"                                                    
+      1432                 Số điện thoại                                                                               
+      1449                 Vai trò chính của bạn                                                                       
+      1461                   <span className="text-xl">🌾</span>                                                       
+      1462                   <span className="mt-1 text-[11px] font-bold leading-tight">Nông dân</span>                
+      1473                   <span className="text-xl">🏢</span>                                                       
+      1485                   <span className="text-xl">🚢</span>                                                       
+      1486                   <span className="mt-1 text-[11px] font-bold leading-tight">Chủ ghe</span>                 
+      1497                   <span className="text-xl">🏪</span>                                                       
+      1498                   <span className="mt-1 text-[11px] font-bold leading-tight">Thương lái</span>              
+      1506                 Mật khẩu / Mã PIN bảo mật                                                                   
+      1514                     placeholder="Tối thiểu 6 ký tự hoặc số"                                                 
+      1531                   <ShieldCheck size={16} /> Định danh số CCCD / VNeID                                       
+      1535                     <Check size={10} /> Đã xác thực                                                         
+      1540                 Tải lên 2 mặt CCCD để nhận huy hiệu xác thực tín nhiệm xanh.                                
+      1546                   showToast(kycUploaded ? "Đã hủy tải ảnh CCCD" : "Đã tải lên 2 mặt CCCD thành công!");     
+      1555                 {kycUploaded ? "Đã đính kèm ảnh CCCD (Click để đổi)" : "Tải ảnh CCCD mặt trước & sau"}      
+      1568                 Tôi đồng ý với <strong>Điều khoản dịch vụ</strong> và <strong>Quy chế bảo vệ môi trường đ...
+      1578               <UserCheck size={18} /> Đăng ký tài khoản ngay                                                
+      1583               Đã có tài khoản?{" "}                                                                         
+      1589                 Đăng nhập tại đây                                                                           
+      1619       title="Tài khoản đã xác thực"                                                                         
+      1625         aria-label="Tài khoản đã xác thực"                                                                  
+      1712               Mạng lưới Sông ngòi Cà Mau - Bạc Liêu                                                         
+      1715               Định vị vệ tinh · Giám sát con nước & tĩnh không cầu                                          
+      1733           Chọn nhanh khúc sông trọng điểm:                                                                  
+      1749                 <span>🌊</span>                                                                             
+      1760           title="Bản đồ sông ngòi Cà Mau - Bạc Liêu"                                                        
+      1770             Đang trỏ: <strong className="text-[#2f815c]">{displayLocation}</strong>                         
+      1781             <Map size={13} /> Xem lộ trình toàn tuyến                                                       
+      1790             <p className="text-[10px] text-[#71877b]">Khúc sông</p>                                         
+      1794             <p className="text-[10px] text-[#71877b]">Cự ly thủy ước tính</p>                               
+      1798             <p className="text-[10px] text-[#71877b]">Khả năng lưu thông</p>                                
+      1802             <p className="text-[10px] text-[#71877b]">Độ mặn cảm biến</p>                                   
+      1811               Tuyến sông: <strong className="text-[#183b32]">{currentSegment.route}</strong>                
+      1815                 Chuyến đang chọn: {origin} → {destination}                                                  
+      1825               🎯 Gán làm Điểm Đi                                                                            
+      1832               🏁 Gán làm Điểm Đến                                                                           
+      1849   const [selectedProduce, setSelectedProduce] = useState("Tất cả");                                         
+      1850   const [filterOrigin, setFilterOrigin] = useState("Tất cả");                                               
+      1851   const [filterDestination, setFilterDestination] = useState("Tất cả");                                     
+      1852   const [filterUrgency, setFilterUrgency] = useState("Tất cả");                                             
+      1856     { id: "Tất cả", label: "Tất cả" },                                                                      
+      1857     { id: "rice", label: "🌾 Lúa (ST25, Một bụi...)" },                                                     
+      1858     { id: "fruit", label: "🍋 Trái cây (Cam, Mít, Ổi...)" },                                                
+      1859     { id: "seafood", label: "🦀 Hải sản (Cua, Tôm, Cá...)" },                                               
+      1864     if (selectedProduce !== "Tất cả") {                                                                     
+      1870     if (filterOrigin !== "Tất cả" && cargo.origin !== filterOrigin) return false;                           
+      1871     if (filterDestination !== "Tất cả" && cargo.destination !== filterDestination) return false;            
+      1872     if (filterUrgency !== "Tất cả" && cargo.urgency !== filterUrgency) return false;                        
+      1886     if (notify) notify(`Đã nạp yêu cầu: ${cargo.name} (${cargo.amount})`);                                  
+      1902                   Bộ lọc Logistics Đường Thủy Cà Mau - Bạc Liêu                                             
+      1904                 <h3 className="text-lg font-bold">Tìm kiếm theo yêu cầu</h3>                                
+      1922               placeholder="Nhập tên nông sản, địa danh, HTX (vd: Cua Năm Căn, Ninh Quới, Lúa ST25)..."      
+      1931               Loại nông/hải sản đặc sản                                                                     
+      1938               <option value="Tất cả">-- Tất cả các loại --</option>                                         
+      1939               <optgroup label="🌾 Lúa">                                                                     
+      1940                 <option value="rice_st25">Lúa ST25 Bạc Liêu</option>                                        
+      1941                 <option value="rice_motbui">Lúa Một Bụi Đỏ</option>                                         
+      1942                 <option value="rice_daithom">Lúa Đài Thơm 8</option>                                        
+      1943                 <option value="rice_om18">Lúa OM18</option>                                                 
+      1944                 <option value="rice_huonglai">Lúa Hương Lài</option>                                        
+      1946               <optgroup label="🍋 Trái cây">                                                                
+      1947                 <option value="fruit_cam">Cam sành</option>                                                 
+      1948                 <option value="fruit_mit">Mít Thái</option>                                                 
+      1949                 <option value="fruit_oi">Ổi nữ hoàng</option>                                               
+      1950                 <option value="fruit_man">Mận An Phước</option>                                             
+      1951                 <option value="fruit_chuoi">Chuối sáp</option>                                              
+      1952                 <option value="fruit_xoai">Xoài Cát Hòa Lộc</option>                                        
+      1954               <optgroup label="🦀 Hải sản">                                                                 
+      1955                 <option value="seafood_cua">Cua biển Năm Căn</option>                                       
+      1956                 <option value="seafood_tomsu">Tôm sú sinh thái</option>                                     
+      1957                 <option value="seafood_tomthe">Tôm thẻ chân trắng</option>                                  
+      1958                 <option value="seafood_cabop">Cá bóp</option>                                               
+      1959                 <option value="seafood_cachem">Cá chẽm</option>                                             
+      1960                 <option value="seafood_bakhia">Ba khía Rạch Gốc</option>                                    
+      1968                 Điểm gửi hàng (Điểm đi)                                                                     
+      1975                 <option value="Tất cả">Tất cả điểm đi</option>                                              
+      1985                 Điểm giao nhận (Điểm đến)                                                                   
+      1992                 <option value="Tất cả">Tất cả điểm đến</option>                                             
+      2002                 Mức độ khẩn cấp                                                                             
+      2009                 <option value="Tất cả">Tất cả thời gian</option>                                            
+      2010                 <option value="Hỏa tốc">Hỏa tốc trong ngày</option>                                         
+      2011                 <option value="Tiêu chuẩn">Tiêu chuẩn</option>                                              
+      2012                 <option value="Định kỳ">Lịch định kỳ</option>                                               
+      2022               Tìm thấy <strong className="text-[#2f815c]">{filteredCargos.length}</strong> yêu cầu phù hợp  
+      2024             {(selectedProduce !== "Tất cả" || filterOrigin !== "Tất cả" || filterDestination !== "Tất cả"...
+      2028                   setSelectedProduce("Tất cả");                                                             
+      2029                   setFilterOrigin("Tất cả");                                                                
+      2030                   setFilterDestination("Tất cả");                                                           
+      2035                 Đặt lại bộ lọc                                                                              
+      2043               <p className="mt-2 text-sm font-bold text-[#183b32]">Không tìm thấy yêu cầu phù hợp</p>       
+      2045                 Vui lòng thử nới lỏng bộ lọc hoặc chọn khu vực lân cận trên bản đồ sông Cà Mau - Bạc Liêu.  
+      2060                         Khớp AI {cargo.matchRate}                                                           
+      2065                       {cargo.subName} · <span className="text-[#8ba095]">{cargo.standard}</span>            
+      2082                         Gửi bởi: <strong className="text-[#183b32]">{cargo.sender}</strong>                 
+      2090                           <CheckCheck size={14} /> Ghép chuyến ngay                                         
+      2109     { label: "Tổng xã viên", value: "124 Hộ", icon: Users, color: "text-[#2f815c]", bg: "bg-[#edf6e9]" },   
+      2110     { label: "Sản lượng lúa ST25", value: "850 Tấn", icon: Wheat, color: "text-[#e9784b]", bg: "bg-[#fff3...
+      2111     { label: "CO2 Giảm phát thải", value: "12.5 Tấn", icon: Leaf, color: "text-[#28704d]", bg: "bg-[#e5ec...
+      2115     { id: 1, name: "Nguyễn Văn Sáu", area: "2.5 ha", product: "Lúa ST25", expectedYield: "15 tấn", status...
+      2116     { id: 2, name: "Trần Thị Mai", area: "1.2 ha", product: "Lúa ST25", expectedYield: "8 tấn", status: "...
+      2117     { id: 3, name: "Lê Minh Tâm", area: "3.0 ha", product: "Tôm sinh thái", expectedYield: "2 tấn", statu...
+      2118     { id: 4, name: "Phạm Văn Bình", area: "4.5 ha", product: "Lúa ST24", expectedYield: "30 tấn", status:...
+      2133           🏢 {getFormattedCurrentDateLong()}                                                                
+      2136           Bảng điều khiển HTX                                                                               
+      2139           Quản lý xã viên, gom đơn lô lớn và điều phối logistics xanh tập trung.                            
+      2146           { id: "overview", label: "Tổng quan", icon: Activity },                                           
+      2147           { id: "members", label: "Quản lý Xã viên", icon: Users },                                         
+      2148           { id: "pooling", label: "Gom đơn (Bulk)", icon: Boxes },                                          
+      2149           { id: "contracts", label: "Hợp đồng", icon: ReceiptText },                                        
+      2169           <SectionTitle eyebrow="Chỉ số hoạt động" title="Thống kê HTX" />                                  
+      2184                 <span className="text-sm font-bold text-[#183b32]">Chứng nhận xanh (MRV)</span>             
+      2186              <p className="text-xs text-[#557264] leading-5">HTX đã áp dụng quy trình giảm phát thải, đủ ...
+      2194              <SectionTitle eyebrow="Danh sách" title="Hộ nông dân" />                                       
+      2196                + Thêm xã viên                                                                               
+      2203                    <p className="text-xs text-[#71877b] mt-1">Diện tích: {m.area} · Dự kiến: {m.expectedY...
+      2215            <SectionTitle eyebrow="Gom đơn thành lô lớn" title="Khởi tạo lô hàng" />                         
+      2216            <p className="text-xs text-[#71877b] mb-4">Chọn các hộ có cùng loại nông sản và sẵn sàng thu h...
+      2218              {members.filter(m => m.status === "Sẵn sàng thu hoạch").map(m => (                             
+      2231                  <span className="text-xs font-semibold text-[#a5c2b4]">Đã chọn:</span>                     
+      2232                  <span className="text-sm font-bold">{selectedForPooling.length} hộ</span>                  
+      2235                  <span className="text-xs font-semibold text-[#a5c2b4]">Tổng sản lượng ước tính:</span>     
+      2237                    {selectedForPooling.length > 0 ? selectedForPooling.map(id => parseInt(members.find(m=...
+      2244                    alert("Đã tạo lô hàng lớn thành công và chuyển sang giao diện tạo hợp đồng thầu.");      
+      2247                  Tiến hành mời thầu xà lan                                                                  
+      2255            <SectionTitle eyebrow="Quản lý" title="Hợp đồng Bao tiêu & Vận tải" />                           
+      2259                   <span className="rounded-full bg-[#fff3ed] px-2 py-0.5 text-[10px] font-bold text-[#e97...
+      2260                   <p className="mt-1.5 text-sm font-bold text-[#183b32]">Hợp đồng vận tải Lúa Đông Xuân 2...
+      2264                <p>Đối tác: <strong>Đoàn Xà lan Minh Trí</strong></p>                                        
+      2265                <p>Cam kết: <strong>1,200 Tấn</strong></p>                                                   
+      2266                <p>Đơn giá: <strong>120,000đ/Tấn</strong></p>                                                
+      2267                <p>Tiến độ: <strong className="text-[#2f815c]">450 / 1200 Tấn</strong></p>                   
+      2269              <button onClick={onContract} className="w-full rounded-lg bg-[#f1f6ef] py-2 text-xs font-bol...
+      2317             📅 {getFormattedCurrentDateLong()}                                                              
+      2320             Chào mừng trở lại,                                                                              
+      2322             <span className="text-[#c5e8ae]">kết nối mùa vụ hôm nay?</span>                                 
+      2325             Hệ thống Logistics Đường Thủy Cà Mau - Bạc Liêu · Cắt giảm khâu trung gian · Theo dõi theo co...
+      2329           ⌁                                                                                                 
+      2338           onClick={() => setJourneyMode("Tìm phương tiện")}                                                 
+      2341           Tìm ghe ghép chuyến                                                                               
+      2347           Tạo hợp đồng                                                                                      
+      2357           Gom đơn HTX                                                                                       
+      2361         <SectionTitle eyebrow="Bắt đầu hành trình" title="Đặt chuyến nhanh" />                              
+      2364             {["Tìm phương tiện", "Ghép chuyến"].map((mode) => (                                             
+      2373                 {mode === "Tìm phương tiện"                                                                 
+      2374                   ? "Tôi cần ghe"                                                                           
+      2375                   : "Tôi có phương tiện"}                                                                   
+      2380             {journeyMode === "Tìm phương tiện"                                                              
+      2381               ? "Nhập hàng hóa để tìm phương tiện phù hợp."                                                 
+      2382               : "Dùng phương tiện đã đăng ký để nhận chuyến cùng tuyến."}                                   
+      2385             <Field label="Điểm đi (Bến xuất phát)" icon={MapPin}>                                           
+      2395             <Field label="Điểm đến (Bến giao nhận)" icon={Navigation}>                                      
+      2405             <Field label="Loại nông/hải sản đặc sản" icon={Package}>                                        
+      2411                 <option value="Tất cả">-- Tất cả các loại --</option>                                       
+      2412                 <optgroup label="🌾 Lúa">                                                                   
+      2413                   <option value="Lúa ST25 Bạc Liêu">Lúa ST25</option>                                       
+      2414                   <option value="Lúa Một Bụi Đỏ">Lúa Một Bụi Đỏ</option>                                    
+      2415                   <option value="Lúa Đài Thơm 8">Lúa Đài Thơm 8</option>                                    
+      2416                   <option value="Lúa OM18">Lúa OM18</option>                                                
+      2417                   <option value="Lúa Hương Lài">Lúa Hương Lài</option>                                      
+      2419                 <optgroup label="🍋 Trái cây">                                                              
+      2420                   <option value="Cam sành">Cam sành</option>                                                
+      2421                   <option value="Mít Thái">Mít Thái</option>                                                
+      2422                   <option value="Ổi nữ hoàng">Ổi nữ hoàng</option>                                          
+      2423                   <option value="Mận An Phước">Mận An Phước</option>                                        
+      2424                   <option value="Chuối sáp">Chuối sáp</option>                                              
+      2425                   <option value="Xoài Cát Hòa Lộc">Xoài Cát Hòa Lộc</option>                                
+      2427                 <optgroup label="🦀 Hải sản">                                                               
+      2428                   <option value="Cua biển Năm Căn">Cua biển Năm Căn</option>                                
+      2429                   <option value="Tôm sú sinh thái">Tôm sú sinh thái</option>                                
+      2430                   <option value="Tôm thẻ chân trắng">Tôm thẻ chân trắng</option>                            
+      2431                   <option value="Cá bóp">Cá bóp</option>                                                    
+      2432                   <option value="Cá chẽm">Cá chẽm</option>                                                  
+      2433                   <option value="Ba khía Rạch Gốc">Ba khía Rạch Gốc</option>                                
+      2437             <Field label="Khối lượng cần chở" icon={MoreHorizontal}>                                        
+      2446                 <option>1 tấn</option>                                                                      
+      2447                 <option>2 tấn</option>                                                                      
+      2448                 <option>5 tấn</option>                                                                      
+      2449                 <option>10 tấn</option>                                                                     
+      2450                 <option>20 tấn</option>                                                                     
+      2451                 <option>50 tấn</option>                                                                     
+      2463                 AI đang tính toán tuyến sông & con nước...                                                  
+      2468                 {journeyMode === "Tìm phương tiện"                                                          
+      2469                   ? "Tìm chuyến bằng AI"                                                                    
+      2470                   : "Ghép chuyến bằng AI"}                                                                  
+      2485                     {journeyMode === "Ghép chuyến"                                                          
+      2486                       ? "Ghép chuyến thành công"                                                            
+      2487                       : "Tìm chuyến thành công"}                                                            
+      2490                     {journeyMode === "Ghép chuyến"                                                          
+      2491                       ? `${vehicleInfo.name} · ${vehicleInfo.plate} · Tuyến: ${origin} → ${destination}`    
+      2492                       : `Ghe Thành Công · AG 1888 · Tuyến: ${origin} → ${destination} (${weight} ${produc...
+      2495                     Đang neo bến tại {origin} · Bấm để xem hành trình ngay →                                
+      2505         <SectionTitle eyebrow="Dành cho HTX" title="Luồng Xanh HTX" />                                      
+      2510           eyebrow="Đang cần chuyến"                                                                         
+      2511           title="Hàng hóa quanh bạn"                                                                        
+      2512           action="Tìm theo yêu cầu"                                                                         
+      2524                 setJourneyMode("Tìm phương tiện");                                                          
+      2534                     {cargo.standard.split(" · ")[0]}                                                        
+      2542                     📍 {cargo.route}                                                                        
+      2559           eyebrow="Sẵn sàng nhận chuyến"                                                                    
+      2560           title="Phương tiện đang trống"                                                                    
+      2561           action="Xem tất cả"                                                                               
+      2562           onAction={() => setJourneyMode("Ghép chuyến")}                                                    
+      2569                 setJourneyMode("Ghép chuyến");                                                              
+      2580                   Đang trống                                                                                
+      2584                 {vehicle.type} · tải trọng {vehicle.capacity} · Thuyền trưởng: {vehicle.captain}            
+      2588                 Phí cước {vehicle.fee}                                                                      
+      2596           eyebrow="Theo dõi dòng chảy thực tế"                                                              
+      2597           title="Bản đồ luồng sông Cà Mau - Bạc Liêu"                                                       
+      2598           action="Xem chi tiết"                                                                             
+      2611           eyebrow="Mạng lưới cảm biến môi trường"                                                           
+      2612           title="Cảnh báo môi trường nước"                                                                  
+      2613           action="Xem tất cả"                                                                               
+      2618             name="Kênh Quản Lộ (Ninh Quới - Phước Long)"                                                    
+      2619             value="0.4‰"                                                                                    
+      2620             label="Nước ngọt an toàn"                                                                       
+      2624             name="Cửa biển Gành Hào & Sông Đốc"                                                             
+      2625             value="18.5‰"                                                                                   
+      2626             label="Nước mặn triều dâng"                                                                     
+      2630             name="Sông Cà Mau (Phường 2 & 9 mới sáp nhập)"                                                  
+      2631             value="4.2‰"                                                                                    
+      2632             label="Xâm nhập mặn nhẹ"                                                                        
+      2636             name="Kênh xáng (Phường Tân Xuyên)"                                                             
+      2637             value="0.8‰"                                                                                    
+      2638             label="Nước ngọt an toàn"                                                                       
+      2652           📅 {getFormattedCurrentDateLong()} · Xin chào,{" "}                                               
+      2653           <VerifiedName name="Anh Tùng (Chủ ghe)" />                                                        
+      2656           Tối ưu từng chuyến ghe.                                                                           
+      2659           Nhận nguồn hàng nông sản phù hợp, chạy đầy tải và giảm chuyến rỗng trên toàn tuyến Cà Mau - Bạc...
+      2665           Cập nhật trọng tải trống                                                                          
+      2669         eyebrow="Nguồn hàng đang tìm ghe"                                                                   
+      2670         title="Cơ hội quanh bạn"                                                                            
+      2686                     {cargo.standard.split(" · ")[0]}                                                        
+      2690                   {cargo.name} ({cargo.subName}) · {cargo.amount}                                           
+      2693                   📍 {cargo.route}                                                                          
+      2697                     {cargo.time} · {cargo.packaging}                                                        
+      2703                     Đề xuất nhận chuyến                                                                     
+      2717           <b className="mt-3 block text-sm">Tối ưu tuyến đường</b>                                          
+      2719             Ninh Quới - Phước Long                                                                          
+      2727           <b className="mt-3 block text-sm">Trọng tải trống</b>                                             
+      2729             Còn 5,0 tấn hôm nay                                                                             
+      2738   "Nguyễn Văn Sáu",                                                                                         
+      2739   "Trần Thị Mai",                                                                                           
+      2740   "Lê Minh Tâm",                                                                                            
+      2741   "Phạm Văn Bình",                                                                                          
+      2742   "Đặng Thị Lan",                                                                                           
+      2757           <b className="text-sm">Gom đơn thành lô lớn</b>                                                   
+      2759             AI gọi xà lan lớn, cước phí rẻ hơn.                                                             
+      2778                 {index % 2 ? "8 tấn" : "12 tấn"} lúa                                                        
+      2786           {selected.length} hộ · {selected.length * 10} tấn lúa                                             
+      2792           Tạo lô hàng lớn                                                                                   
+      2808         <p className="mt-2 text-xs text-[#799085]">Độ mặn hiện tại</p>                                      
+      2837   const [filter, setFilter] = useState("Tất cả");                                                           
+      2838   const filters = ["Tất cả", "Đang giao", "Đã hoàn thành", "Đã hủy"];                                       
+      2840     filter === "Tất cả"                                                                                     
+      2846         eyebrow="Nhật ký vận chuyển"                                                                        
+      2847         title="Hoạt động"                                                                                   
+      2850             onClick={() => notify("Tìm kiếm chuyến hàng đang sẵn sàng")}                                    
+      2852             aria-label="Tìm kiếm"                                                                           
+      2866             {item === "Tất cả" ? " (8)" : ""}                                                               
+      2879   const origin = journey.origin || journey.route.split(" → ")[0];                                           
+      2880   const destination = journey.destination || journey.route.split(" → ")[1];                                 
+      2909               {journey.id} · {journey.route}                                                                
+      2931           <span className="truncate max-w-[48%]">📍 {origin}</span>                                         
+      2932           <span className="truncate max-w-[48%] text-right">🏁 {destination}</span>                         
+      2945             🚢                                                                                              
+      2951               ? `Đang ở bến xuất phát (${origin})`                                                          
+      2953                 ? `Đã cập bến giao nhận (${destination})`                                                   
+      2954                 : `Đang chạy trên luồng sông (${journey.progress}%)`}                                       
+      2957             {journey.createdAt || "Hôm nay"}                                                                
+      2964           <span className="text-[#8b9e93]">Phương tiện: </span>                                             
+      2975         Xem chi tiết lộ trình trên sông <ChevronRight size={14} />                                          
+      2990         eyebrow="Ví Hành trình xanh"                                                                        
+      2991         title="Thanh toán"                                                                                  
+      3004             <p className="text-xs text-[#b6d1bc]">Số dư khả dụng</p>                                        
+      3007               <small className="text-base font-medium">đ</small>                                            
+      3014             onClick={() => setWalletAction("Nạp tiền")}                                                     
+      3018             Nạp tiền                                                                                        
+      3021             onClick={() => setWalletAction("Rút tiền")}                                                     
+      3025             Rút tiền                                                                                        
+      3032           label="Nạp tiền"                                                                                  
+      3033           onClick={() => setWalletAction("Nạp tiền")}                                                       
+      3035         <QuickAction icon={Ship} label="Trả cước" onClick={pay} />                                          
+      3038           label="Lịch sử"                                                                                   
+      3043         eyebrow="Giao dịch gần đây"                                                                         
+      3044         title="Lịch sử ví"                                                                                  
+      3045         action="Xem tất cả"                                                                                 
+      3051           title="Cước ghe Thành Công"                                                                       
+      3052           date="Hôm nay, 14:08"                                                                             
+      3053           amount={`-${fee.toLocaleString("vi-VN")}đ`}                                                       
+      3057           title="Nạp tiền vào ví"                                                                           
+      3058           date="Hôm nay, 09:30"                                                                             
+      3059           amount="+2.000.000đ"                                                                              
+      3064           title="Hoàn cước chuyến HT-1982"                                                                  
+      3065           date="Hôm qua, 15:45"                                                                             
+      3066           amount={`+${fee.toLocaleString("vi-VN")}đ`}                                                       
+      3108         eyebrow="Trao đổi chuyến hàng"                                                                      
+      3109         title="Tin nhắn"                                                                                    
+      3112             onClick={() => notify("Đã đánh dấu các cuộc trò chuyện là đã đọc")}                             
+      3115             Đánh dấu đã đọc                                                                                 
+      3123             title: "Ghe Thành Công · Anh Tùng",                                                             
+      3124             text: "Anh nhận chuyến xoài ở Phường Cà Mau nhé?",                                              
+      3125             time: "Đang hoạt động",                                                                         
+      3130             title: "Chị Mai · Người gửi",                                                                   
+      3131             text: "Cho mình xin thời gian ghe đến Xã Năm Căn.",                                             
+      3132             time: "8 phút trước",                                                                           
+      3137             title: "Hỗ trợ Hành trình xanh",                                                                
+      3138             text: "Chúng tôi đã cập nhật tuyến sông an toàn.",                                              
+      3139             time: "Hôm qua",                                                                                
+      3145             onClick={() => notify(`Đã mở chat với ${notice.title}`)}                                        
+      3156                 {notice.time === "Đang hoạt động" && (                                                      
+      3170                 notify(`Đang gọi ${notice.title}`);                                                         
+      3173               aria-label={`Gọi ${notice.title}`}                                                            
+      3198     (role === "cooperative" ? "Nguyễn Văn A" : (role === "farmer" ? "Ngọc Anh" : "Nguyễn Thành Công"));     
+      3211         eyebrow="Tài khoản của bạn"                                                                         
+      3212         title="Tôi"                                                                                         
+      3215             onClick={() => notify("Chế độ chỉnh sửa đã sẵn sàng")}                                          
+      3231             {role === "cooperative" ? "Quản lý HTX" : (role === "farmer" ? "Nông dân" : "Chủ ghe")} · Thà...
+      3236             Tài khoản đã xác thực                                                                           
+      3242           Phân quyền demo                                                                                   
+      3245           Chuyển đổi vai trò                                                                                
+      3252             Nông dân                                                                                        
+      3264             Chủ ghe                                                                                         
+      3272               Thông tin chạy chuyến                                                                         
+      3275               Phương tiện của tôi                                                                           
+      3282             {editingVehicle ? "Đóng" : "Nhập phương tiện"}                                                  
+      3287             <Field label="Loại phương tiện" icon={Ship}>                                                    
+      3297             <Field label="Tên phương tiện" icon={Anchor}>                                                   
+      3301                 placeholder="Ví dụ: Ghe Thành Công"                                                         
+      3304             <Field label="Số đăng ký / biển số" icon={ReceiptText}>                                         
+      3310             <Field label="Trọng tải tối đa" icon={MoreHorizontal}>                                          
+      3318                 <option>1 tấn</option>                                                                      
+      3319                 <option>2 tấn</option>                                                                      
+      3320                 <option>5 tấn</option>                                                                      
+      3321                 <option>10 tấn</option>                                                                     
+      3322                 <option>20 tấn</option>                                                                     
+      3328                 notify(`Đã lưu ${vehicleInfo.type} ${vehicleInfo.name}`);                                   
+      3332               Lưu phương tiện                                                                               
+      3345                 {vehicleInfo.type} · {vehicleInfo.plate} · tải{" "}                                         
+      3356             <b className="text-sm">Định danh & KYC</b>                                                      
+      3358               CCCD mặt trước / mặt sau đã sẵn sàng                                                          
+      3366           <Upload size={15} /> Tải lên ảnh CCCD mặt trước / sau                                             
+      3371           [UserRound, "Thông tin cá nhân"],                                                                 
+      3372           [Bell, "Cài đặt thông báo"],                                                                      
+      3373           [CircleHelp, "Trung tâm hỗ trợ"],                                                                 
+      3374           [MessageCircle, "Đánh giá chuyến đi"],                                                            
+      3387           onClick={() => onProfilePanel("Đăng xuất")}                                                       
+      3391           <span>Đăng xuất</span>                                                                            
+      3402         <b className="display-font">Tin mới</b>                                                             
+      3403         <button onClick={onClose} aria-label="Đóng">                                                        
+      3428         Mở tin nhắn <ChevronRight size={14} />                                                              
+      3443             Mạng lưới thủy đạo liên tỉnh                                                                    
+      3446             Luồng sông Cà Mau - Bạc Liêu                                                                    
+      3451           aria-label="Đóng"                                                                                 
+      3472               🌊 {seg.shortName}                                                                            
+      3512           {activeSeg.tide} · {activeSeg.clearance}                                                          
+      3520             Chặng đường: <strong className="text-[#183b32]">{activeSeg.route}</strong>                      
+      3543     "Thông tin cá nhân": [                                                                                  
+      3544       "Hồ sơ Ngọc Anh",                                                                                     
+      3545       "Nguyễn Ngọc Anh · Nông dân",                                                                         
+      3547       "Số điện thoại: 09xx xxx 248",                                                                        
+      3548       "Địa chỉ: Ấp Ninh Quới, Xã Ninh Quới, Cà Mau",                                                        
+      3550     "Cài đặt thông báo": [                                                                                  
+      3551       "Cài đặt thông báo",                                                                                  
+      3552       "Thông báo chuyến hàng: Đang bật",                                                                    
+      3553       "Cảnh báo độ mặn: Đang bật",                                                                          
+      3554       "Tin nhắn mới: Đang bật",                                                                             
+      3556     "Trung tâm hỗ trợ": [                                                                                   
+      3557       "Trung tâm hỗ trợ",                                                                                   
+      3559       "Hỗ trợ ghép chuyến và thanh toán",                                                                   
+      3560       "Phản hồi trong vòng 5 phút",                                                                         
+      3562     "Đánh giá chuyến đi": [                                                                                 
+      3563       "Đánh giá khách hàng",                                                                                
+      3564       "Chuyến gần nhất: HT-3224",                                                                           
+      3565       "Khách hàng Anh Tùng",                                                                                
+      3566       "⭐⭐⭐⭐⭐ 5/5 · Đúng giờ, thân thiện, giao hàng an toàn",                                                
+      3569   if (panel === "Đăng xuất")                                                                                
+      3577             Đăng xuất phiên demo?                                                                           
+      3580             Bạn có thể đăng nhập lại bất cứ lúc nào.                                                        
+      3587               Ở lại                                                                                         
+      3591                 notify("Đã đăng xuất khỏi phiên demo");                                                     
+      3597               Đăng xuất                                                                                     
+      3609           aria-label="Đóng"                                                                                 
+      3627           notify(`Đã lưu ${panel}`);                                                                        
+      3632         Đã hiểu                                                                                             
+      3641     journey.route.split(" → ")[0] ||                                                                        
+      3642     "Xã Ninh Quới (Bạc Liêu)";                                                                              
+      3645     journey.route.split(" → ")[1] ||                                                                        
+      3646     "Xã Phước Long (Bạc Liêu)";                                                                             
+      3649     "Luồng sông trung chuyển",                                                                              
+      3671               Khởi tạo: {journey.createdAt || "Hôm nay"}                                                    
+      3681           aria-label="Đóng"                                                                                 
+      3738             ? "Đang neo bến xếp dỡ"                                                                         
+      3740               ? "Đã cập bến an toàn"                                                                        
+      3741               : `Ghe đang chạy: ${stops[1] || "Khúc sông trung chuyển"}`}                                   
+      3749           Tiến trình luồng sông Cà Mau - Bạc Liêu:                                                          
+      3766                   Bến xuất phát: {origin}                                                                   
+      3776                     ? "🟢 Đang bốc hàng lên ghe"                                                            
+      3777                     : "✅ Đã rời bến"}                                                                       
+      3781                 Tiếp nhận nông sản & neo đậu bến bãi an toàn                                                
+      3800                   Lưu thông trên luồng: {stops[1] || "Khúc sông trung chuyển"}                              
+      3812                     ? "🌊 Đang chạy đúng con nước"                                                          
+      3814                       ? "✅ Đã vượt qua"                                                                     
+      3815                       : "⏳ Chờ xuất bến"}                                                                   
+      3819                 Giám sát tĩnh không cầu & nước triều dâng                                                   
+      3838                   Bến giao nhận: {destination}                                                              
+      3848                     ? "🏁 Đã cập bến giao nhận"                                                             
+      3849                     : "⏳ Đang đón phương tiện"}                                                             
+      3853                 Nghiệm thu chất lượng nông sản & hoàn tất                                                   
+      3863           <span className="text-[10px] text-[#71877b]">Phương tiện</span>                                   
+      3869           <span className="text-[10px] text-[#71877b]">Khối lượng hàng</span>                               
+      3871             {journey.weight || "Theo hợp đồng"}                                                             
+      3875           <span className="text-[10px] text-[#71877b]">Thủy triều & luồng</span>                            
+      3876           <b className="mt-0.5 block text-[#28704d]">Nước lớn · Thuận dòng</b>                              
+      3879           <span className="text-[10px] text-[#71877b]">Thời gian (ETA)</span>                               
+      3889     [Landmark, "Ngân hàng nội địa"],                                                                        
+      3890     [Wallet, "Ví MoMo"],                                                                                    
+      3891     [CreditCard, "Thẻ Visa / Mastercard"],                                                                  
+      3892     [ArrowDownToLine, "Chuyển khoản nhanh"],                                                                
+      3900               Ví Hành trình xanh                                                                            
+      3907             aria-label="Đóng"                                                                               
+      3941             Ví Hành trình xanh                                                                              
+      3943           <h2 className="display-font text-xl font-bold">Lịch sử giao dịch</h2>                             
+      3947           aria-label="Đóng"                                                                                 
+      3956           title="Cước chuyến HT-3224"                                                                       
+      3957           date="Hôm nay, 14:08"                                                                             
+      3958           amount={`-${fee.toLocaleString("vi-VN")}đ`}                                                       
+      3962           title="Nạp tiền vào ví"                                                                           
+      3963           date="Hôm nay, 09:30"                                                                             
+      3964           amount="+2.000.000đ"                                                                              
+      3969           title="Hoàn cước chuyến HT-1982"                                                                  
+      3970           date="Hôm qua, 15:45"                                                                             
+      3971           amount={`+${fee.toLocaleString("vi-VN")}đ`}                                                       
+      3979         Đóng lịch sử                                                                                        
+      4013           aria-label="Đóng"                                                                                 
+      4021           <span className="text-[#799085]">Khối lượng hàng</span>                                           
+      4025           <span className="text-[#799085]">Bến xuất phát (Điểm đi)</span>                                   
+      4026           <b className="text-right text-[#183b32]">{cargo.origin || cargo.route.split(" → ")[0]}</b>        
+      4029           <span className="text-[#799085]">Bến giao nhận (Điểm đến)</span>                                  
+      4030           <b className="text-right text-[#183b32]">{cargo.destination || cargo.route.split(" → ")[1]}</b>   
+      4033           <span className="text-[#799085]">Quy cách đóng gói</span>                                         
+      4037           <span className="text-[#799085]">Bảo quản đặc biệt</span>                                         
+      4038           <b className="text-[#2f815c]">{cargo.tempReq || "Khô ráo"}</b>                                    
+      4041           <span className="text-[#799085]">Thời gian yêu cầu</span>                                         
+      4045           <span className="text-[#799085]">Đơn vị gửi hàng</span>                                           
+      4053         <CheckCheck size={18} /> Nhận vận chuyển lô hàng này                                                
+      4065             Phương tiện đang trống                                                                          
+      4073           aria-label="Đóng"                                                                                 
+      4086               {vehicle.type} · tải {vehicle.capacity}                                                       
+      4088             <p className="mt-1 text-xs text-[#4c9758]">Sẵn sàng nhận chuyến</p>                             
+      4092           Tuyến dự kiến: <b className="text-[#183b32]">{vehicle.route}</b>                                  
+      4095           Phí nền tảng {vehicle.fee}                                                                        
+      4102         Đặt chuyến với phương tiện này                                                                      
+      4112     ["Tên người mua / chủ ghe", "Anh Tùng · Ghe Thành Công"],                                               
+      4113     ["Tên nông dân", "Ngọc Anh · HTX Ninh Quới"],                                                           
+      4114     ["Loại nông sản", "Lúa ST25 Bạc Liêu"],                                                                 
+      4115     ["Ngày thu hoạch dự kiến", getCurrentDateShort()],                                                      
+      4116     ["Khối lượng", "50 tấn · Lô HTX-NQ-08"],                                                                
+      4117     ["Giá chốt cố định", "7.200.000đ / tấn"],                                                               
+      4121     notify("Tiền cọc đã được giữ an toàn trên hệ thống. Hợp đồng có hiệu lực!");                            
+      4128             Smart Contract · HTX-NQ-08                                                                      
+      4131             Hợp đồng vận tải & Bao tiêu số                                                                  
+      4136           aria-label="Đóng"                                                                                 
+      4161           <LockKeyhole size={12} /> Tỷ lệ cọc                                                               
+      4179             ? "Đã ký điện tử · Tiền cọc đã khóa an toàn."                                                   
+      4180             : `Số tiền cọc dự kiến: 72.000.000đ (${deposit})`}                                              
+      4189         {signed ? "Hợp đồng đã có hiệu lực" : "Ký tên & Khóa tiền cọc"}                                     
+
+
