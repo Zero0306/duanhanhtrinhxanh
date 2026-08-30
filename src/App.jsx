@@ -60,16 +60,24 @@ import {
   LayoutDashboard,
   TrendingUp,
   Star,
+  Thermometer,
+  Wind,
+  AlertTriangle,
 } from "lucide-react";
 import appLogo from "./assets/logo.png";
 const userNavItems = [
-  { id: "home", label: "Trang chủ", mobileLabel: "Home", icon: Home },
-  { id: "menu", label: "Chức năng", mobileLabel: "Menu", icon: LayoutGrid },
+  { id: "home", label: "Trang chủ", mobileLabel: "Trang chủ", icon: Home },
+  { id: "activity", label: "Hoạt động", mobileLabel: "Hoạt động", icon: Activity },
+  { id: "payment", label: "Thanh toán", mobileLabel: "Thanh toán", icon: Wallet },
+  { id: "notifications", label: "Thông báo", mobileLabel: "Thông báo", icon: Bell },
   { id: "profile", label: "Tôi", mobileLabel: "Tôi", icon: UserRound },
 ];
-const adminNavItems = [
-  { id: "admin_dashboard", label: "Tổng quan", mobileLabel: "Tổng quan", icon: LayoutDashboard },
-  { id: "admin_users", label: "Người dùng", mobileLabel: "Users", icon: Users },
+
+const htxNavItems = [
+  { id: "home", label: "Tổng quan", mobileLabel: "Tổng quan", icon: Activity },
+  { id: "members", label: "Xã viên", mobileLabel: "Xã viên", icon: Users },
+  { id: "pooling", label: "Gom đơn & HĐ", mobileLabel: "Đơn & HĐ", icon: Boxes },
+  { id: "environment", label: "Môi trường", mobileLabel: "Môi trường", icon: Droplets },
   { id: "profile", label: "Tôi", mobileLabel: "Tôi", icon: UserRound },
 ];
 
@@ -182,18 +190,32 @@ const notices = [
   },
 ];
 const caMauLocations = [
+  // Bạc Liêu - Phước Long & Hồng Dân
   "Xã Ninh Quới (Bạc Liêu)",
+  "Xã Ninh Quới A (Bạc Liêu)",
   "Xã Phước Long (Bạc Liêu)",
+  "Thị trấn Phước Long (Bạc Liêu)",
+  "Xã Vĩnh Phú Đông (Bạc Liêu)",
+  "Xã Vĩnh Phú Tây (Bạc Liêu)",
+  "Xã Hưng Phú (Bạc Liêu)",
   "Xã Hồng Dân (Bạc Liêu)",
+  "Xã Lộc Ninh (Bạc Liêu)",
+  // Bạc Liêu - Giá Rai, Gành Hào
   "Thị xã Giá Rai (Bạc Liêu)",
   "Thị trấn Hộ Phòng (Bạc Liêu)",
   "Xã Gành Hào (Bạc Liêu)",
   "Xã Phong Thạnh Tây (Bạc Liêu)",
   "Xã Vĩnh Lợi (Bạc Liêu)",
   "Phường Bạc Liêu (TP Bạc Liêu)",
+  // Cà Mau - TP Cà Mau (Post-merger)
   "Phường Cà Mau (TP Cà Mau)",
-  "Phường An Xuyên (Cà Mau)",
+  "Phường 2 (Sáp nhập P9 - Cà Mau)",
+  "Phường 4 (Sáp nhập P5 - Cà Mau)",
+  "Phường Tân Xuyên (Cà Mau)",
   "Phường Tân Thành (Cà Mau)",
+  "Xã Lý Văn Lâm (Cà Mau)",
+  "Xã Tắc Vân (Sáp nhập Định Bình - Cà Mau)",
+  // Cà Mau - Các huyện
   "Xã Năm Căn (Cà Mau)",
   "Cảng cá Sông Đốc (Cà Mau)",
   "Xã Trần Văn Thời (Cà Mau)",
@@ -204,6 +226,92 @@ const caMauLocations = [
   "Xã Phú Tân (Cà Mau)",
   "Xã Đất Mũi (Cà Mau)",
 ];
+
+const produceGroupedOptions = [
+  {
+    label: " Lúa",
+    options: [
+      { label: "Lúa ST25", value: "Lúa ST25 Bạc Liêu" },
+      { label: "Lúa Một Bụi Đỏ", value: "Lúa Một Bụi Đỏ" },
+      { label: "Lúa Đài Thơm 8", value: "Lúa Đài Thơm 8" },
+      { label: "Lúa OM18", value: "Lúa OM18" },
+      { label: "Lúa Hương Lài", value: "Lúa Hương Lài" },
+    ]
+  },
+  {
+    label: " Trái cây",
+    options: [
+      { label: "Cam sành", value: "Cam sành" },
+      { label: "Mít Thái", value: "Mít Thái" },
+      { label: "Ổi nữ hoàng", value: "Ổi nữ hoàng" },
+      { label: "Mận An Phước", value: "Mận An Phước" },
+      { label: "Chuối sáp", value: "Chuối sáp" },
+      { label: "Xoài Cát Hòa Lộc", value: "Xoài Cát Hòa Lộc" },
+    ]
+  },
+  {
+    label: " Hải sản",
+    options: [
+      { label: "Cua biển Năm Căn", value: "Cua biển Năm Căn" },
+      { label: "Tôm sú sinh thái", value: "Tôm sú sinh thái" },
+      { label: "Tôm thẻ chân trắng", value: "Tôm thẻ chân trắng" },
+      { label: "Cá bóp", value: "Cá bóp" },
+      { label: "Cá chẽm", value: "Cá chẽm" },
+      { label: "Ba khía Rạch Gốc", value: "Ba khía Rạch Gốc" },
+    ]
+  }
+];
+
+const weightOptions = ["50 kg", "100 kg", "250 kg", "500 kg", "1 tấn", "2 tấn", "5 tấn", "10 tấn", "20 tấn", "50 tấn"];
+
+function FlexibleInput({ value, onChange, options, grouped, placeholder }) {
+  const isCustomValue = value && value !== "Tất cả" && (!options || !options.includes(value)) && (!grouped || !grouped.some(g => g.options.some(o => o.value === value)));
+  const [mode, setMode] = useState(isCustomValue ? 'input' : 'select');
+  
+  if (mode === 'select') {
+    return (
+      <select 
+        value={value || ""} 
+        onChange={(e) => {
+          if (e.target.value === 'CUSTOM_INPUT') {
+            setMode('input');
+            onChange('');
+          } else {
+            onChange(e.target.value);
+          }
+        }}
+        className="w-full bg-transparent outline-none font-semibold text-[#183b32]"
+      >
+        <option value="" disabled>{placeholder}</option>
+        {grouped ? (
+          grouped.map(g => (
+            <optgroup key={g.label} label={g.label}>
+              {g.options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+            </optgroup>
+          ))
+        ) : (
+          options.map(o => <option key={o} value={o}>{o}</option>)
+        )}
+        <option value="CUSTOM_INPUT" className="font-bold text-[#e9784b]">Khác (Nhập tay...)</option>
+      </select>
+    );
+  }
+
+  return (
+    <div className="flex items-center w-full gap-2">
+      <input 
+        autoFocus
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        placeholder="Nhập thông tin..."
+        className="flex-1 bg-transparent outline-none font-semibold text-[#183b32] placeholder:font-normal placeholder:text-[#8ba095]"
+      />
+      <button onClick={() => { setMode('select'); onChange(options ? options[0] : grouped[0].options[0].value); }} className="text-[#e9784b] p-1 bg-[#fff3ed] rounded-md transition active:scale-95">
+        <X size={14} />
+      </button>
+    </div>
+  );
+}
 
 const locationCoordinates = {
   "Xã Ninh Quới (Bạc Liêu)": [9.458, 105.421],
@@ -274,9 +382,9 @@ function getInteractiveMapUrl(locationOrCoord, zoomPadding = 0.04) {
 const riverSegments = [
   {
     id: "quan-lo",
-    name: "Kênh Quản Lộ - Phụng Hiệp",
+    name: "Kênh Quản Lộ (Ninh Quới, Ninh Quới A, Vĩnh Phú Đông, TT Phước Long)",
     shortName: "Quản Lộ - Phụng Hiệp",
-    route: "Ninh Quới ↔ Phước Long ↔ Cà Mau",
+    route: "Ninh Quới ↔ Ninh Quới A ↔ Vĩnh Phú Đông ↔ Phước Long ↔ Cà Mau",
     origin: "Xã Ninh Quới (Bạc Liêu)",
     destination: "Xã Phước Long (Bạc Liêu)",
     lat: 9.458,
@@ -289,6 +397,7 @@ const riverSegments = [
     traffic: "Ghe tải đến 30 tấn lưu thông tốt",
     salinity: "0.4‰ (Nước ngọt)",
     highlights: "Vựa lúa ST25 & Nông sản Bạc Liêu",
+    stops: ["Ninh Quới", "Ninh Quới A", "Vĩnh Phú Đông", "Phước Long", "Cà Mau"],
   },
   {
     id: "ca-mau-bac-lieu",
@@ -307,6 +416,7 @@ const riverSegments = [
     traffic: "Tuyến QL1A thủy - ghe tàu liên tỉnh tấp nập",
     salinity: "4.2‰",
     highlights: "Chợ đầu mối thủy hải sản Giá Rai",
+    stops: ["Giá Rai", "Hộ Phòng", "Hòa Bình", "TP Cà Mau"],
   },
   {
     id: "ganh-hao",
@@ -325,6 +435,7 @@ const riverSegments = [
     traffic: "Cửa biển mở rộng - tàu bè ra vào liên tục",
     salinity: "18.5‰ (Nước mặn)",
     highlights: "Cảng cá & Tôm biển xuất khẩu",
+    stops: ["TP Cà Mau", "Đầm Dơi", "Đông Hải", "Gành Hào"],
   },
   {
     id: "bay-hap",
@@ -343,6 +454,7 @@ const riverSegments = [
     traffic: "Vận chuyển Cua biển & Tôm sinh thái",
     salinity: "22.0‰",
     highlights: "Thủ phủ Cua Năm Căn & Tôm rừng",
+    stops: ["Cái Nước", "Phú Tân", "Năm Căn", "Đất Mũi"],
   },
   {
     id: "song-trem",
@@ -361,6 +473,7 @@ const riverSegments = [
     traffic: "Ghe chở chuối sáp, mật ong, tràm",
     salinity: "0.2‰",
     highlights: "Nông sản rừng tràm sinh thái",
+    stops: ["Thới Bình", "Biển Bạch", "Trí Phải", "U Minh Hạ"],
   },
   {
     id: "song-doc",
@@ -379,6 +492,7 @@ const riverSegments = [
     traffic: "Cảng cá quy mô lớn nhất vùng",
     salinity: "25.0‰",
     highlights: "Thủy sản biển & Chế biến khô",
+    stops: ["Trần Văn Thời", "Khánh Hải", "Phong Điền", "Sông Đốc"],
   },
 ];
 
@@ -591,6 +705,7 @@ function App() {
   const [activeJourneys, setActiveJourneys] = useState(journeys);
   const [selectedCargo, setSelectedCargo] = useState(null);
   const [selectedVehicle, setSelectedVehicle] = useState(null);
+  const [allVehiclesOpen, setAllVehiclesOpen] = useState(false);
   const [walletAction, setWalletAction] = useState(null);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [contractOpen, setContractOpen] = useState(false);
@@ -746,9 +861,11 @@ function App() {
           />
         )}
         <main className="px-5 pb-28 md:px-10">
-          {activeTab === "home" && (
+          {(activeTab === "home" || (role === "cooperative" && ["members", "pooling", "environment"].includes(activeTab))) && (
             <HomeView
               {...{
+                notify,
+                activeTab,
                 origin,
                 setOrigin,
                 destination,
@@ -772,6 +889,7 @@ function App() {
                 role,
                 onContract: () => setContractOpen(true),
                 onOpenCustomSearch: () => setCustomSearchOpen(true),
+                onViewAllVehicles: () => setAllVehiclesOpen(true),
               }}
             />
           )}
@@ -819,9 +937,9 @@ function App() {
             />
           )}
         </main>
-        <nav className={`fixed bottom-0 left-0 right-0 z-20 mx-auto grid w-full max-w-[620px] ${role === "admin" ? "grid-cols-3" : "grid-cols-3"} items-center border-t border-[#e5ece3] bg-white/95 px-1 pb-[max(10px,env(safe-area-inset-bottom))] pt-2 shadow-[0_-8px_30px_rgba(36,77,52,.08)] backdrop-blur sm:px-2 md:bottom-4 md:rounded-2xl md:border md:pb-2`}>
-          {(role === "admin" ? adminNavItems : userNavItems).map(({ id, label, mobileLabel, icon: Icon }) => {
-            const isMenuChildActive = (id === "menu" && ["activity", "payment", "notifications"].includes(activeTab));
+        <nav className={`fixed bottom-0 left-0 right-0 z-20 mx-auto grid w-full max-w-[620px] grid-cols-5 items-center border-t border-[#e5ece3] bg-white/95 px-1 pb-[max(10px,env(safe-area-inset-bottom))] pt-2 shadow-[0_-8px_30px_rgba(36,77,52,.08)] backdrop-blur sm:px-2 md:bottom-4 md:rounded-2xl md:border md:pb-2`}>
+          {(role === "cooperative" ? htxNavItems : userNavItems).map(({ id, label, mobileLabel, icon: Icon }) => {
+            const isMenuChildActive = false; // Menu is removed
             const isActive = activeTab === id || isMenuChildActive;
             return (
               <button
@@ -924,6 +1042,14 @@ function App() {
       )}
       {contractOpen && (
         <ContractModal onClose={() => setContractOpen(false)} notify={notify} />
+      )}
+      {allVehiclesOpen && (
+        <AllVehiclesModal 
+          vehicles={availableVehicles}
+          onClose={() => setAllVehiclesOpen(false)} 
+          onVehicleDetail={setSelectedVehicle} 
+          createJourney={createJourney}
+        />
       )}
     </div>
   );
@@ -1466,7 +1592,7 @@ function LoginView({ onAuthenticated }) {
               <label className="block text-xs font-bold text-[#4d6b5c] mb-1.5">
                 Vai trò chính của bạn
               </label>
-              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                 <button
                   type="button"
                   onClick={() => setRegRole("farmer")}
@@ -1477,7 +1603,7 @@ function LoginView({ onAuthenticated }) {
                   }`}
                 >
                   <span className="text-xl"></span>
-                  <span className="mt-1 text-[11px] font-bold leading-tight">Nông dân</span>
+                  <span className="mt-1 text-[11px] font-bold leading-tight">Nông dân & Chủ ghe</span>
                 </button>
                 <button
                   type="button"
@@ -1490,18 +1616,6 @@ function LoginView({ onAuthenticated }) {
                 >
                   <span className="text-xl"></span>
                   <span className="mt-1 text-[11px] font-bold leading-tight">HTX</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setRegRole("boatOwner")}
-                  className={`flex flex-col items-center justify-center rounded-2xl border p-2.5 text-center transition active:scale-95 ${
-                    regRole === "boatOwner"
-                      ? "border-[#2f815c] bg-[#edf6e9] text-[#1f5c40] ring-2 ring-[#2f815c]/20"
-                      : "border-[#dfeade] bg-[#fbfdfa] text-[#71877b] hover:bg-[#f4faf2]"
-                  }`}
-                >
-                  <span className="text-xl"></span>
-                  <span className="mt-1 text-[11px] font-bold leading-tight">Chủ ghe</span>
                 </button>
                 <button
                   type="button"
@@ -1879,15 +1993,13 @@ function CustomSearchModal({
 
   // Filter cargo requests
   const filteredCargos = cargoRequests.filter((cargo) => {
-    if (selectedProduce !== "Tất cả") {
-      const category = selectedProduce.split("_")[0]; // "rice", "fruit", "seafood"
-      if (category === "rice" && cargo.type !== "rice") return false;
-      if (category === "fruit" && cargo.type !== "mango") return false;
-      if (category === "seafood" && !["crab", "shrimp", "salted_crab"].includes(cargo.type)) return false;
+    if (selectedProduce && selectedProduce !== "Tất cả") {
+      const p = selectedProduce.toLowerCase();
+      if (!cargo.name.toLowerCase().includes(p) && !cargo.type.toLowerCase().includes(p)) return false;
     }
-    if (filterOrigin !== "Tất cả" && cargo.origin !== filterOrigin) return false;
-    if (filterDestination !== "Tất cả" && cargo.destination !== filterDestination) return false;
-    if (filterUrgency !== "Tất cả" && cargo.urgency !== filterUrgency) return false;
+    if (filterOrigin && filterOrigin !== "Tất cả" && !cargo.origin.toLowerCase().includes(filterOrigin.toLowerCase())) return false;
+    if (filterDestination && filterDestination !== "Tất cả" && !cargo.destination.toLowerCase().includes(filterDestination.toLowerCase())) return false;
+    if (filterUrgency && filterUrgency !== "Tất cả" && cargo.urgency !== filterUrgency) return false;
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       const matchText = `${cargo.name} ${cargo.subName} ${cargo.route} ${cargo.sender}`.toLowerCase();
@@ -1948,36 +2060,14 @@ function CustomSearchModal({
             <label className="block text-[10px] font-bold text-[#71877b] mb-1">
               Loại nông/hải sản đặc sản
             </label>
-            <select
-              value={selectedProduce}
-              onChange={(e) => setSelectedProduce(e.target.value)}
-              className="w-full rounded-xl border border-[#dce8dc] bg-white p-2.5 text-xs font-semibold text-[#183b32] outline-none focus:border-[#2f815c]"
-            >
-              <option value="Tất cả">-- Tất cả các loại --</option>
-              <optgroup label=" Lúa">
-                <option value="rice_st25">Lúa ST25 Bạc Liêu</option>
-                <option value="rice_motbui">Lúa Một Bụi Đỏ</option>
-                <option value="rice_daithom">Lúa Đài Thơm 8</option>
-                <option value="rice_om18">Lúa OM18</option>
-                <option value="rice_huonglai">Lúa Hương Lài</option>
-              </optgroup>
-              <optgroup label=" Trái cây">
-                <option value="fruit_cam">Cam sành</option>
-                <option value="fruit_mit">Mít Thái</option>
-                <option value="fruit_oi">Ổi nữ hoàng</option>
-                <option value="fruit_man">Mận An Phước</option>
-                <option value="fruit_chuoi">Chuối sáp</option>
-                <option value="fruit_xoai">Xoài Cát Hòa Lộc</option>
-              </optgroup>
-              <optgroup label=" Hải sản">
-                <option value="seafood_cua">Cua biển Năm Căn</option>
-                <option value="seafood_tomsu">Tôm sú sinh thái</option>
-                <option value="seafood_tomthe">Tôm thẻ chân trắng</option>
-                <option value="seafood_cabop">Cá bóp</option>
-                <option value="seafood_cachem">Cá chẽm</option>
-                <option value="seafood_bakhia">Ba khía Rạch Gốc</option>
-              </optgroup>
-            </select>
+            <div className="rounded-xl border border-[#dce8dc] bg-white p-1.5 text-xs focus-within:border-[#2f815c]">
+              <FlexibleInput
+                value={selectedProduce === "Tất cả" ? "" : selectedProduce}
+                onChange={(val) => setSelectedProduce(val || "Tất cả")}
+                grouped={produceGroupedOptions}
+                placeholder="Chọn hoặc nhập loại hàng hóa..."
+              />
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
@@ -1985,35 +2075,27 @@ function CustomSearchModal({
               <label className="block text-[10px] font-bold text-[#71877b] mb-1">
                 Điểm gửi hàng (Điểm đi)
               </label>
-              <select
-                value={filterOrigin}
-                onChange={(e) => setFilterOrigin(e.target.value)}
-                className="w-full rounded-xl border border-[#dce8dc] bg-white p-2 text-xs font-semibold text-[#183b32] outline-none focus:border-[#2f815c]"
-              >
-                <option value="Tất cả">Tất cả điểm đi</option>
-                {caMauLocations.map((loc) => (
-                  <option key={loc} value={loc}>
-                    {loc}
-                  </option>
-                ))}
-              </select>
+              <div className="rounded-xl border border-[#dce8dc] bg-white p-1.5 text-xs focus-within:border-[#2f815c]">
+                <FlexibleInput
+                  value={filterOrigin === "Tất cả" ? "" : filterOrigin}
+                  onChange={(val) => setFilterOrigin(val || "Tất cả")}
+                  options={caMauLocations}
+                  placeholder="Chọn điểm đi..."
+                />
+              </div>
             </div>
             <div>
               <label className="block text-[10px] font-bold text-[#71877b] mb-1">
                 Điểm giao nhận (Điểm đến)
               </label>
-              <select
-                value={filterDestination}
-                onChange={(e) => setFilterDestination(e.target.value)}
-                className="w-full rounded-xl border border-[#dce8dc] bg-white p-2 text-xs font-semibold text-[#183b32] outline-none focus:border-[#2f815c]"
-              >
-                <option value="Tất cả">Tất cả điểm đến</option>
-                {caMauLocations.map((loc) => (
-                  <option key={loc} value={loc}>
-                    {loc}
-                  </option>
-                ))}
-              </select>
+              <div className="rounded-xl border border-[#dce8dc] bg-white p-1.5 text-xs focus-within:border-[#2f815c]">
+                <FlexibleInput
+                  value={filterDestination === "Tất cả" ? "" : filterDestination}
+                  onChange={(val) => setFilterDestination(val || "Tất cả")}
+                  options={caMauLocations}
+                  placeholder="Chọn điểm đến..."
+                />
+              </div>
             </div>
             <div className="col-span-2 sm:col-span-1">
               <label className="block text-[10px] font-bold text-[#71877b] mb-1">
@@ -2120,13 +2202,16 @@ function CustomSearchModal({
   );
 }
 
-function CooperativeDashboard({ onContract, setActiveTab }) {
-  const [dashboardTab, setDashboardTab] = useState("overview"); // overview, members, pooling, contracts
-
+function CooperativeDashboard({ 
+  notify, activeTab, onContract, setActiveTab,
+  origin, setOrigin, destination, setDestination,
+  produce, setProduce, weight, setWeight,
+  findBoat, matching, matched, createJourney, vehicleInfo
+}) {
   const stats = [
-    { label: "Tổng xã viên", value: "124 Hộ", icon: Users, color: "text-[#2f815c]", bg: "bg-[#edf6e9]" },
-    { label: "Sản lượng lúa ST25", value: "850 Tấn", icon: Wheat, color: "text-[#e9784b]", bg: "bg-[#fff3ed]" },
-    { label: "CO2 Giảm phát thải", value: "12.5 Tấn", icon: Leaf, color: "text-[#28704d]", bg: "bg-[#e5ece3]" },
+    { label: "Tổng xã viên", value: "245 Hộ", icon: Users, color: "text-[#2f815c]", bg: "bg-[#edf6e9]" },
+    { label: "Sản lượng lúa ST25", value: "1,250 Tấn", icon: Wheat, color: "text-[#e9784b]", bg: "bg-[#fff3ed]" },
+    { label: "CO2 Giảm phát thải", value: "45.2 Tấn", icon: Leaf, color: "text-[#28704d]", bg: "bg-[#e5ece3]" },
   ];
 
   const members = [
@@ -2134,9 +2219,19 @@ function CooperativeDashboard({ onContract, setActiveTab }) {
     { id: 2, name: "Trần Thị Mai", area: "1.2 ha", product: "Lúa ST25", expectedYield: "8 tấn", status: "Thu hoạch trong 3 ngày" },
     { id: 3, name: "Lê Minh Tâm", area: "3.0 ha", product: "Tôm sinh thái", expectedYield: "2 tấn", status: "Đang thu hoạch" },
     { id: 4, name: "Phạm Văn Bình", area: "4.5 ha", product: "Lúa ST24", expectedYield: "30 tấn", status: "Sẵn sàng thu hoạch" },
+    { id: 5, name: "Huỳnh Tuấn Anh", area: "5.0 ha", product: "Lúa ST25", expectedYield: "35 tấn", status: "Sẵn sàng thu hoạch" },
+    { id: 6, name: "Lý Kiều Diễm", area: "1.5 ha", product: "Cua biển Năm Căn", expectedYield: "0.5 tấn", status: "Sẵn sàng thu hoạch" },
+  ];
+
+  const contracts = [
+    { id: "HD-2024-089", buyer: "Công ty Lương Thực Tín Phát", product: "Lúa ST25", amount: "100 Tấn", price: "8,500 đ/kg", status: "Đang giao hàng" },
+    { id: "HD-2024-090", buyer: "Siêu thị Co.op Mart", product: "Trái cây các loại", amount: "15 Tấn", price: "25,000 đ/kg", status: "Đã hoàn tất" },
+    { id: "HD-2024-091", buyer: "Công ty Xuất Nhập Khẩu Thủy Sản", product: "Tôm sú sinh thái", amount: "5 Tấn", price: "180,000 đ/kg", status: "Chờ lấy hàng" },
   ];
 
   const [selectedForPooling, setSelectedForPooling] = useState([]);
+  const [showMap, setShowMap] = useState(false);
+  const [inventoryModal, setInventoryModal] = useState(null);
 
   const togglePool = (id) => {
     setSelectedForPooling((curr) =>
@@ -2158,42 +2253,58 @@ function CooperativeDashboard({ onContract, setActiveTab }) {
         </p>
       </section>
 
-      {/* Tabs */}
-      <div className="mb-6 flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-        {[
-          { id: "overview", label: "Tổng quan", icon: Activity },
-          { id: "members", label: "Quản lý Xã viên", icon: Users },
-          { id: "pooling", label: "Gom đơn (Bulk)", icon: Boxes },
-          { id: "contracts", label: "Hợp đồng", icon: ReceiptText },
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setDashboardTab(tab.id)}
-            className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-xs font-bold transition-all ${
-              dashboardTab === tab.id
-                ? "bg-[#2f815c] text-white shadow-md shadow-[#2f815c]/20"
-                : "border border-[#e0ebe0] bg-white text-[#71877b] hover:border-[#2f815c] hover:text-[#2f815c]"
-            }`}
-          >
-            <tab.icon size={16} />
-            {tab.label}
-          </button>
-        ))}
-      </div>
-
       {/* Tab Content */}
-      {dashboardTab === "overview" && (
+      {activeTab === "home" && (
         <div className="space-y-6 animate-fade-in">
+          <section className="grid grid-cols-4 gap-y-4 gap-x-2 rounded-2xl bg-white p-4 shadow-sm border border-[#e0ebe0]">
+            {[
+              { icon: Ship, label: "Ghe/Xuồng" },
+              { icon: Anchor, label: "Xà Lan" },
+              { icon: Boxes, label: "Ghép Đơn" },
+              { icon: Droplets, label: "Độ Mặn" },
+              { icon: Wheat, label: "Lúa Gạo" },
+              { icon: Leaf, label: "Trái Cây" },
+              { icon: Fish, label: "Thủy Sản" },
+              { icon: LayoutGrid, label: "Tất cả" },
+            ].map((item, idx) => (
+              <button key={idx} onClick={() => setInventoryModal(item.label)} className="flex flex-col items-center justify-center gap-2 rounded-xl hover:bg-[#f1f6ef] transition p-1 active:scale-95">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#f4faf2] text-[#2f815c]">
+                  <item.icon size={22} strokeWidth={1.5} />
+                </div>
+                <span className="text-[10px] font-semibold text-[#71877b] text-center leading-tight whitespace-nowrap">{item.label}</span>
+              </button>
+            ))}
+          </section>
+
+          <section>
+             <div className="rounded-2xl bg-gradient-to-r from-[#2f815c] to-[#1f5c40] p-5 text-white shadow-lg">
+                <div className="flex items-center gap-3 mb-3">
+                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/20 backdrop-blur">
+                      <Boxes size={20} className="text-white" />
+                   </div>
+                   <div>
+                      <h3 className="text-lg font-bold">Gom đơn lô lớn</h3>
+                      <p className="text-xs text-[#c5e8ae] mt-0.5">Tiết kiệm cước phí lên tới 30%</p>
+                   </div>
+                </div>
+                <button 
+                  onClick={() => setActiveTab("pooling")}
+                  className="w-full rounded-xl bg-white text-[#1f5c40] py-3 text-sm font-bold shadow-sm hover:bg-[#f1f6ef] transition active:scale-[0.99]"
+                >
+                  Bắt đầu gom đơn ngay
+                </button>
+             </div>
+          </section>
           <SectionTitle eyebrow="Chỉ số hoạt động" title="Thống kê HTX" />
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {stats.map((stat, i) => (
-              <div key={i} className="rounded-2xl border border-[#e0ebe0] bg-white p-4 shadow-sm">
+              <button key={i} onClick={() => alert("Đang mở phân tích chi tiết: " + stat.label)} className="text-left w-full rounded-2xl border border-[#e0ebe0] bg-white p-4 shadow-sm hover:border-[#2f815c] transition active:scale-95">
                 <div className={`mb-3 inline-flex rounded-xl p-2.5 ${stat.bg} ${stat.color}`}>
                   <stat.icon size={20} />
                 </div>
                 <p className="text-xs font-semibold text-[#799085]">{stat.label}</p>
                 <p className="mt-1 text-lg font-bold text-[#183b32]">{stat.value}</p>
-              </div>
+              </button>
             ))}
           </div>
           <div className="rounded-2xl border border-[#d6e8d2] bg-[#f4faf2] p-4">
@@ -2206,11 +2317,14 @@ function CooperativeDashboard({ onContract, setActiveTab }) {
         </div>
       )}
 
-      {dashboardTab === "members" && (
+      {activeTab === "members" && (
         <div className="space-y-4 animate-fade-in">
            <div className="flex justify-between items-center mb-2">
              <SectionTitle eyebrow="Danh sách" title="Hộ nông dân" />
-             <button className="rounded-xl bg-[#e9784b] px-3 py-1.5 text-xs font-bold text-white shadow-sm hover:bg-[#de6c3e]">
+             <button onClick={() => {
+                const name = window.prompt("Nhập tên xã viên mới:");
+                if (name) alert(`Đã thêm xã viên ${name} vào danh sách.`);
+             }} className="rounded-xl bg-[#e9784b] px-3 py-1.5 text-xs font-bold text-white shadow-sm hover:bg-[#de6c3e] active:scale-95">
                + Thêm xã viên
              </button>
            </div>
@@ -2228,9 +2342,30 @@ function CooperativeDashboard({ onContract, setActiveTab }) {
         </div>
       )}
 
-      {dashboardTab === "pooling" && (
+      {activeTab === "pooling" && (
         <div className="space-y-4 animate-fade-in">
-           <SectionTitle eyebrow="Gom đơn thành lô lớn" title="Khởi tạo lô hàng" />
+           <SectionTitle eyebrow="Quản lý" title="Hợp đồng Bao tiêu & Vận tải" />
+           <div className="flex flex-col gap-3 mb-6">
+             {contracts.map(c => (
+               <div key={c.id} className="rounded-[20px] border border-[#e0ebe0] bg-white p-4 shadow-sm">
+                 <div className="flex justify-between items-start mb-3">
+                   <div>
+                      <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${c.status === 'Đang giao hàng' ? 'bg-[#fff3ed] text-[#e9784b]' : c.status === 'Đã hoàn tất' ? 'bg-[#edf6e9] text-[#28704d]' : 'bg-[#e5ece3] text-[#557264]'}`}>{c.status}</span>
+                      <p className="mt-1.5 text-sm font-bold text-[#183b32]">{c.buyer}</p>
+                   </div>
+                 </div>
+                 <div className="grid grid-cols-2 gap-2 text-xs text-[#71877b] mb-4">
+                   <p>Mặt hàng: <strong>{c.product}</strong></p>
+                   <p>Cam kết: <strong>{c.amount}</strong></p>
+                   <p>Đơn giá: <strong>{c.price}</strong></p>
+                   <p>Mã HĐ: <strong className="text-[#2f815c]">{c.id}</strong></p>
+                 </div>
+                 <button onClick={onContract} className="w-full rounded-lg bg-[#f1f6ef] py-2 text-xs font-bold text-[#28704d] transition active:scale-95">Xem chi tiết & Đối soát</button>
+               </div>
+             ))}
+           </div>
+
+           <SectionTitle eyebrow="Gom đơn thành lô lớn" title="Khởi tạo lô hàng mới" />
            <p className="text-xs text-[#71877b] mb-4">Chọn các hộ có cùng loại nông sản và sẵn sàng thu hoạch để gom thành lô lớn, gọi xà lan tải trọng cao nhằm tiết kiệm cước.</p>
            <div className="space-y-2">
              {members.filter(m => m.status === "Sẵn sàng thu hoạch").map(m => (
@@ -2261,38 +2396,73 @@ function CooperativeDashboard({ onContract, setActiveTab }) {
                    onContract();
                    alert("Đã tạo lô hàng lớn thành công và chuyển sang giao diện tạo hợp đồng thầu.");
                  }}
-                 className="w-full rounded-xl bg-[#e9784b] py-3 text-sm font-bold shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                 className="w-full rounded-xl bg-[#e9784b] py-3 text-sm font-bold shadow-sm transition active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
                  Tiến hành mời thầu xà lan
               </button>
            </div>
         </div>
       )}
 
-      {dashboardTab === "contracts" && (
+      {activeTab === "environment" && (
          <div className="space-y-4 animate-fade-in">
-           <SectionTitle eyebrow="Quản lý" title="Hợp đồng Bao tiêu & Vận tải" />
+           <SectionTitle 
+             eyebrow="Đo lường & Cảnh báo" 
+             title="Giám sát Môi trường" 
+             action={showMap ? "Thu gọn bản đồ" : "Xem tất cả"}
+             onAction={() => setShowMap(!showMap)}
+           />
+           {showMap && (
+             <div className="mb-4">
+               <InteractiveRiverMap 
+                 origin={origin} 
+                 destination={destination} 
+                 setOrigin={setOrigin} 
+                 setDestination={setDestination}
+                 onRouteDetail={() => notify("Đang mở bản đồ toàn tuyến cho HTX")}
+               />
+             </div>
+           )}
+           <div className="grid grid-cols-2 gap-3">
+             <div className="rounded-[20px] border border-[#e0ebe0] bg-white p-4 shadow-sm text-center">
+               <Droplets size={28} className="mx-auto mb-2 text-[#2f815c]" />
+               <p className="text-[10px] font-bold text-[#71877b] uppercase">Độ mặn (‰)</p>
+               <p className="mt-1 text-2xl font-bold text-[#183b32]">3.2</p>
+               <p className="text-[10px] text-[#e9784b] mt-1 font-semibold">Cảnh báo: Tăng nhẹ</p>
+             </div>
+             <div className="rounded-[20px] border border-[#e0ebe0] bg-white p-4 shadow-sm text-center">
+               <Thermometer size={28} className="mx-auto mb-2 text-[#d9733e]" />
+               <p className="text-[10px] font-bold text-[#71877b] uppercase">Độ phèn (pH)</p>
+               <p className="mt-1 text-2xl font-bold text-[#183b32]">6.5</p>
+               <p className="text-[10px] text-[#28704d] mt-1 font-semibold">Mức an toàn</p>
+             </div>
+           </div>
            <div className="rounded-[20px] border border-[#e0ebe0] bg-white p-4 shadow-sm">
-             <div className="flex justify-between items-start mb-3">
-               <div>
-                  <span className="rounded-full bg-[#fff3ed] px-2 py-0.5 text-[10px] font-bold text-[#e9784b]">Đang hiệu lực</span>
-                  <p className="mt-1.5 text-sm font-bold text-[#183b32]">Hợp đồng vận tải Lúa Đông Xuân 2026</p>
-               </div>
+             <div className="flex items-center gap-3 mb-3">
+                <Wind size={24} className="text-[#397153]" />
+                <div>
+                  <p className="text-[10px] font-bold text-[#71877b] uppercase">Chất lượng không khí (AQI)</p>
+                  <p className="text-xl font-bold text-[#183b32]">42 <span className="text-xs text-[#28704d] font-normal">(Tốt)</span></p>
+                </div>
              </div>
-             <div className="grid grid-cols-2 gap-2 text-xs text-[#71877b] mb-4">
-               <p>Đối tác: <strong>Đoàn Xà lan Minh Trí</strong></p>
-               <p>Cam kết: <strong>1,200 Tấn</strong></p>
-               <p>Đơn giá: <strong>120,000đ/Tấn</strong></p>
-               <p>Tiến độ: <strong className="text-[#2f815c]">450 / 1200 Tấn</strong></p>
+             <p className="text-xs text-[#557264] leading-5">Không khí trong lành, rất phù hợp cho các hoạt động canh tác và thu hoạch ngoài trời.</p>
+           </div>
+           <div className="rounded-[20px] border border-[#e0ebe0] bg-[#fff4df] p-4 shadow-sm mt-4">
+             <div className="flex items-center gap-2 mb-2">
+               <AlertTriangle size={18} className="text-[#d9733e]" />
+               <p className="text-sm font-bold text-[#d9733e]">Dự báo 3 ngày tới</p>
              </div>
-             <button onClick={onContract} className="w-full rounded-lg bg-[#f1f6ef] py-2 text-xs font-bold text-[#28704d]">Xem chi tiết & Đối soát</button>
+             <p className="text-xs text-[#71877b] leading-5">Khả năng xâm nhập mặn sâu ở các thủy cấp sông Cửa Lớn và các địa giới mới sau sáp nhập của TP. Cà Mau (Phường 2 mới - sáp nhập từ Phường 9, Phường 4 mới - sáp nhập từ Phường 5, và các khu vực vùng ven thuộc xã Lý Văn Lâm, Tắc Vân, Định Bình). Khuyến nghị các HTX/xã viên đóng cống, hạn chế lấy nước vào đầm nuôi tôm.</p>
            </div>
          </div>
       )}
+      {inventoryModal && <InventoryModal category={inventoryModal} onClose={() => setInventoryModal(null)} />}
     </div>
   );
 }
 
 function HomeView({
+  notify,
+  activeTab,
   origin,
   setOrigin,
   destination,
@@ -2316,15 +2486,31 @@ function HomeView({
   role,
   onContract,
   onOpenCustomSearch,
+  onViewAllVehicles,
 }) {
-  if (role === "boatOwner") {
-    return (
-      <BoatOwnerHome onCargoDetail={onCargoDetail} setActiveTab={setActiveTab} />
-    );
-  }
+  const [showAllEnvs, setShowAllEnvs] = useState(false);
+
   if (role === "cooperative") {
     return (
-      <CooperativeDashboard onContract={onContract} setActiveTab={setActiveTab} />
+      <CooperativeDashboard 
+        notify={notify}
+        activeTab={activeTab}
+        onContract={onContract} 
+        setActiveTab={setActiveTab} 
+        origin={origin}
+        setOrigin={setOrigin}
+        destination={destination}
+        setDestination={setDestination}
+        produce={produce}
+        setProduce={setProduce}
+        weight={weight}
+        setWeight={setWeight}
+        findBoat={findBoat}
+        matching={matching}
+        matched={matched}
+        createJourney={createJourney}
+        vehicleInfo={vehicleInfo}
+      />
     );
   }
   return (
@@ -2351,183 +2537,24 @@ function HomeView({
           size={42}
         />
       </section>
-      <div className="order-2 mb-7 grid grid-cols-3 gap-2">
-        <button
-          onClick={() => setJourneyMode("Tìm phương tiện")}
-          className="rounded-xl bg-[#e9784b] px-2 py-3 text-[11px] font-bold text-white shadow-sm transition active:scale-95"
-        >
-          Tìm ghe ghép chuyến
-        </button>
-        <button
-          onClick={onContract}
-          className="rounded-xl border border-[#bde0a9] bg-white px-2 py-3 text-[11px] font-bold text-[#28704d] shadow-sm transition active:scale-95"
-        >
-          Tạo hợp đồng
-        </button>
-        <button
-          onClick={() =>
-            document
-              .getElementById("luong-xanh-htx")
-              ?.scrollIntoView({ behavior: "smooth" })
-          }
-          className="rounded-xl border border-[#bde0a9] bg-white px-2 py-3 text-[11px] font-bold text-[#28704d] shadow-sm transition active:scale-95"
-        >
-          Gom đơn HTX
-        </button>
-      </div>
+
       <section className="order-3 mb-8">
         <SectionTitle eyebrow="Bắt đầu hành trình" title="Đặt chuyến nhanh" />
-        <div className="rounded-[20px] border border-[#e0ebe0] bg-white p-4 shadow-sm md:p-5">
-          <div className="mb-4 grid grid-cols-2 gap-2 rounded-xl bg-[#f1f6ef] p-1">
-            {["Tìm phương tiện", "Ghép chuyến"].map((mode) => (
-              <button
-                key={mode}
-                onClick={() => {
-                  setJourneyMode(mode);
-                  setMatched(false);
-                }}
-                className={`rounded-lg px-3 py-2.5 text-xs font-bold transition ${journeyMode === mode ? "bg-white text-[#28704d] shadow-sm" : "text-[#779084]"}`}
-              >
-                {mode === "Tìm phương tiện"
-                  ? "Tôi cần ghe"
-                  : "Tôi có phương tiện"}
-              </button>
-            ))}
-          </div>
-          <p className="mb-3 text-xs text-[#6e8579]">
-            {journeyMode === "Tìm phương tiện"
-              ? "Nhập hàng hóa để tìm phương tiện phù hợp."
-              : "Dùng phương tiện đã đăng ký để nhận chuyến cùng tuyến."}
-          </p>
-          <div className="grid gap-3 md:grid-cols-2">
-            <Field label="Điểm đi (Bến xuất phát)" icon={MapPin}>
-              <select
-                value={origin}
-                onChange={(event) => setOrigin(event.target.value)}
-              >
-                {caMauLocations.map((location) => (
-                  <option key={location}>{location}</option>
-                ))}
-              </select>
-            </Field>
-            <Field label="Điểm đến (Bến giao nhận)" icon={Navigation}>
-              <select
-                value={destination}
-                onChange={(event) => setDestination(event.target.value)}
-              >
-                {caMauLocations.map((location) => (
-                  <option key={location}>{location}</option>
-                ))}
-              </select>
-            </Field>
-            <Field label="Loại nông/hải sản đặc sản" icon={Package}>
-              <select
-                value={produce}
-                onChange={(event) => setProduce(event.target.value)}
-                className="w-full bg-transparent outline-none font-semibold text-[#183b32]"
-              >
-                <option value="Tất cả">-- Tất cả các loại --</option>
-                <optgroup label=" Lúa">
-                  <option value="Lúa ST25 Bạc Liêu">Lúa ST25</option>
-                  <option value="Lúa Một Bụi Đỏ">Lúa Một Bụi Đỏ</option>
-                  <option value="Lúa Đài Thơm 8">Lúa Đài Thơm 8</option>
-                  <option value="Lúa OM18">Lúa OM18</option>
-                  <option value="Lúa Hương Lài">Lúa Hương Lài</option>
-                </optgroup>
-                <optgroup label=" Trái cây">
-                  <option value="Cam sành">Cam sành</option>
-                  <option value="Mít Thái">Mít Thái</option>
-                  <option value="Ổi nữ hoàng">Ổi nữ hoàng</option>
-                  <option value="Mận An Phước">Mận An Phước</option>
-                  <option value="Chuối sáp">Chuối sáp</option>
-                  <option value="Xoài Cát Hòa Lộc">Xoài Cát Hòa Lộc</option>
-                </optgroup>
-                <optgroup label=" Hải sản">
-                  <option value="Cua biển Năm Căn">Cua biển Năm Căn</option>
-                  <option value="Tôm sú sinh thái">Tôm sú sinh thái</option>
-                  <option value="Tôm thẻ chân trắng">Tôm thẻ chân trắng</option>
-                  <option value="Cá bóp">Cá bóp</option>
-                  <option value="Cá chẽm">Cá chẽm</option>
-                  <option value="Ba khía Rạch Gốc">Ba khía Rạch Gốc</option>
-                </optgroup>
-              </select>
-            </Field>
-            <Field label="Khối lượng cần chở" icon={MoreHorizontal}>
-              <select
-                value={weight}
-                onChange={(event) => setWeight(event.target.value)}
-              >
-                <option>50 kg</option>
-                <option>100 kg</option>
-                <option>250 kg</option>
-                <option>500 kg</option>
-                <option>1 tấn</option>
-                <option>2 tấn</option>
-                <option>5 tấn</option>
-                <option>10 tấn</option>
-                <option>20 tấn</option>
-                <option>50 tấn</option>
-              </select>
-            </Field>
-          </div>
-          <button
-            disabled={matching}
-            onClick={findBoat}
-            className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#e9784b] px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#e9784b]/20 transition hover:bg-[#d7653a] disabled:cursor-wait disabled:opacity-70 active:scale-[0.99]"
-          >
-            {matching ? (
-              <>
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-                AI đang tính toán tuyến sông & con nước...
-              </>
-            ) : (
-              <>
-                <Sparkles size={17} />
-                {journeyMode === "Tìm phương tiện"
-                  ? "Tìm chuyến bằng AI"
-                  : "Ghép chuyến bằng AI"}
-              </>
-            )}
-          </button>
-          {matched && (
-            <button
-              onClick={() => createJourney(journeyMode)}
-              className="mt-4 block w-full animate-rise rounded-xl border border-[#bde0a9] bg-[#eff9e9] p-4 text-left transition hover:bg-[#e5f5df]"
-            >
-              <div className="flex items-start gap-3">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#4f9b61] text-white">
-                  <Check size={17} />
-                </span>
-                <div className="flex-1">
-                  <p className="text-sm font-bold text-[#27623f]">
-                    {journeyMode === "Ghép chuyến"
-                      ? "Ghép chuyến thành công"
-                      : "Tìm chuyến thành công"}
-                  </p>
-                  <p className="mt-1 text-xs leading-5 text-[#557264]">
-                    {journeyMode === "Ghép chuyến"
-                      ? `${vehicleInfo.name} · ${vehicleInfo.plate} · Tuyến: ${origin} → ${destination}`
-                      : `Ghe Thành Công · AG 1888 · Tuyến: ${origin} → ${destination} (${weight} ${produce})`}
-                  </p>
-                  <p className="mt-1.5 text-xs font-bold text-[#db713f]">
-                    Đang neo bến tại {origin} · Bấm để xem hành trình ngay →
-                  </p>
-                </div>
-                <ChevronRight size={18} className="text-[#28704d]" />
-              </div>
-            </button>
-          )}
-        </div>
+        <FastBookingForm 
+          origin={origin} setOrigin={setOrigin}
+          destination={destination} setDestination={setDestination}
+          produce={produce} setProduce={setProduce}
+          weight={weight} setWeight={setWeight}
+          findBoat={findBoat} matching={matching} matched={matched}
+          createJourney={createJourney} vehicleInfo={vehicleInfo}
+        />
       </section>
-      <section id="luong-xanh-htx" className="order-3 mb-8">
-        <SectionTitle eyebrow="Dành cho HTX" title="Luồng Xanh HTX" />
-        <CooperativeFlow onContract={onContract} />
-      </section>
+
       <section className="order-1 mb-8">
         <SectionTitle
           eyebrow="Đang cần chuyến"
           title="Hàng hóa quanh bạn"
-          action="Tìm theo yêu cầu"
+          action="Tìm chuyến theo yêu cầu"
           onAction={onOpenCustomSearch}
         />
         <div className="grid gap-3 sm:grid-cols-2">
@@ -2577,7 +2604,7 @@ function HomeView({
           eyebrow="Sẵn sàng nhận chuyến"
           title="Phương tiện đang trống"
           action="Xem tất cả"
-          onAction={() => setJourneyMode("Ghép chuyến")}
+          onAction={onViewAllVehicles}
         />
         <div className="flex gap-3 overflow-x-auto pb-1">
           {availableVehicles.map((vehicle) => (
@@ -2624,40 +2651,35 @@ function HomeView({
           onRouteDetail={onRouteDetail}
         />
       </section>
-      <section className="order-5">
+      <section className="order-5 mb-8">
         <SectionTitle
           eyebrow="Mạng lưới cảm biến môi trường"
           title="Cảnh báo môi trường nước"
-          action="Xem tất cả"
-          onAction={() => setActiveTab("notifications")}
+          action={showAllEnvs ? "Thu gọn" : "Xem tất cả"}
+          onAction={() => setShowAllEnvs(!showAllEnvs)}
         />
         <div className="grid gap-3 sm:grid-cols-2">
-          <EnvironmentCard
-            name="Kênh Quản Lộ (Ninh Quới - Phước Long)"
-            value="0.4‰"
-            label="Nước ngọt an toàn"
-            tone="safe"
-          />
-          <EnvironmentCard
-            name="Cửa biển Gành Hào & Sông Đốc"
-            value="18.5‰"
-            label="Nước mặn triều dâng"
-            tone="danger"
-          />
-          <EnvironmentCard
-            name="Sông Cà Mau (Phường 2 & 9 mới sáp nhập)"
-            value="4.2‰"
-            label="Xâm nhập mặn nhẹ"
-            tone="warning"
-          />
-          <EnvironmentCard
-            name="Kênh xáng (Phường Tân Xuyên)"
-            value="0.8‰"
-            label="Nước ngọt an toàn"
-            tone="safe"
-          />
+          {(() => {
+            const envData = [
+              { name: "Kênh Quản Lộ (Ninh Quới, Ninh Quới A, Vĩnh Phú Đông, TT Phước Long)", value: "0.4‰", label: "Nước ngọt an toàn", tone: "safe" },
+              { name: "Sông Cà Mau (Phường 2 mới - sáp nhập P9)", value: "4.2‰", label: "Xâm nhập mặn nhẹ", tone: "warning" },
+              { name: "Tuyến Sông Gành Hào (Phường 4 mới - sáp nhập P5)", value: "5.5‰", label: "Xâm nhập mặn vừa", tone: "warning" },
+              { name: "Cửa biển Gành Hào & Sông Đốc", value: "18.5‰", label: "Nước mặn triều dâng", tone: "danger" },
+              { name: "Kênh Tắc Vân (Xã Tắc Vân - sáp nhập Định Bình)", value: "2.1‰", label: "Xâm nhập mặn nhẹ", tone: "warning" },
+              { name: "Sông Trẹm (Xã Lý Văn Lâm)", value: "1.2‰", label: "Nước ngọt an toàn", tone: "safe" },
+              { name: "Kênh xáng (Phường Tân Xuyên)", value: "0.8‰", label: "Nước ngọt an toàn", tone: "safe" },
+              { name: "Sông Ông Đốc (Tuyến ven xã Tân Thành)", value: "12.4‰", label: "Nước mặn triều dâng", tone: "danger" },
+              { name: "Sông Bảy Háp (Huyện Năm Căn)", value: "22.0‰", label: "Cảnh báo mặn cao", tone: "danger" },
+              { name: "Rạch Rập (Phường 8, Cà Mau)", value: "3.5‰", label: "Nguy cơ nhiễm mặn", tone: "warning" }
+            ];
+            const visible = showAllEnvs ? envData : envData.slice(0, 4);
+            return visible.map((env, i) => (
+              <EnvironmentCard key={i} name={env.name} value={env.value} label={env.label} tone={env.tone} />
+            ));
+          })()}
         </div>
       </section>
+
     </div>
   );
 }
@@ -2665,87 +2687,8 @@ function HomeView({
 function BoatOwnerHome({ onCargoDetail, setActiveTab }) {
   return (
     <div className="animate-rise">
-      <section className="mb-7 rounded-[24px] bg-[#174c3a] px-6 py-7 text-white shadow-xl md:px-9">
-        <p className="text-sm font-semibold text-[#bfe3b0]">
-           {getFormattedCurrentDateLong()} · Xin chào,{" "}
-          <VerifiedName name="Anh Tùng (Chủ ghe)" />
-        </p>
-        <h1 className="display-font mt-2 text-3xl font-bold">
-          Tối ưu từng chuyến ghe.
-        </h1>
-        <p className="mt-3 text-sm leading-6 text-[#d7ebdc]">
-          Nhận nguồn hàng nông sản phù hợp, chạy đầy tải và giảm chuyến rỗng trên toàn tuyến Cà Mau - Bạc Liêu.
-        </p>
-        <button
-          onClick={() => setActiveTab("profile")}
-          className="mt-5 rounded-xl bg-[#e9784b] px-4 py-3 text-xs font-bold shadow-md transition active:scale-95"
-        >
-          Cập nhật trọng tải trống
-        </button>
-      </section>
-      <SectionTitle
-        eyebrow="Nguồn hàng đang tìm ghe"
-        title="Cơ hội quanh bạn"
-      />
-      <div className="space-y-3">
-        {cargoRequests.map((cargo) => (
-          <article
-            key={cargo.id}
-            className="rounded-[20px] border border-[#e0ebe0] bg-white p-4 shadow-sm transition hover:border-[#2f815c]"
-          >
-            <div className="flex items-start gap-3.5">
-              <ProduceIcon type={cargo.type} />
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-bold text-[#183b32]">
-                    <VerifiedName name={cargo.sender} />
-                  </p>
-                  <span className="rounded-full bg-[#edf6e9] px-2 py-0.5 text-[10px] font-bold text-[#28704d]">
-                    {cargo.standard.split(" · ")[0]}
-                  </span>
-                </div>
-                <p className="mt-1 text-xs font-semibold text-[#4d705d]">
-                  {cargo.name} ({cargo.subName}) · {cargo.amount}
-                </p>
-                <p className="mt-1 text-xs text-[#71877b]">
-                   {cargo.route}
-                </p>
-                <div className="mt-2 flex items-center justify-between">
-                  <p className="text-[11px] font-bold text-[#e9784b]">
-                    {cargo.time} · {cargo.packaging}
-                  </p>
-                  <button
-                    onClick={() => onCargoDetail(cargo)}
-                    className="rounded-xl bg-[#2f815c] px-3.5 py-1.5 text-xs font-bold text-white shadow-sm transition hover:bg-[#256a4b] active:scale-95"
-                  >
-                    Đề xuất nhận chuyến
-                  </button>
-                </div>
-              </div>
-            </div>
-          </article>
-        ))}
-      </div>
-      <SectionTitle eyebrow="Tối ưu trọng tải rỗng" title="Gợi ý ghép chuyến" />
-      <div className="space-y-3 mb-6">
-        {[
-          { id: "GC-01", type: "tôm", sender: "Vựa Tôm Năm Căn", standard: "VietGAP", name: "Tôm sinh thái", subName: "Nguyên liệu tươi", amount: "150 kg", route: "Ninh Quới → Năm Căn", time: "Hôm nay, 14:00", packaging: "Thùng xốp đá", tempReq: "Lạnh" }
-        ].map((item) => (
-          <div key={item.id} className="flex items-center justify-between rounded-[20px] border border-[#bde0a9] bg-[#f7fcf3] p-4 shadow-sm">
-            <div>
-              <p className="text-sm font-bold text-[#183b32]">{item.name} · {item.amount}</p>
-              <p className="mt-1 text-[11px] text-[#71877b]">{item.route}</p>
-              <p className="mt-1 text-[11px] font-bold text-[#e9784b]">{item.time}</p>
-            </div>
-            <button
-              onClick={() => onCargoDetail(item)}
-              className="rounded-xl bg-[#28704d] px-3.5 py-1.5 text-xs font-bold text-white shadow-sm transition hover:bg-[#2f815c] active:scale-95"
-            >
-              Ghép ngay
-            </button>
-          </div>
-        ))}
-      </div>
+
+
       <div className="mt-6 grid grid-cols-3 gap-3">
         <button
           onClick={() => setActiveTab("activity")}
@@ -3336,12 +3279,12 @@ function ProfileView({
         <h2 className="display-font mt-1 text-lg font-bold">
           Chuyển đổi vai trò
         </h2>
-        <div className="mt-4 grid grid-cols-2 gap-2 rounded-xl bg-[#e4f1df] p-1 sm:grid-cols-4">
+        <div className="mt-4 grid grid-cols-2 gap-2 rounded-xl bg-[#e4f1df] p-1 sm:grid-cols-2">
           <button
             onClick={() => onRoleChange("farmer")}
             className={`rounded-lg px-2 py-3 text-xs font-bold ${role === "farmer" ? "bg-white text-[#28704d] shadow-sm" : "text-[#71877b]"}`}
           >
-            Nông dân
+            Nông dân & Chủ ghe
           </button>
           <button
             onClick={() => onRoleChange("cooperative")}
@@ -3349,104 +3292,130 @@ function ProfileView({
           >
             HTX
           </button>
-          <button
-            onClick={() => onRoleChange("boatOwner")}
-            className={`rounded-lg px-2 py-3 text-xs font-bold ${role === "boatOwner" ? "bg-white text-[#28704d] shadow-sm" : "text-[#71877b]"}`}
-          >
-            Chủ ghe
-          </button>
-          <button
-            onClick={() => onRoleChange("admin")}
-            className={`rounded-lg px-2 py-3 text-xs font-bold ${role === "admin" ? "bg-white text-[#28704d] shadow-sm" : "text-[#71877b]"}`}
-          >
-            Admin
-          </button>
         </div>
       </section>
-      <section className="mb-5 rounded-[20px] border border-[#e0ebe0] bg-white p-5 shadow-sm">
-        <div className="mb-4 flex items-center justify-between">
-          <div>
-            <p className="mb-1 text-[10px] font-bold uppercase tracking-[.16em] text-[#8ba095]">
-              Thông tin chạy chuyến
-            </p>
-            <h2 className="display-font text-lg font-bold">
-              Phương tiện của tôi
-            </h2>
-          </div>
-          <button
-            onClick={() => setEditingVehicle((current) => !current)}
-            className="rounded-lg bg-[#edf6e9] px-3 py-2 text-xs font-bold text-[#28704d]"
-          >
-            {editingVehicle ? "Đóng" : "Nhập phương tiện"}
-          </button>
-        </div>
-        {editingVehicle ? (
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Field label="Loại phương tiện" icon={Ship}>
-              <select
-                value={vehicleInfo.type}
-                onChange={(event) => updateVehicle("type", event.target.value)}
-              >
-                {vehicleTypes.map((vehicle) => (
-                  <option key={vehicle.name}>{vehicle.name}</option>
-                ))}
-              </select>
-            </Field>
-            <Field label="Tên phương tiện" icon={Anchor}>
-              <input
-                value={vehicleInfo.name}
-                onChange={(event) => updateVehicle("name", event.target.value)}
-                placeholder="Ví dụ: Ghe Thành Công"
-              />
-            </Field>
-            <Field label="Số đăng ký / biển số" icon={ReceiptText}>
-              <input
-                value={vehicleInfo.plate}
-                onChange={(event) => updateVehicle("plate", event.target.value)}
-              />
-            </Field>
-            <Field label="Trọng tải tối đa" icon={MoreHorizontal}>
-              <select
-                value={vehicleInfo.capacity}
-                onChange={(event) =>
-                  updateVehicle("capacity", event.target.value)
-                }
-              >
-                <option>500 kg</option>
-                <option>1 tấn</option>
-                <option>2 tấn</option>
-                <option>5 tấn</option>
-                <option>10 tấn</option>
-                <option>20 tấn</option>
-              </select>
-            </Field>
+      {role !== "cooperative" ? (
+        <section className="mb-5 rounded-[20px] border border-[#e0ebe0] bg-white p-5 shadow-sm">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-[.16em] text-[#8ba095]">
+                Thông tin chạy chuyến
+              </p>
+              <h2 className="display-font text-lg font-bold">
+                Phương tiện của tôi
+              </h2>
+            </div>
             <button
-              onClick={() => {
-                setEditingVehicle(false);
-                notify(`Đã lưu ${vehicleInfo.type} ${vehicleInfo.name}`);
-              }}
-              className="sm:col-span-2 rounded-xl bg-[#1f6b4b] py-3 text-sm font-bold text-white"
+              onClick={() => setEditingVehicle((current) => !current)}
+              className="rounded-lg bg-[#edf6e9] px-3 py-2 text-xs font-bold text-[#28704d]"
             >
-              Lưu phương tiện
+              {editingVehicle ? "Đóng" : "Nhập phương tiện"}
             </button>
           </div>
-        ) : (
-          <div className="flex items-center gap-3 rounded-xl bg-[#f1f6ef] p-3">
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-[#397153]">
-              <Ship size={19} />
-            </span>
-            <div className="flex-1">
-              <p className="text-sm font-bold">
-                <VerifiedName name={vehicleInfo.name} />
-              </p>
-              <p className="mt-1 text-xs text-[#799085]">
-                {vehicleInfo.type} · {vehicleInfo.plate} · tải{" "}
-                {vehicleInfo.capacity}
-              </p>
+          {editingVehicle ? (
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Field label="Loại phương tiện" icon={Ship}>
+                <select
+                  value={vehicleInfo.type}
+                  onChange={(event) => updateVehicle("type", event.target.value)}
+                >
+                  {vehicleTypes.map((vehicle) => (
+                    <option key={vehicle.name}>{vehicle.name}</option>
+                  ))}
+                </select>
+              </Field>
+              <Field label="Tên phương tiện" icon={Anchor}>
+                <input
+                  value={vehicleInfo.name}
+                  onChange={(event) => updateVehicle("name", event.target.value)}
+                  placeholder="Ví dụ: Ghe Thành Công"
+                />
+              </Field>
+              <Field label="Số đăng ký / biển số" icon={ReceiptText}>
+                <input
+                  value={vehicleInfo.plate}
+                  onChange={(event) => updateVehicle("plate", event.target.value)}
+                />
+              </Field>
+              <Field label="Trọng tải tối đa" icon={MoreHorizontal}>
+                <select
+                  value={vehicleInfo.capacity}
+                  onChange={(event) =>
+                    updateVehicle("capacity", event.target.value)
+                  }
+                >
+                  <option>500 kg</option>
+                  <option>1 tấn</option>
+                  <option>2 tấn</option>
+                  <option>5 tấn</option>
+                  <option>10 tấn</option>
+                  <option>20 tấn</option>
+                </select>
+              </Field>
+              <button
+                onClick={() => {
+                  setEditingVehicle(false);
+                  notify(`Đã lưu ${vehicleInfo.type} ${vehicleInfo.name}`);
+                }}
+                className="sm:col-span-2 rounded-xl bg-[#1f6b4b] py-3 text-sm font-bold text-white"
+              >
+                Lưu phương tiện
+              </button>
             </div>
+          ) : (
+            <div className="flex items-center gap-3 rounded-xl bg-[#f1f6ef] p-3">
+              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-[#397153]">
+                <Ship size={19} />
+              </span>
+              <div className="flex-1">
+                <p className="text-sm font-bold">
+                  <VerifiedName name={vehicleInfo.name} />
+                </p>
+                <p className="mt-1 text-xs text-[#799085]">
+                  {vehicleInfo.type} · {vehicleInfo.plate} · tải{" "}
+                  {vehicleInfo.capacity}
+                </p>
+              </div>
+            </div>
+          )}
+        </section>
+      ) : (
+        <section className="mb-5 rounded-[20px] border border-[#e0ebe0] bg-white p-5 shadow-sm">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <p className="mb-1 text-[10px] font-bold uppercase tracking-[.16em] text-[#8ba095]">
+                Hồ sơ pháp lý
+              </p>
+              <h2 className="display-font text-lg font-bold">
+                Thông tin Hợp tác xã
+              </h2>
+            </div>
+            <button
+              onClick={() => notify("Đang mở trang chỉnh sửa hồ sơ HTX")}
+              className="rounded-lg bg-[#edf6e9] px-3 py-2 text-xs font-bold text-[#28704d]"
+            >
+              Cập nhật
+            </button>
           </div>
-        )}
-      </section>
+          <div className="space-y-3">
+             <div className="flex items-center gap-3 text-sm border-b border-[#f0f6ee] pb-2">
+                <ShieldCheck size={18} className="text-[#397153]" />
+                <span className="font-semibold text-[#183b32] w-24">Mã số thuế:</span>
+                <span className="text-[#557264]">2001234567</span>
+             </div>
+             <div className="flex items-center gap-3 text-sm border-b border-[#f0f6ee] pb-2">
+                <MapPin size={18} className="text-[#397153]" />
+                <span className="font-semibold text-[#183b32] w-24">Địa chỉ:</span>
+                <span className="text-[#557264] truncate">Xã Ninh Quới, Hồng Dân, Bạc Liêu</span>
+             </div>
+             <div className="flex items-center gap-3 text-sm">
+                <Leaf size={18} className="text-[#397153]" />
+                <span className="font-semibold text-[#183b32] w-24">Chứng nhận:</span>
+                <span className="text-[#2f815c] font-bold">VietGAP, MRV Carbon</span>
+             </div>
+          </div>
+        </section>
+      )}
       <section className="mb-5 rounded-[20px] border border-[#e0ebe0] bg-white p-5 shadow-sm">
         <div className="flex items-center gap-3">
           <ShieldCheck className="text-[#3e9b61]" size={21} />
@@ -3697,10 +3666,62 @@ function ProfilePanel({ panel, onClose, notify, onLogout }) {
         </div>
       </ModalShell>
     );
+  if (panel === "Đánh giá chuyến đi") {
+    const reviews = [
+      { id: 1, name: "Anh Tùng", date: "15/08/2026 14:30", rating: 5, text: "Chủ ghe rất nhiệt tình, cẩn thận. Lúa về tới Cà Mau không suy suyển hột nào, cảm ơn anh Sáu nha!", avatar: "T" },
+      { id: 2, name: "HTX Nhật Minh", date: "10/08/2026 09:15", rating: 5, text: "Giao hàng đúng hẹn, xe sạch sẽ, có phủ bạt cẩn thận. Sẽ tiếp tục hợp tác các chuyến trái cây sau.", avatar: "N" },
+      { id: 3, name: "Chị Bảy", date: "02/08/2026 16:45", rating: 4, text: "Ghe chạy êm, nhưng kẹt con nước nên đến trễ 30 phút. Nói chung vẫn tốt.", avatar: "B" },
+      { id: 4, name: "Đại lý Tôm Khô Tấn Phát", date: "25/07/2026 11:20", rating: 5, text: "Tuyệt vời, tôm sống 100%, bảo quản lạnh rất chuẩn.", avatar: "T" }
+    ];
+    return (
+      <ModalShell onClose={onClose}>
+        <div className="mb-4 flex items-center justify-between">
+          <h2 className="display-font text-xl font-bold text-[#183b32]">Đánh giá khách hàng</h2>
+          <button onClick={onClose} aria-label="Đóng" className="rounded-full bg-[#f1f6ef] p-2 text-[#397153] hover:bg-[#e4efe2] transition">
+            <X size={18} />
+          </button>
+        </div>
+        <div className="flex items-center gap-4 mb-4 bg-[#fffaf5] p-4 rounded-xl border border-[#faecd8]">
+          <div className="text-center">
+            <p className="text-4xl font-bold text-[#e9784b]">4.8</p>
+            <p className="text-xs text-[#d9733e]">trên 5</p>
+          </div>
+          <div className="flex flex-col gap-1">
+            <div className="flex text-[#e9784b]">
+              {[1,2,3,4,5].map(i => <Star key={i} size={16} fill={i <= 4 ? "currentColor" : "none"} strokeWidth={i <= 4 ? 0 : 2} />)}
+            </div>
+            <p className="text-xs text-[#799085]">Dựa trên 120 đánh giá</p>
+          </div>
+        </div>
+        <div className="space-y-4 max-h-[60vh] overflow-y-auto scrollbar-thin pr-1 pb-4">
+          {reviews.map(r => (
+            <div key={r.id} className="border-b border-[#e0ebe0] pb-4 last:border-0 last:pb-0">
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#f1f6ef] text-[#2f815c] font-bold text-lg border border-[#d6e8d4]">
+                  {r.avatar}
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-bold text-[#183b32]">{r.name}</p>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <div className="flex text-[#e9784b]">
+                      {[1,2,3,4,5].map(i => <Star key={i} size={12} fill={i <= r.rating ? "currentColor" : "none"} strokeWidth={i <= r.rating ? 0 : 2} />)}
+                    </div>
+                  </div>
+                  <p className="text-[10px] text-[#8ba095] mt-1 mb-2">{r.date}</p>
+                  <p className="text-sm text-[#365f4b] leading-5">{r.text}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </ModalShell>
+    );
+  }
+
   return (
     <ModalShell onClose={onClose}>
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="display-font text-xl font-bold">{content[0]}</h2>
+        <h2 className="display-font text-xl font-bold text-[#183b32]">{content[0]}</h2>
         <button
           onClick={onClose}
           aria-label="Đóng"
@@ -3709,7 +3730,7 @@ function ProfilePanel({ panel, onClose, notify, onLogout }) {
           <X size={18} />
         </button>
       </div>
-      <div className="space-y-2">
+      <div className="space-y-2 max-h-[60vh] overflow-y-auto">
         {content.slice(1).map((line) => (
           <div
             key={line}
@@ -3724,7 +3745,7 @@ function ProfilePanel({ panel, onClose, notify, onLogout }) {
           notify(`Đã lưu ${panel}`);
           onClose();
         }}
-        className="mt-4 w-full rounded-xl bg-[#1f6b4b] py-3 text-sm font-bold text-white"
+        className="mt-4 w-full rounded-xl bg-[#1f6b4b] py-3 text-sm font-bold text-white shadow-md active:scale-95 transition"
       >
         Đã hiểu
       </button>
@@ -4226,6 +4247,7 @@ function VehicleDetail({ vehicle, onClose, onBook }) {
 function ContractModal({ onClose, notify }) {
   const [deposit, setDeposit] = useState("20%");
   const [signed, setSigned] = useState(false);
+  const [isSigning, setIsSigning] = useState(false);
   const fields = [
     ["Tên người mua / chủ ghe", "Anh Tùng · Ghe Thành Công"],
     ["Tên nông dân", "Ngọc Anh · HTX Ninh Quới"],
@@ -4235,8 +4257,12 @@ function ContractModal({ onClose, notify }) {
     ["Giá chốt cố định", "7.200.000đ / tấn"],
   ];
   const sign = () => {
-    setSigned(true);
-    notify("Tiền cọc đã được giữ an toàn trên hệ thống. Hợp đồng có hiệu lực!");
+    setIsSigning(true);
+    setTimeout(() => {
+      setIsSigning(false);
+      setSigned(true);
+      notify("Tiền cọc đã được khóa vào hệ thống an toàn");
+    }, 2000);
   };
   return (
     <ModalShell>
@@ -4299,13 +4325,248 @@ function ContractModal({ onClose, notify }) {
         </span>
       </div>
       <button
-        disabled={signed}
+        disabled={signed || isSigning}
         onClick={sign}
-        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#1f6b4b] py-3.5 text-sm font-bold text-white disabled:opacity-70"
+        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#1f6b4b] py-3.5 text-sm font-bold text-white disabled:opacity-70 transition-all"
       >
-        <LockKeyhole size={17} />
-        {signed ? "Hợp đồng đã có hiệu lực" : "Ký tên & Khóa tiền cọc"}
+        {isSigning ? (
+          <>
+            <span className="animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full"></span>
+            Đang chờ Chủ ghe xác nhận...
+          </>
+        ) : (
+          <>
+            <LockKeyhole size={17} />
+            {signed ? "Hợp đồng đã có hiệu lực" : "Ký tên & Khóa tiền cọc"}
+          </>
+        )}
       </button>
+    </ModalShell>
+  );
+}
+
+function AllVehiclesModal({ vehicles, onClose, onVehicleDetail, createJourney }) {
+  return (
+    <ModalShell onClose={onClose}>
+      <div className="mb-5 flex items-start justify-between">
+        <div>
+          <h2 className="display-font text-2xl font-bold text-[#183b32]">
+            Tất cả phương tiện
+          </h2>
+          <p className="mt-1 text-xs text-[#799085]">
+            Danh sách ghe, xà lan, vỏ đang sẵn sàng
+          </p>
+        </div>
+        <button
+          onClick={onClose}
+          className="rounded-full bg-[#f1f6ef] p-2 text-[#397153]"
+        >
+          <X size={18} />
+        </button>
+      </div>
+      <div className="flex flex-col gap-3 h-[60vh] overflow-y-auto">
+        {vehicles.map((v) => (
+          <div key={v.name} className="rounded-[18px] border border-[#e0ebe0] bg-white p-4 shadow-sm">
+            <div className="flex justify-between items-center mb-3">
+              <span className="font-bold text-[#183b32]">{v.name}</span>
+              <span className="font-bold text-[#e9784b]">{v.fee}</span>
+            </div>
+            <p className="text-xs text-[#71877b] mb-1">Tải trọng: {v.capacity}</p>
+            <p className="text-xs text-[#71877b] mb-3">Tuyến: {v.route}</p>
+            <div className="flex gap-2">
+              <button 
+                onClick={() => { onClose(); onVehicleDetail(v); }}
+                className="flex-1 rounded-xl border border-[#2f815c] py-2 text-xs font-bold text-[#2f815c] transition active:scale-95"
+              >
+                Xem chi tiết
+              </button>
+              <button 
+                onClick={() => { 
+                  onClose(); 
+                  createJourney("Ghép chuyến", {
+                    title: "Chuyến đặt phương tiện",
+                    route: v.route,
+                    boat: v.name,
+                  });
+                }}
+                className="flex-1 rounded-xl bg-[#2f815c] py-2 text-xs font-bold text-white shadow-sm transition active:scale-95"
+              >
+                Đặt chuyến
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </ModalShell>
+  );
+}
+
+function FastBookingForm({
+  origin, setOrigin,
+  destination, setDestination,
+  produce, setProduce,
+  weight, setWeight,
+  findBoat, matching, matched, createJourney, vehicleInfo
+}) {
+  return (
+    <div className="rounded-[20px] border border-[#e0ebe0] bg-white p-4 shadow-sm md:p-5">
+      <div className="grid gap-3 md:grid-cols-2">
+        <Field label="Điểm đi (Bến xuất phát)" icon={MapPin}>
+          <div className="w-full">
+            <FlexibleInput
+              value={origin}
+              onChange={(val) => setOrigin(val)}
+              options={caMauLocations}
+              placeholder="Chọn điểm đi..."
+            />
+          </div>
+        </Field>
+        <Field label="Điểm đến (Bến giao nhận)" icon={Navigation}>
+          <div className="w-full">
+            <FlexibleInput
+              value={destination}
+              onChange={(val) => setDestination(val)}
+              options={caMauLocations}
+              placeholder="Chọn điểm đến..."
+            />
+          </div>
+        </Field>
+        <Field label="Loại nông/hải sản đặc sản" icon={Package}>
+          <div className="w-full">
+            <FlexibleInput
+              value={produce}
+              onChange={(val) => setProduce(val)}
+              grouped={produceGroupedOptions}
+              placeholder="Chọn loại hàng hóa..."
+            />
+          </div>
+        </Field>
+        <Field label="Khối lượng cần chở" icon={MoreHorizontal}>
+          <div className="w-full">
+            <FlexibleInput
+              value={weight}
+              onChange={(val) => setWeight(val)}
+              options={weightOptions}
+              placeholder="Chọn khối lượng..."
+            />
+          </div>
+        </Field>
+      </div>
+      <button
+        disabled={matching}
+        onClick={findBoat}
+        className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-[#e9784b] px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-[#e9784b]/20 transition hover:bg-[#d7653a] disabled:cursor-wait disabled:opacity-70 active:scale-[0.99]"
+      >
+        {matching ? (
+          <>
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+            AI đang tính toán tuyến sông & con nước...
+          </>
+        ) : (
+          <>
+            <Sparkles size={17} />
+            Tìm chuyến bằng AI
+          </>
+        )}
+      </button>
+      {matched && (
+        <button
+          onClick={() => createJourney("Tìm phương tiện")}
+          className="mt-4 block w-full animate-rise rounded-xl border border-[#bde0a9] bg-[#eff9e9] p-4 text-left transition hover:bg-[#e5f5df]"
+        >
+          <div className="flex items-start gap-3">
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#4f9b61] text-white">
+              <Check size={17} />
+            </span>
+            <div className="flex-1">
+              <p className="text-sm font-bold text-[#27623f]">Tìm chuyến thành công</p>
+              <p className="mt-1 text-xs leading-5 text-[#557264]">
+                Ghe Thành Công · AG 1888 · Tuyến: {origin} → {destination} ({weight} {produce})
+              </p>
+              <p className="mt-1.5 text-xs font-bold text-[#db713f]">
+                Đang neo bến tại {origin} · Bấm để xem hành trình ngay →
+              </p>
+            </div>
+            <ChevronRight size={18} className="text-[#28704d]" />
+          </div>
+        </button>
+      )}
+    </div>
+  );
+}
+
+function InventoryModal({ category, onClose }) {
+  const dataMap = {
+    "Ghe/Xuồng": [
+      { id: "GX-01", name: "Ghe tải chở lúa (30 Tấn)", owner: "Nguyễn Văn Sáu", capacity: "30 Tấn", status: "Sẵn sàng" },
+      { id: "GX-02", name: "Ghe chở trái cây (15 Tấn)", owner: "Lê Thị Bảy", capacity: "15 Tấn", status: "Đang vận chuyển" },
+    ],
+    "Xà Lan": [
+      { id: "XL-01", name: "Xà lan Mũi Né 1", owner: "Trần Văn Tám", capacity: "120 Tấn", status: "Đang neo đậu" },
+      { id: "XL-02", name: "Xà lan HTX Miền Tây", owner: "HTX Nhật Minh", capacity: "250 Tấn", status: "Đang ghép đơn" },
+    ],
+    "Lúa Gạo": [
+      { id: "LG-01", name: "Lúa ST25 Hữu cơ", owner: "Hộ Nguyễn Văn A", area: "2.5 ha", yield: "15 Tấn", status: "Chờ thu hoạch" },
+      { id: "LG-02", name: "Lúa Đài Thơm 8", owner: "Hộ Trần Thị C", area: "1.2 ha", yield: "8 Tấn", status: "Sẵn sàng bán" },
+    ],
+    "Trái Cây": [
+      { id: "TC-01", name: "Cam sành VietGAP", owner: "Hộ Lê Hữu Khương", area: "0.8 ha", yield: "3 Tấn", status: "Chờ thu hoạch" },
+      { id: "TC-02", name: "Xoài Cát Hòa Lộc", owner: "Hộ Nguyễn Tấn Đạt", area: "1.5 ha", yield: "4 Tấn", status: "Đang ra trái" },
+    ],
+    "Thủy Sản": [
+      { id: "TS-01", name: "Tôm sú sinh thái", owner: "Hộ Võ Thành", area: "1.5 ha", yield: "2 Tấn", status: "Sẵn sàng xuất" },
+      { id: "TS-02", name: "Cua biển Năm Căn", owner: "Hộ Lê Lâm", area: "2.0 ha", yield: "1.5 Tấn", status: "Sẵn sàng xuất" },
+    ],
+    "Ghép Đơn": [
+      { id: "GD-01", name: "Chuyến ghép nông sản Gành Hào", owner: "Tuyến Cà Mau - Bạc Liêu", capacity: "Trống 15 Tấn", status: "Chờ xuất phát" }
+    ],
+    "Độ Mặn": [
+      { id: "MT-01", name: "Trạm đo Quản Lộ", owner: "HTX Nhật Minh", capacity: "0.4‰", status: "Hoạt động tốt" }
+    ]
+  };
+
+  const getList = () => {
+    if (category === "Tất cả") {
+      return Object.entries(dataMap).flatMap(([cat, items]) => items.map(item => ({...item, cat})));
+    }
+    return dataMap[category] || [];
+  };
+
+  const items = getList();
+
+  return (
+    <ModalShell onClose={onClose}>
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-[.15em] text-[#8ba095]">Danh sách quản lý</p>
+          <h2 className="display-font text-xl font-bold text-[#183b32]">{category === "Tất cả" ? "Toàn bộ Tài sản & Nông sản" : category}</h2>
+        </div>
+        <button onClick={onClose} className="rounded-full bg-[#f1f6ef] p-2 text-[#397153] hover:bg-[#e4efe2] transition">
+          <X size={18} />
+        </button>
+      </div>
+
+      {items.length === 0 ? (
+        <div className="py-10 text-center text-sm font-semibold text-[#8ba095]">Chưa có dữ liệu quản lý cho hạng mục này.</div>
+      ) : (
+        <div className="space-y-3 max-h-[60vh] overflow-y-auto scrollbar-thin pr-1 pb-4">
+          {items.map((item, idx) => (
+            <div key={idx} className="flex flex-col gap-2 rounded-xl border border-[#e0ebe0] bg-[#f8fcf7] p-3 shadow-sm hover:border-[#2f815c] transition">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-[#183b32] text-sm">{item.name}</span>
+                <span className="rounded-full bg-[#edf6e9] px-2 py-1 text-[10px] font-bold text-[#2f815c] whitespace-nowrap">{item.status}</span>
+              </div>
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-[#557264] mt-1">
+                {item.owner && <span>Phụ trách: <strong>{item.owner}</strong></span>}
+                {item.capacity && <span>Khối lượng/Tải trọng: <strong>{item.capacity}</strong></span>}
+                {item.area && <span>Diện tích: <strong>{item.area}</strong></span>}
+                {item.yield && <span>Sản lượng: <strong>{item.yield}</strong></span>}
+                {item.cat && <span>Loại: <strong className="text-[#d9733e]">{item.cat}</strong></span>}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </ModalShell>
   );
 }
