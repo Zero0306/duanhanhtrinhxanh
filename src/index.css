@@ -3,8 +3,8 @@
 
 :root {
   font-family: "DM Sans", sans-serif;
-  color: #183b32;
-  background: #f5f8f4;
+  color: #1e4638;
+  background: #f6faf5;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -30,7 +30,7 @@ button {
 .app-shell {
   min-height: 100vh;
   background:
-    radial-gradient(circle at 85% 3%, #e4f4d9 0, transparent 25%), #f5f8f4;
+    radial-gradient(circle at 85% 3%, #e6f6dd 0, transparent 28%), #f6faf5;
 }
 .map-grid {
   background-image:
