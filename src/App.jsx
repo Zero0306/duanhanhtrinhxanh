@@ -4869,6 +4869,265 @@ function JourneyDetail({ journey, onClose }) {
   );
 }
 
+function CargoDetail({ cargo, onClose, onAccept }) {
+  if (!cargo) return null;
+  return (
+    <ModalShell onClose={onClose}>
+      <div className="mb-5 flex items-start justify-between">
+        <div className="flex items-center gap-3">
+          <ProduceIcon type={cargo.type} />
+          <div>
+            <span className="rounded-full bg-[#edf6e9] px-2.5 py-0.5 text-[10px] font-bold text-[#2c7d55]">
+              {cargo.standard}
+            </span>
+            <h2 className="display-font mt-0.5 text-xl font-bold text-[#1e4638]">
+              {cargo.name}
+            </h2>
+            <p className="text-xs text-[#557264]">{cargo.subName}</p>
+          </div>
+        </div>
+        <button
+          onClick={onClose}
+          aria-label="Đóng"
+          className="rounded-full bg-[#f1f6ef] p-2 text-[#367e5b] hover:bg-[#e4efe2] transition"
+        >
+          <X size={18} />
+        </button>
+      </div>
+
+      <div className="space-y-3 rounded-2xl bg-[#f8fbf7] border border-[#e0ebe0] p-4 text-xs sm:text-sm">
+        <div className="flex justify-between items-center pb-2 border-b border-[#e5eee5]">
+          <span className="text-[#799085]">Khối lượng cần vận chuyển</span>
+          <b className="text-[#ea8156] text-base font-bold">{cargo.amount}</b>
+        </div>
+        <div className="flex justify-between items-start gap-4">
+          <span className="text-[#799085]">Bến bốc hàng (Điểm đi)</span>
+          <b className="text-right text-[#1e4638]">{cargo.origin || (cargo.route && cargo.route.split(" → ")[0])}</b>
+        </div>
+        <div className="flex justify-between items-start gap-4">
+          <span className="text-[#799085]">Bến giao nhận (Điểm đến)</span>
+          <b className="text-right text-[#1e4638]">{cargo.destination || (cargo.route && cargo.route.split(" → ")[1])}</b>
+        </div>
+        <div className="flex justify-between items-center">
+          <span className="text-[#799085]">Quy cách đóng gói</span>
+          <b className="text-[#1e4638]">{cargo.packaging}</b>
+        </div>
+        <div className="flex justify-between items-center">
+          <span className="text-[#799085]">Bảo quản đặc biệt</span>
+          <b className="text-[#2c7d55]">{cargo.tempReq || "Khô ráo, thoáng mát"}</b>
+        </div>
+        <div className="flex justify-between items-center">
+          <span className="text-[#799085]">Thời gian yêu cầu</span>
+          <b className="text-[#1e4638]">{cargo.time}</b>
+        </div>
+        <div className="flex justify-between items-center border-t border-[#e5eee5] pt-2">
+          <span className="text-[#799085]">Đơn vị / Hộ gửi hàng</span>
+          <b className="text-[#2c7d55]">{cargo.sender}</b>
+        </div>
+        {cargo.phone && (
+          <div className="flex justify-between items-center">
+            <span className="text-[#799085]">Liên hệ bến bốc</span>
+            <b className="text-[#1e4638]">{cargo.phone}</b>
+          </div>
+        )}
+      </div>
+
+      <div className="mt-4 flex gap-3">
+        <button
+          onClick={onClose}
+          className="flex-1 rounded-xl border border-[#d6e5d8] py-3 text-xs sm:text-sm font-bold text-[#557264] hover:bg-[#f1f6ef] transition"
+        >
+          Đóng
+        </button>
+        <button
+          onClick={onAccept}
+          className="flex-[2] flex items-center justify-center gap-2 rounded-xl bg-[#2c7d55] hover:bg-[#236746] py-3 text-xs sm:text-sm font-bold text-white shadow-md shadow-[#2c7d55]/20 transition active:scale-[0.98]"
+        >
+          <CheckCheck size={18} /> Nhận vận chuyển lô hàng này
+        </button>
+      </div>
+    </ModalShell>
+  );
+}
+
+function VehicleDetail({ vehicle, onClose, onBook }) {
+  if (!vehicle) return null;
+  return (
+    <ModalShell onClose={onClose}>
+      <div className="mb-5 flex items-start justify-between">
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-[.15em] text-[#8ba095]">
+            Phương tiện đang trống
+          </p>
+          <h2 className="display-font mt-1 text-2xl font-bold text-[#1e4638]">
+            {vehicle.name}
+          </h2>
+        </div>
+        <button
+          onClick={onClose}
+          aria-label="Đóng"
+          className="rounded-full bg-[#f1f6ef] p-2 text-[#367e5b] hover:bg-[#e4efe2] transition"
+        >
+          <X size={18} />
+        </button>
+      </div>
+
+      <div className="rounded-2xl bg-[#f8fbf7] border border-[#e0ebe0] p-4 text-sm space-y-3">
+        <div className="flex items-center gap-3">
+          <span className="rounded-xl bg-[#edf6e9] p-3 text-[#2c7d55]">
+            <Ship size={22} />
+          </span>
+          <div>
+            <b className="text-[#1e4638]">
+              {vehicle.type} · Tải trọng {vehicle.capacity}
+            </b>
+            <p className="mt-0.5 text-xs text-[#2c7d55] font-semibold">Sẵn sàng nhận chuyến</p>
+          </div>
+        </div>
+
+        <div className="pt-2 border-t border-[#e5eee5] space-y-2 text-xs">
+          <div className="flex justify-between">
+            <span className="text-[#799085]">Tuyến hoạt động:</span>
+            <b className="text-[#1e4638] text-right">{vehicle.route}</b>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-[#799085]">Tài công / Chủ phương tiện:</span>
+            <b className="text-[#1e4638]">{vehicle.captain || "Tài công HTX"}</b>
+          </div>
+          {vehicle.phone && (
+            <div className="flex justify-between">
+              <span className="text-[#799085]">Số điện thoại:</span>
+              <b className="text-[#2c7d55]">{vehicle.phone}</b>
+            </div>
+          )}
+          <div className="flex justify-between items-center pt-2 border-t border-[#e5eee5]">
+            <span className="text-[#799085]">Phí nền tảng ghép chuyến:</span>
+            <b className="text-sm font-bold text-[#ea8156]">{vehicle.fee}</b>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-4 flex gap-3">
+        <button
+          onClick={onClose}
+          className="flex-1 rounded-xl border border-[#d6e5d8] py-3 text-xs sm:text-sm font-bold text-[#557264] hover:bg-[#f1f6ef] transition"
+        >
+          Đóng
+        </button>
+        <button
+          onClick={onBook}
+          className="flex-[2] flex items-center justify-center gap-2 rounded-xl bg-[#2c7d55] hover:bg-[#236746] py-3 text-xs sm:text-sm font-bold text-white shadow-md shadow-[#2c7d55]/20 transition active:scale-[0.98]"
+        >
+          <Ship size={18} /> Đặt chuyến với phương tiện này
+        </button>
+      </div>
+    </ModalShell>
+  );
+}
+
+function WalletMethodModal({ action, onClose, notify }) {
+  const methods = [
+    [Landmark, "Ngân hàng nội địa (Vietcombank, Agribank, BIDV...)"],
+    [Wallet, "Ví điện tử MoMo / ZaloPay"],
+    [CreditCard, "Thẻ Quốc tế (Visa / Mastercard)"],
+    [ArrowDownToLine, "Chuyển khoản QR Napas 247"],
+  ];
+  return (
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-0 backdrop-blur-sm sm:items-center sm:p-5 animate-fade-in">
+      <div className="w-full max-w-md rounded-t-[28px] bg-white p-5 shadow-2xl sm:rounded-[28px] animate-rise">
+        <div className="mb-5 flex items-center justify-between">
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[.15em] text-[#8ba095]">
+              Ví Hành trình xanh
+            </p>
+            <h2 className="display-font text-xl font-bold text-[#1e4638]">{action} qua cổng thanh toán</h2>
+          </div>
+          <button
+            onClick={onClose}
+            className="rounded-full bg-[#f1f6ef] p-2 text-[#367e5b] hover:bg-[#e4efe2] transition"
+            aria-label="Đóng"
+          >
+            <X size={18} />
+          </button>
+        </div>
+        <div className="space-y-2.5">
+          {methods.map(([Icon, label]) => (
+            <button
+              key={label}
+              onClick={() => {
+                notify(`${action} qua ${label.split(" (")[0]} thành công`);
+                onClose();
+              }}
+              className="flex w-full items-center gap-3 rounded-2xl border border-[#e0ebe0] p-3.5 text-left hover:border-[#2c7d55] hover:bg-[#f6faf5] transition active:scale-[0.99]"
+            >
+              <span className="rounded-xl bg-[#edf6e9] p-2.5 text-[#2c7d55]">
+                <Icon size={18} />
+              </span>
+              <span className="flex-1 text-xs sm:text-sm font-semibold text-[#1e4638]">{label}</span>
+              <ChevronRight size={16} className="text-[#9caf9f]" />
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function HistoryModal({ onClose, fee }) {
+  return (
+    <ModalShell onClose={onClose}>
+      <div className="mb-5 flex items-center justify-between">
+        <div>
+          <p className="text-[10px] font-bold uppercase tracking-[.15em] text-[#8ba095]">
+            Ví Hành trình xanh
+          </p>
+          <h2 className="display-font text-xl font-bold text-[#1e4638]">Lịch sử giao dịch</h2>
+        </div>
+        <button
+          onClick={onClose}
+          aria-label="Đóng"
+          className="rounded-full bg-[#f1f6ef] p-2 text-[#367e5b] hover:bg-[#e4efe2] transition"
+        >
+          <X size={18} />
+        </button>
+      </div>
+      <div className="space-y-1 rounded-2xl border border-[#e0ebe0] bg-white px-4 py-2">
+        <Transaction
+          icon={Ship}
+          title="Cước chuyến HT-2048 (Lúa ST25)"
+          date="Hôm nay, 10:15"
+          amount={`-${fee.toLocaleString("vi-VN")}đ`}
+        />
+        <Transaction
+          icon={ArrowDownToLine}
+          title="Nạp tiền vào ví điện tử"
+          date="Hôm nay, 09:30"
+          amount="+2.000.000đ"
+          positive
+        />
+        <Transaction
+          icon={Check}
+          title="Hoàn cước chuyến HT-1982"
+          date="Hôm qua, 15:45"
+          amount={`+${fee.toLocaleString("vi-VN")}đ`}
+          positive
+        />
+        <Transaction
+          icon={Ship}
+          title="Phí nền tảng ghép chuyến HT-1873"
+          date="27/08/2026"
+          amount={`-${fee.toLocaleString("vi-VN")}đ`}
+        />
+      </div>
+      <button
+        onClick={onClose}
+        className="mt-4 w-full rounded-xl bg-[#f1f6ef] py-3 text-xs font-bold text-[#367e5b] hover:bg-[#e4efe2] transition"
+      >
+        Đóng
+      </button>
+    </ModalShell>
+  );
+}
 
 function ContractModal({ onClose, notify }) {
   const [deposit, setDeposit] = useState("20%");
