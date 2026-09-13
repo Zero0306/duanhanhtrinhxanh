@@ -1003,7 +1003,7 @@ function App() {
               <button
                 key={id}
                 onClick={() => setActiveTab(id)}
-                className={`flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-xl px-1 py-1.5 text-center text-[10px] font-medium tracking-tight transition sm:px-2 sm:text-[11px] ${isActive ? "bg-[#edf6e9] text-[#28704d] font-bold" : "text-[#8b9e93] hover:text-[#367e5b]"}`}
+                className={`flex min-w-0 flex-1 flex-col items-center justify-center gap-[3px] rounded-[10px] px-0.5 py-1.5 text-center text-[9px] sm:text-[11px] font-medium tracking-tight transition sm:px-2 ${isActive ? "bg-[#edf6e9] text-[#28704d] font-bold" : "text-[#8b9e93] hover:text-[#367e5b]"}`}
               >
                 <Icon size={20} strokeWidth={isActive ? 2.5 : 2} className="shrink-0" />
                 <span className="w-full truncate px-0.5 sm:hidden">
