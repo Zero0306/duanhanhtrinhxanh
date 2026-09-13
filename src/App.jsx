@@ -1003,14 +1003,14 @@ function App() {
               <button
                 key={id}
                 onClick={() => setActiveTab(id)}
-                className={`flex min-w-0 flex-1 flex-col items-center justify-center gap-[3px] rounded-[10px] px-0.5 py-1.5 text-center text-[9px] sm:text-[11px] font-medium tracking-tight transition sm:px-2 ${isActive ? "bg-[#edf6e9] text-[#28704d] font-bold" : "text-[#8b9e93] hover:text-[#367e5b]"}`}
+                className={`flex flex-col items-center justify-center pt-1.5 pb-1 transition-all ${isActive ? "text-[#2c7d55]" : "text-[#8ba095] hover:text-[#4d6b5c]"}`}
               >
-                <Icon size={20} strokeWidth={isActive ? 2.5 : 2} className="shrink-0" />
-                <span className="w-full truncate px-0.5 sm:hidden">
-                  {mobileLabel}
-                </span>
-                <span className="hidden w-full truncate sm:block">
-                  {label}
+                <div className="relative mb-1 transition-transform duration-200 active:scale-95">
+                  <Icon size={24} strokeWidth={isActive ? 2.5 : 2} />
+                </div>
+                <span className={`text-[10px] whitespace-nowrap transition-all ${isActive ? "font-bold" : "font-medium"}`}>
+                  <span className="sm:hidden">{mobileLabel}</span>
+                  <span className="hidden sm:inline">{label}</span>
                 </span>
               </button>
             );
