@@ -1003,13 +1003,13 @@ function App() {
               <button
                 key={id}
                 onClick={() => setActiveTab(id)}
-                className={`flex min-w-0 flex-1 flex-col items-center gap-1 rounded-xl px-0.5 py-1.5 text-center text-[9px] font-semibold leading-3 transition sm:px-2 sm:text-[10px] sm:leading-normal ${isActive ? "bg-[#edf6e9] text-[#28704d]" : "text-[#8b9e93] hover:text-[#367e5b]"}`}
+                className={`flex min-w-0 flex-1 flex-col items-center justify-center gap-1 rounded-xl px-1 py-1.5 text-center text-[10px] font-medium tracking-tight transition sm:px-2 sm:text-[11px] ${isActive ? "bg-[#edf6e9] text-[#28704d] font-bold" : "text-[#8b9e93] hover:text-[#367e5b]"}`}
               >
-                <Icon size={19} strokeWidth={isActive ? 2.5 : 1.8} />
-                <span className="max-w-full whitespace-nowrap sm:hidden">
+                <Icon size={20} strokeWidth={isActive ? 2.5 : 2} className="shrink-0" />
+                <span className="w-full truncate px-0.5 sm:hidden">
                   {mobileLabel}
                 </span>
-                <span className="hidden max-w-full whitespace-nowrap sm:block">
+                <span className="hidden w-full truncate sm:block">
                   {label}
                 </span>
               </button>
@@ -1116,19 +1116,8 @@ function App() {
 function ZaloIcon({ className = "w-5 h-5" }) {
   return (
     <svg viewBox="0 0 48 48" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="48" height="48" rx="12" fill="#0068FF" />
-      <path
-        d="M12.5 30L19.5 30L12.5 17.5V15H24.5V19H17.5L24.5 31.5V34H12.5V30Z"
-        fill="white"
-      />
-      <path
-        d="M29 15H25.5V34H29V15Z"
-        fill="white"
-      />
-      <path
-        d="M34.5 20C34.5 17.2 36.8 15 39.5 15C42.2 15 44.5 17.2 44.5 20V34H41V20C41 19.2 40.3 18.5 39.5 18.5C38.7 18.5 38 19.2 38 20V34H34.5V20Z"
-        fill="white"
-      />
+      <rect width="48" height="48" rx="14" fill="currentColor" />
+      <text x="50%" y="54%" dominantBaseline="middle" textAnchor="middle" fill="#ffffff" fontWeight="800" fontSize="22" fontFamily="Arial, sans-serif" letterSpacing="-0.5">Zalo</text>
     </svg>
   );
 }
@@ -1277,9 +1266,8 @@ function LoginView({ onAuthenticated }) {
 
   // Login form state
   const [phone, setPhone] = useState("");
-  const [otpSent, setOtpSent] = useState(false);
-  const [otp, setOtp] = useState("");
-  const [otpTimer, setOtpTimer] = useState(0);
+  const [loginPassword, setLoginPassword] = useState("");
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
 
   // Register form state
   const [regFullName, setRegFullName] = useState("");
@@ -1289,6 +1277,11 @@ function LoginView({ onAuthenticated }) {
   const [showPassword, setShowPassword] = useState(false);
   const [agreeTerms, setAgreeTerms] = useState(true);
   const [kycUploaded, setKycUploaded] = useState(false);
+
+  // OTP state for registration
+  const [otpSent, setOtpSent] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [otpTimer, setOtpTimer] = useState(0);
 
   // Modal & Feedback
   const [zaloModalOpen, setZaloModalOpen] = useState(false);
@@ -1311,13 +1304,13 @@ function LoginView({ onAuthenticated }) {
   }, [otpSent, otpTimer]);
 
   const handleSendOtp = () => {
-    if (!phone.trim() || phone.length < 9) {
+    if (!regPhone.trim() || regPhone.length < 9) {
       showToast("Vui lòng nhập số điện thoại hợp lệ (từ 9 - 11 chữ số)");
       return;
     }
     setOtpSent(true);
     setOtpTimer(60);
-    showToast("Mã OTP đã được gửi đến " + phone + " (Mã demo: 123456)");
+    showToast("Mã OTP đã được gửi đến " + regPhone + " (Mã demo: 123456)");
   };
 
   const handleFillDemoOtp = () => {
@@ -1326,40 +1319,40 @@ function LoginView({ onAuthenticated }) {
   };
 
   const handleLoginSubmit = () => {
+    if (!phone.trim() || phone.length < 9) {
+      showToast("Vui lòng nhập số điện thoại hợp lệ");
+      return;
+    }
+    if (!loginPassword || loginPassword.length < 6) {
+      showToast("Vui lòng nhập mật khẩu hợp lệ (Tối thiểu 6 ký tự)");
+      return;
+    }
+    localStorage.setItem("hanhTrinhXanh.authenticated", "true");
+    localStorage.setItem("hanhTrinhXanh.phone", phone);
+    localStorage.setItem("hanhTrinhXanh.name", "Khách hàng");
+    localStorage.setItem("hanhTrinhXanh.role", "farmer");
+    localStorage.setItem("hanhTrinhXanh.authMethod", "password");
+    showToast("Đăng nhập thành công!");
+    setTimeout(() => {
+      onAuthenticated("farmer", "Khách hàng");
+    }, 250);
+  };
+
+  const handleRegisterSubmit = () => {
+    if (!regFullName.trim() || !regPhone.trim() || !regPassword) {
+      showToast("Vui lòng điền đầy đủ thông tin");
+      return;
+    }
+    if (!agreeTerms) {
+      showToast("Vui lòng đồng ý với Điều khoản dịch vụ");
+      return;
+    }
     if (!otpSent) {
       handleSendOtp();
       return;
     }
     if (!otp || otp.length < 6) {
       showToast("Vui lòng nhập đủ 6 chữ số mã OTP (Mã demo: 123456)");
-      return;
-    }
-    localStorage.setItem("hanhTrinhXanh.authenticated", "true");
-    localStorage.setItem("hanhTrinhXanh.phone", phone);
-    localStorage.setItem("hanhTrinhXanh.name", "Ngọc Anh");
-    localStorage.setItem("hanhTrinhXanh.role", "farmer");
-    localStorage.setItem("hanhTrinhXanh.authMethod", "phone_otp");
-    showToast("Đăng nhập thành công!");
-    setTimeout(() => {
-      onAuthenticated("farmer", "Ngọc Anh");
-    }, 250);
-  };
-
-  const handleRegisterSubmit = () => {
-    if (!regFullName.trim()) {
-      showToast("Vui lòng nhập Họ và tên của bạn");
-      return;
-    }
-    if (!regPhone.trim() || regPhone.length < 9) {
-      showToast("Vui lòng nhập Số điện thoại hợp lệ (9 - 11 số)");
-      return;
-    }
-    if (!regPassword || regPassword.length < 6) {
-      showToast("Mật khẩu / Mã PIN cần tối thiểu 6 ký tự");
-      return;
-    }
-    if (!agreeTerms) {
-      showToast("Vui lòng đồng ý với Điều khoản dịch vụ");
       return;
     }
 
@@ -1430,28 +1423,30 @@ function LoginView({ onAuthenticated }) {
         </div>
 
         {/* Tab Switcher: Đăng nhập vs Đăng ký mới */}
-        <div className="mb-6 grid grid-cols-2 gap-1 rounded-2xl bg-[#edf4ea] p-1.5 text-xs font-bold text-[#678072]">
+        <div className="mb-8 flex border-b-2 border-[#eef4ec]">
           <button
             type="button"
             onClick={() => setAuthMode("login")}
-            className={`flex items-center justify-center gap-2 rounded-xl py-2.5 transition-all duration-200 ${
+            className={`flex-1 pb-3.5 text-sm font-bold transition-all ${
               authMode === "login"
-                ? "bg-[#2c7d55] text-white shadow-md shadow-[#2c7d55]/20"
-                : "hover:text-[#1e4638]"
+                ? "border-b-2 border-[#2c7d55] text-[#1e4638]"
+                : "text-[#8ba095] hover:text-[#4d6b5c]"
             }`}
+            style={{ marginBottom: "-2px" }}
           >
-            <LogIn size={15} /> Đăng nhập
+            Đăng nhập
           </button>
           <button
             type="button"
             onClick={() => setAuthMode("register")}
-            className={`flex items-center justify-center gap-2 rounded-xl py-2.5 transition-all duration-200 ${
+            className={`flex-1 pb-3.5 text-sm font-bold transition-all ${
               authMode === "register"
-                ? "bg-[#2c7d55] text-white shadow-md shadow-[#2c7d55]/20"
-                : "hover:text-[#1e4638]"
+                ? "border-b-2 border-[#2c7d55] text-[#1e4638]"
+                : "text-[#8ba095] hover:text-[#4d6b5c]"
             }`}
+            style={{ marginBottom: "-2px" }}
           >
-            <UserPlus size={15} /> Tạo tài khoản mới
+            Tạo tài khoản
           </button>
         </div>
 
@@ -1476,7 +1471,7 @@ function LoginView({ onAuthenticated }) {
                 Số điện thoại đăng nhập
                 <div className="relative mt-2 flex items-center">
                   <span className="absolute left-3.5 text-xs font-semibold text-[#8ba095]">
-                    �� +84
+                     +84
                   </span>
                   <input
                     value={phone}
@@ -1489,69 +1484,45 @@ function LoginView({ onAuthenticated }) {
               </label>
             </div>
 
-            {/* OTP Input (Shown after Send OTP clicked) */}
-            {otpSent && (
-              <div className="rounded-2xl border border-[#d6e9d2] bg-[#f4faf2] p-4 animate-slide-down">
-                <div className="flex items-center justify-between">
-                  <label className="block text-xs font-bold text-[#28704d]">
-                    Mã xác thực OTP (6 chữ số)
-                  </label>
+            {/* Password Input */}
+            <div>
+              <label className="block text-xs font-bold text-[#4d6b5c]">
+                Mật khẩu
+                <div className="relative mt-2 flex items-center">
+                  <LockKeyhole size={17} className="absolute left-3.5 text-[#8ba095]" />
+                  <input
+                    type={showLoginPassword ? "text" : "password"}
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                    className="w-full rounded-2xl border border-[#dce8dc] bg-[#fbfdfa] py-3.5 pl-10 pr-12 text-sm font-semibold text-[#1e4638] outline-none transition focus:border-[#2c7d55] focus:bg-white focus:ring-4 focus:ring-[#2c7d55]/10"
+                    placeholder="Nhập mật khẩu..."
+                  />
                   <button
                     type="button"
-                    onClick={handleFillDemoOtp}
-                    className="flex items-center gap-1 text-[11px] font-bold text-[#ea8156] hover:underline"
+                    onClick={() => setShowLoginPassword(!showLoginPassword)}
+                    className="absolute right-3.5 text-[#8ba095] hover:text-[#2c7d55] transition"
                   >
-                     Điền nhanh 123456
+                    {showLoginPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
-                <input
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
-                  maxLength={6}
-                  className="mt-2 w-full rounded-xl border border-[#c3dec0] bg-white py-3 text-center text-lg font-bold tracking-[.35em] text-[#1e4638] outline-none focus:border-[#2c7d55] focus:ring-4 focus:ring-[#2c7d55]/10"
-                  placeholder="123456"
-                  inputMode="numeric"
-                />
-                <div className="mt-2.5 flex items-center justify-between text-[11px] text-[#71877b]">
-                  <span>Mã mô phỏng: <strong className="text-[#28704d]">123456</strong></span>
-                  {otpTimer > 0 ? (
-                    <span className="font-semibold text-[#8ba095]">Gửi lại sau {otpTimer}s</span>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={handleSendOtp}
-                      className="font-bold text-[#28704d] hover:underline"
-                    >
-                      Gửi lại mã OTP
-                    </button>
-                  )}
-                </div>
-              </div>
-            )}
+              </label>
+            </div>
 
             {/* Submit Phone Button */}
             <button
               type="button"
-              disabled={!phone || (otpSent && !otp)}
+              disabled={!phone || !loginPassword}
               onClick={handleLoginSubmit}
-              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#ea8156] hover:bg-[#de6c3e] active:scale-[0.98] py-3.5 text-sm font-bold text-white shadow-lg shadow-[#ea8156]/20 transition-all disabled:cursor-not-allowed disabled:opacity-50"
+              className="group flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#2c7d55] to-[#3b9f6e] hover:from-[#236b47] hover:to-[#2c7d55] active:scale-[0.98] py-3.5 text-sm font-bold text-white shadow-lg shadow-[#2c7d55]/30 transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none"
             >
-              {otpSent ? (
-                <>
-                  <ShieldCheck size={18} /> Xác nhận OTP & Đăng nhập
-                </>
-              ) : (
-                <>
-                  Nhận mã OTP <ArrowRight size={16} />
-                </>
-              )}
+              <LogIn size={18} /> Đăng nhập
             </button>
 
             {/* Divider */}
             <div className="relative my-4 flex items-center justify-center">
               <div className="w-full border-t border-[#e6eee4]"></div>
               <span className="absolute bg-white px-3 text-[11px] font-bold uppercase tracking-wider text-[#98aba0]">
-                Hoặc đăng nhập nhanh
+                Hoặc
               </span>
             </div>
 
@@ -1559,41 +1530,11 @@ function LoginView({ onAuthenticated }) {
             <button
               type="button"
               onClick={() => setZaloModalOpen(true)}
-              className="flex w-full items-center justify-center gap-3 rounded-2xl bg-[#0068FF] hover:bg-[#0057d9] active:scale-[0.98] py-3.5 text-sm font-bold text-white shadow-lg shadow-blue-500/20 transition-all"
+              className="group flex w-full items-center justify-center gap-3 rounded-2xl bg-white border border-[#0068FF]/30 hover:border-[#0068FF] hover:bg-[#f0f6ff] active:scale-[0.98] py-3.5 text-sm font-bold text-[#0068FF] shadow-sm hover:shadow-md hover:shadow-[#0068FF]/10 transition-all duration-300"
             >
-              <ZaloIcon className="h-5 w-5" />
+              <ZaloIcon className="h-5 w-5 text-[#0068FF]" />
               <span>Đăng nhập bằng Zalo</span>
             </button>
-
-            {/* Fast Demo Access */}
-            <div className="rounded-2xl border border-[#e2ede0] bg-[#f8fbf7] p-3.5">
-              <p className="mb-2 text-center text-[11px] font-bold uppercase tracking-wider text-[#799085]">
-                 Dùng thử nhanh 1-chạm (Không cần OTP)
-              </p>
-              <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
-                <button
-                  type="button"
-                  onClick={() => handleQuickDemo("farmer")}
-                  className="flex items-center justify-center gap-1.5 rounded-xl border border-[#cee2c9] bg-white py-2.5 text-xs font-bold text-[#28704d] hover:bg-[#edf6e9] active:scale-95 transition shadow-sm"
-                >
-                   Nông dân
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleQuickDemo("cooperative")}
-                  className="flex items-center justify-center gap-1.5 rounded-xl border border-[#cee2c9] bg-white py-2.5 text-xs font-bold text-[#28704d] hover:bg-[#edf6e9] active:scale-95 transition shadow-sm"
-                >
-                   HTX
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleQuickDemo("owner")}
-                  className="flex items-center justify-center gap-1.5 rounded-xl border border-[#cee2c9] bg-white py-2.5 text-xs font-bold text-[#28704d] hover:bg-[#edf6e9] active:scale-95 transition shadow-sm"
-                >
-                   Chủ ghe
-                </button>
-              </div>
-            </div>
           </div>
         )}
 
@@ -1759,13 +1700,62 @@ function LoginView({ onAuthenticated }) {
               </span>
             </label>
 
+            {/* OTP Input (Shown after Send OTP clicked) */}
+            {otpSent && (
+              <div className="rounded-2xl border border-[#d6e9d2] bg-[#f4faf2] p-4 animate-slide-down">
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-bold text-[#28704d]">
+                    Mã xác thực OTP (6 chữ số)
+                  </label>
+                  <button
+                    type="button"
+                    onClick={handleFillDemoOtp}
+                    className="flex items-center gap-1 text-[11px] font-bold text-[#ea8156] hover:underline"
+                  >
+                     Điền nhanh 123456
+                  </button>
+                </div>
+                <input
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  maxLength={6}
+                  className="mt-2 w-full rounded-xl border border-[#c3dec0] bg-white py-3 text-center text-lg font-bold tracking-[.35em] text-[#1e4638] outline-none focus:border-[#2c7d55] focus:ring-4 focus:ring-[#2c7d55]/10"
+                  placeholder="123456"
+                  inputMode="numeric"
+                />
+                <div className="mt-2.5 flex items-center justify-between text-[11px] text-[#71877b]">
+                  <span>Mã mô phỏng: <strong className="text-[#28704d]">123456</strong></span>
+                  {otpTimer > 0 ? (
+                    <span className="font-semibold text-[#8ba095]">Gửi lại sau {otpTimer}s</span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleSendOtp}
+                      className="font-bold text-[#28704d] hover:underline"
+                    >
+                      Gửi lại mã OTP
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Submit Register Button */}
             <button
               type="button"
+              disabled={!regFullName || !regPhone || !regPassword || (otpSent && !otp)}
               onClick={handleRegisterSubmit}
-              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#2c7d55] hover:bg-[#256c4c] active:scale-[0.98] py-3.5 text-sm font-bold text-white shadow-lg shadow-[#2c7d55]/25 transition-all"
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[#2c7d55] hover:bg-[#256c4c] active:scale-[0.98] py-3.5 text-sm font-bold text-white shadow-lg shadow-[#2c7d55]/25 transition-all disabled:cursor-not-allowed disabled:opacity-50"
             >
-              <UserCheck size={18} /> Đăng ký tài khoản ngay
+              {otpSent ? (
+                <>
+                  <ShieldCheck size={18} /> Xác nhận OTP & Đăng ký
+                </>
+              ) : (
+                <>
+                  Nhận mã OTP <ArrowRight size={16} />
+                </>
+              )}
             </button>
 
             {/* Footer switcher */}
